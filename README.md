@@ -1,2 +1,2 @@
 # MyMusic
-A web application about music to relax in free time
+A web application about music help you relax in free time
