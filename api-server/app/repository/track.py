@@ -1,6 +1,7 @@
 from model import models
 from repository.repo import get_db
 import uuid
+from sqlalchemy import func, text
 
 
 class TrackRepo:
@@ -11,12 +12,12 @@ class TrackRepo:
         db.refresh(track)
         return track
 
-    def get_track_by_id(id: uuid.UUID) -> models.Track:
+    def get_track_by_id(self, id: uuid.UUID) -> models.Track:
         db = get_db()
         track = db.get(models.Track).filter(models.User.id == id).first()
         return track
 
-    def delete_track(id: uuid.UUID) -> bool:
+    def delete_track(self, id: uuid.UUID) -> bool:
         db = get_db()
         track = db.get(models.Track).filter(models.User.id == id).first()
         if track == None:
@@ -25,3 +26,17 @@ class TrackRepo:
             db.delete(track)
             db.commit()
             return True
+
+    def find_track_with_name(self, name: str) -> list[models.Track]:
+        db = get_db()
+        ts_query = func.plainto_tsquery("simple", name)
+        tracks = (
+            db.query(models.Track)
+            .filter(
+                func.to_tsvector('simple', models.Track.name).op("@@")(ts_query)
+            )
+            .all()
+        )
+
+        print(tracks)
+        return tracks

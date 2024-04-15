@@ -1,8 +1,9 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, ForeignKey, Integer, String, Table
+from sqlalchemy import Column, ForeignKey, Integer, String, Table, Computed
 from sqlalchemy.orm import relationship
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID, TSVECTOR
 import uuid
+from sqlalchemy import func
 
 Base = declarative_base()
 
@@ -55,8 +56,6 @@ class Track(Base):
     playlists = relationship(
         "Playlist", secondary=TrackPlaylist, back_populates="tracks", lazy=True
     )
-    # do we need this ??? why a track want to know what playlist has it ?
-
     album_id = Column(UUID, ForeignKey("albums.id"))
     album = relationship("Album", backref="tracks", lazy=True)
 
