@@ -14,12 +14,12 @@ class TrackRepo:
 
     def get_track_by_id(self, id: uuid.UUID) -> models.Track:
         db = get_db()
-        track = db.get(models.Track).filter(models.User.id == id).first()
+        track = db.get(models.Track, ident=id)
         return track
 
     def delete_track(self, id: uuid.UUID) -> bool:
         db = get_db()
-        track = db.get(models.Track).filter(models.User.id == id).first()
+        track = db.get(models.Track, ident=id)
         if track == None:
             return False
         else:
@@ -32,9 +32,7 @@ class TrackRepo:
         ts_query = func.plainto_tsquery("simple", name)
         tracks = (
             db.query(models.Track)
-            .filter(
-                func.to_tsvector('simple', models.Track.name).op("@@")(ts_query)
-            )
+            .filter(func.to_tsvector("simple", models.Track.name).op("@@")(ts_query))
             .all()
         )
 
