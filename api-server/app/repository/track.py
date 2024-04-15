@@ -35,6 +35,4 @@ class TrackRepo:
             .filter(func.to_tsvector("simple", models.Track.name).op("@@")(ts_query))
             .all()
         )
-
-        print(tracks)
         return tracks
