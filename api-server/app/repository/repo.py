@@ -2,6 +2,6 @@ from repository import sessionmaker
 from sqlalchemy.orm import Session
 
 
-def get_db() -> Session:
-    db = sessionmaker()
-    return db
+def get_session() -> Session:
+    session = sessionmaker()
+    return session
