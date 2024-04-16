@@ -39,6 +39,7 @@ class TrackService:
         )
         track = self.repo.track_repo.insert_track(track, session)
 
+        session.close()
         track_response = TrackResponse(
             id=track.id,
             name=track_form.name,
