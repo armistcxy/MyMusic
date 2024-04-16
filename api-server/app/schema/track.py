@@ -2,7 +2,6 @@ import uuid
 from pydantic import BaseModel
 from schema.artist import ArtistSimpleResponse
 from schema.category import CategorySimpleResponse
-from schema.album import AlbumSimpleResponse
 
 
 class TrackUploadForm(BaseModel):
@@ -13,10 +12,16 @@ class TrackUploadForm(BaseModel):
     categories: list[str] | None = None
 
 
-class TrackResponse(BaseModel):
+class TrackSimpleResponse(BaseModel):
     id: uuid.UUID
     name: str
     length: int
+
+
+from schema.album import AlbumSimpleResponse
+
+
+class TrackResponse(TrackSimpleResponse):
     artists: list[ArtistSimpleResponse]
     album: AlbumSimpleResponse | None = None
     categories: list[CategorySimpleResponse] | None = None
