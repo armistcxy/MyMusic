@@ -1,25 +1,8 @@
-from pydantic import BaseModel
-import uuid
 from model import models
 from repository.general import Repo
 from repository.repo import get_session
-
-
-class TrackUploadForm(BaseModel):
-    name: str
-    length: int
-    artists_id: list[uuid.UUID]
-    album_id: uuid.UUID | None
-    categories: list[str] | None
-
-
-class TrackResponse(BaseModel):
-    id: uuid.UUID
-    name: str
-    length: int
-    artists: list[str]
-    album: str | None = None
-    categories: list[str] | None = None
+from schema.track import TrackResponse, TrackUploadForm
+from schema.artist import model_to_simple_response
 
 
 class TrackService:
@@ -44,7 +27,7 @@ class TrackService:
             id=track.id,
             name=track_form.name,
             length=track_form.length,
-            artists=[artist.name for artist in artists],
+            artists=[model_to_simple_response(artist) for artist in artists],
         )
 
         return track_response
