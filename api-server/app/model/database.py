@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from model.config import load_db_config
+from app.model.config import load_db_config
 import sqlalchemy
 
 

@@ -1,8 +1,8 @@
-from model import models
-from repository.general import Repo
-from repository.repo import get_session
-from schema.track import TrackResponse, TrackUploadForm
-from schema.artist import model_to_simple_response
+from app.model import models
+from app.repository.general import Repo
+from app.repository.repo import get_session
+from app.schema.track import TrackResponse, TrackUploadForm
+from app.schema.artist import model_to_simple_response
 
 
 class TrackService:

@@ -1,7 +1,7 @@
 import uuid
 from pydantic import BaseModel
-from schema.artist import ArtistSimpleResponse
-from schema.category import CategorySimpleResponse
+from app.schema.artist import ArtistSimpleResponse
+from app.schema.category import CategorySimpleResponse
 
 
 class TrackUploadForm(BaseModel):
@@ -18,7 +18,7 @@ class TrackSimpleResponse(BaseModel):
     length: int
 
 
-from schema.album import AlbumSimpleResponse
+from app.schema.album import AlbumSimpleResponse
 
 
 class TrackResponse(TrackSimpleResponse):

@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 import uuid
-from model import models
+from app.model import models
 
 
 class ArtistSimpleResponse(BaseModel):

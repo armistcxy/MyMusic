@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 import uuid
-from schema.artist import ArtistSimpleResponse
+from app.schema.artist import ArtistSimpleResponse
 
 
 class AlbumSimpleResponse(BaseModel):
@@ -8,7 +8,7 @@ class AlbumSimpleResponse(BaseModel):
     name: str
 
 
-from schema.track import TrackSimpleResponse
+from app.schema.track import TrackSimpleResponse
 
 
 class AlbumDetailResponse(AlbumSimpleResponse):

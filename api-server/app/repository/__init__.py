@@ -1,4 +1,4 @@
-from model import database, models
+from app.model import database, models
 from sqlalchemy.orm import sessionmaker
 
 engine = database.init_engine()

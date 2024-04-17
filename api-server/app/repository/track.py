@@ -1,4 +1,4 @@
-from model import models
+from app.model import models
 import uuid
 from sqlalchemy import func, text
 from sqlalchemy.orm import Session

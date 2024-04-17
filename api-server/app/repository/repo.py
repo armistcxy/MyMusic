@@ -1,4 +1,4 @@
-from repository import sessionmaker
+from app.repository import sessionmaker
 from sqlalchemy.orm import Session
 
 

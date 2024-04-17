@@ -1,5 +1,5 @@
-from repository.artist import ArtistRepo
-from repository.track import TrackRepo
+from app.repository.artist import ArtistRepo
+from app.repository.track import TrackRepo
 
 
 class Repo:
