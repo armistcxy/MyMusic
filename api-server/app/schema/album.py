@@ -12,5 +12,5 @@ from app.schema.track import TrackSimpleResponse
 
 
 class AlbumDetailResponse(AlbumSimpleResponse):
-    artist: ArtistSimpleResponse
+    artists: list[ArtistSimpleResponse]
     tracks: list[TrackSimpleResponse]
