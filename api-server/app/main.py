@@ -4,8 +4,17 @@ from app.api.track import track_router
 api = FastAPI()
 api.include_router(track_router)
 
-# def j4test():
-#     from repository.track import TrackRepo
+
+def j4test():
+    from app.repository.track import TrackRepo
+    from app.repository.repo import get_session
+
+    # track_repo = TrackRepo()
+    # tracks = track_repo.get_all_tracks(session=get_session())
+    # for track in tracks:
+    #     print(track.name)
+
+
 #     from repository.artist import ArtistRepo
 #     from service.track import TrackService
 #     from repository.general import Repo
@@ -45,4 +54,4 @@ api.include_router(track_router)
 #     print(track_response.model_dump())
 
 
-# j4test()
+j4test()

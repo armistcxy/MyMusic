@@ -11,6 +11,10 @@ class TrackRepo:
         session.refresh(track)
         return track
 
+    def get_all_tracks(self, session: Session) -> list[models.Track]:
+        tracks = session.query(models.Track).all()
+        return tracks
+
     def get_track_by_id(self, id: uuid.UUID, session: Session) -> models.Track:
         track = session.get(models.Track, ident=id)
         return track

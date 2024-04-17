@@ -25,3 +25,15 @@ class TrackResponse(TrackSimpleResponse):
     artists: list[ArtistSimpleResponse]
     album: AlbumSimpleResponse | None = None
     categories: list[CategorySimpleResponse] | None = None
+
+
+from app.model import models
+
+
+def model_to_simple_response(track: models.Track) -> TrackSimpleResponse:
+    track_simple_response = TrackSimpleResponse(
+        id=track.id,
+        name=track.name,
+        length=track.length,
+    )
+    return track_simple_response
