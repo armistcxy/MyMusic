@@ -1,5 +1,5 @@
-from model import models
-from repository.repo import get_session
+from app.model import models
+from app.repository.repo import get_session
 import uuid
 from sqlalchemy import func
 from sqlalchemy.orm import Session

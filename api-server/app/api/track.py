@@ -1,10 +1,10 @@
 from fastapi import APIRouter
 from app.schema.track import TrackResponse, TrackUploadForm
 from app.service.track import TrackService
-from app.repository.track import TrackRepo
+from app.api import repo
 
 track_router = APIRouter(prefix="/tracks")
-track_service = TrackService(TrackRepo())
+track_service = TrackService(repo)
 
 
 @track_router.post("/", response_model=TrackResponse)
