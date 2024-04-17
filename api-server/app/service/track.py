@@ -2,8 +2,8 @@ from app.model import models
 from app.repository.general import Repo
 from app.repository.repo import get_session
 from app.schema.track import TrackResponse, TrackUploadForm, TrackSimpleResponse
-import app.schema.track as schema_track
-import app.schema.artist as schema_artist
+import app.schema.utils as schema_utils
+import uuid
 
 
 class TrackService:
@@ -29,7 +29,8 @@ class TrackService:
             name=track_form.name,
             length=track_form.length,
             artists=[
-                schema_artist.model_to_simple_response(artist) for artist in artists
+                schema_utils.artist_model_to_simple_response(artist)
+                for artist in artists
             ],
         )
 
@@ -38,8 +39,17 @@ class TrackService:
     def get_all_tracks(self) -> list[TrackSimpleResponse]:
         session = get_session()
         tracks = self.repo.track_repo.get_all_tracks(session)
-        responses = [schema_track.model_to_simple_response(track) for track in tracks]
+        responses = [
+            schema_utils.track_model_to_simple_response(track) for track in tracks
+        ]
 
         session.close()
 
         return responses
+
+    def get_track_by_id(self, id: uuid.UUID) -> TrackResponse:
+        session = get_session()
+        track = self.repo.track_repo.get_track_by_id(id, session)
+        response = schema_utils.track_model_to_detail_response(track)
+        session.close()
+        return response

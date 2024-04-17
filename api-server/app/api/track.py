@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from app.schema.track import TrackResponse, TrackUploadForm, TrackSimpleResponse
 from app.service.track import TrackService
 from app.api import repo
+import uuid
 
 track_router = APIRouter(prefix="/tracks")
 track_service = TrackService(repo)
@@ -19,6 +20,7 @@ def get_all_tracks():
     return responses
 
 
-@track_router.get("/{id}", response_model=TrackSimpleResponse)
-def get_track_by_id():
-    pass
+@track_router.get("/{id}", response_model=TrackResponse)
+def get_track_by_id(id: uuid.UUID):
+    response = track_service.get_track_by_id(id)
+    return response

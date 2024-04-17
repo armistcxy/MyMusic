@@ -2,6 +2,6 @@ from pydantic import BaseModel
 import uuid
 
 
-class CategorySimpleResponse(BaseModel):
+class CategoryResponse(BaseModel):
     id: uuid.UUID
     name: str
