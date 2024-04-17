@@ -3,6 +3,7 @@ from app.repository.track import TrackRepo
 from app.repository.album import AlbumRepo
 from app.repository.category import CategoryRepo
 from app.repository.user import UserRepo
+from app.repository.playlist import PlaylistRepo
 
 
 class Repo:
@@ -13,6 +14,11 @@ class Repo:
         album_repo: AlbumRepo,
         category_repo: CategoryRepo,
         user_repo: UserRepo,
+        playlist_repo: PlaylistRepo,
     ):
         self.artist_repo = artist_repo
         self.track_repo = track_repo
+        self.album_repo = album_repo
+        self.category_repo = category_repo
+        self.user_repo = user_repo
+        self.playlist_repo = playlist_repo
