@@ -4,7 +4,7 @@ from app.service.track import TrackService
 from app.api import repo
 import uuid
 
-track_router = APIRouter(prefix="/tracks")
+track_router = APIRouter(prefix="/tracks", tags=["Track"])
 track_service = TrackService(repo)
 
 

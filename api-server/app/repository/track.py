@@ -36,3 +36,6 @@ class TrackRepo:
             .all()
         )
         return tracks
+
+    def update_track(self, track: models.Track, session: Session) -> models.Track:
+        pass

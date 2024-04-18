@@ -8,5 +8,12 @@ class ArtistSimpleResponse(BaseModel):
     name: str
 
 
-class ArtistDetailResponse(ArtistSimpleResponse):
-    description: str
+class ArtistUploadForm(BaseModel):
+    name: str
+    description: str | None = None
+
+
+class ArtistResponse(ArtistSimpleResponse):
+    description: str | None = None
+
+

@@ -41,8 +41,8 @@ def track_model_to_detail_response(
 
 def artist_model_to_detail_response(
     artist: models.Artist,
-) -> schema_artist.ArtistDetailResponse:
-    artist_response = schema_artist.ArtistDetailResponse(
+) -> schema_artist.ArtistResponse:
+    artist_response = schema_artist.ArtistResponse(
         id=artist.id,
         name=artist.name,
         description=artist.description,
