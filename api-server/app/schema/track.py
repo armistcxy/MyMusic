@@ -25,3 +25,7 @@ class TrackResponse(TrackSimpleResponse):
     artists: list[ArtistSimpleResponse]
     album: AlbumSimpleResponse | None = None
     categories: list[CategoryResponse] | None = None
+
+
+class TrackDeleteResponse(BaseModel):
+    message: str

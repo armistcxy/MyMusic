@@ -1,7 +1,12 @@
 from app.model import models
 from app.repository.general import Repo
 from app.repository.repo import get_session
-from app.schema.track import TrackResponse, TrackUploadForm, TrackSimpleResponse
+from app.schema.track import (
+    TrackResponse,
+    TrackUploadForm,
+    TrackSimpleResponse,
+    TrackDeleteResponse,
+)
 import app.schema.utils as schema_utils
 import uuid
 
@@ -53,3 +58,12 @@ class TrackService:
         response = schema_utils.track_model_to_detail_response(track)
         session.close()
         return response
+
+    def delete_track_by_id(self, id: uuid.UUID) -> TrackDeleteResponse | None:
+        session = get_session()
+        success = self.repo.track_repo.delete_track(id, session)
+        session.close()
+        if success:
+            return None
+        else:
+            return TrackDeleteResponse(message=f"fail to delete track with {id}")
