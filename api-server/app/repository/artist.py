@@ -35,3 +35,6 @@ class ArtistRepo:
             .all()
         )
         return artists
+
+    def get_all_artists(self) -> list[models.Artist]:
+        pass
