@@ -18,7 +18,7 @@ class UserDetailResponse(UserSimpleResponse):
     email: EmailStr
 
 
-class UserSignInForm(BaseModel):
+class UserLogInForm(BaseModel):
     email: EmailStr
     password: str
     remember_me: bool
@@ -28,4 +28,17 @@ class UserRegisterForm(BaseModel):
     email: EmailStr
     password: str
     name: str
-    gender: Gender
+    # gender: Gender
+
+
+class UserRegisterResponse(BaseModel):
+    id: uuid.UUID
+    email: EmailStr
+    name: str
+
+
+class UserLogInResponse(BaseModel):
+    id: uuid.UUID
+    email: EmailStr
+    name: str
+    token: str

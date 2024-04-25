@@ -1,6 +1,9 @@
-from sqlalchemy.ext.declarative import declarative_base
+# from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, ForeignKey, Integer, String, Table, Computed
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import (
+    relationship,
+    declarative_base,
+)  # there's warning that declaretive_base from sqlalchemy.ext.declarativate is deprecated
 from sqlalchemy.dialects.postgresql import UUID, TSVECTOR
 import uuid
 from sqlalchemy import func
