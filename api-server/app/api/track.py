@@ -47,3 +47,9 @@ def delete_track_by_id(id: uuid.UUID):
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content=response
     )
+
+
+@track_router.get("/search/{name}", response_model=list[TrackSimpleResponse])
+def find_track_with_name(name: str):
+    response = track_service.find_track_with_name(name)
+    return response

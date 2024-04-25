@@ -1,6 +1,6 @@
 from app.model import models
 import uuid
-from sqlalchemy import func, text
+from sqlalchemy import func, text, update
 from sqlalchemy.orm import Session
 
 
@@ -38,4 +38,13 @@ class TrackRepo:
         return tracks
 
     def update_track(self, track: models.Track, session: Session) -> models.Track:
+        session.get(models.Track, ident=track.id)
+        stmt = (
+            update(models.Track)
+            .where(models.Track.id == track.id)
+            .values(
+                name=track.name,
+                length=track.length,
+            )
+        )
         pass

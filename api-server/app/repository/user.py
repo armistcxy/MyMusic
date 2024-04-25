@@ -35,3 +35,7 @@ class UserRepo:
             .all()
         )
         return users
+
+    def get_all_users(self, session: Session) -> list[models.User]:
+        users = session.query(models.User).all()
+        return users

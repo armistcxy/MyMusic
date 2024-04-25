@@ -67,3 +67,12 @@ class TrackService:
             return None
         else:
             return TrackDeleteResponse(message=f"fail to delete track with {id}")
+
+    def find_track_with_name(self, name: str) -> list[TrackSimpleResponse]:
+        session = get_session()
+        query_result = self.repo.track_repo.find_track_with_name(name, session)
+        response = []
+        for track in query_result:
+            response.append(schema_utils.track_model_to_simple_response(track))
+        session.close()
+        return response

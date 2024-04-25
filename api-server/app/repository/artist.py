@@ -17,7 +17,6 @@ class ArtistRepo:
         return artist
 
     def delete_artist(self, id: uuid.UUID, session: Session) -> bool:
-        session = get_session()
         artist = session.get(models.Artist, ident=id)
         if artist == None:
             return False
@@ -27,7 +26,6 @@ class ArtistRepo:
             return True
 
     def find_artist_with_name(self, name: str, session: Session) -> list[models.Artist]:
-        session = get_session()
         ts_query = func.plainto_tsquery("simple", name)
         artists = (
             session.query(models.Artist)
@@ -36,5 +34,6 @@ class ArtistRepo:
         )
         return artists
 
-    def get_all_artists(self) -> list[models.Artist]:
-        pass
+    def get_all_artists(self, session: Session) -> list[models.Artist]:
+        artists = session.query(models.Artist).all()
+        return artists

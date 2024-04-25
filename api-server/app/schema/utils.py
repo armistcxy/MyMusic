@@ -48,3 +48,24 @@ def artist_model_to_detail_response(
         description=artist.description,
     )
     return artist_response
+
+
+def user_model_to_simple_response(
+    user: models.User,
+) -> schema_user.UserSimpleResponse:
+    user_response = schema_user.UserSimpleResponse(
+        id=user.id,
+        name=user.username,
+    )
+    return user_response
+
+
+def user_model_to_detail_response(
+    user: models.User,
+) -> schema_user.UserDetailResponse:
+    user_response = schema_user.UserDetailResponse(
+        id=user.id,
+        name=user.username,
+        email=user.email,
+    )
+    return user_response
