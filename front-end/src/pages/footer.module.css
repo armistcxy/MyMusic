@@ -1,0 +1,14 @@
+.PlayTrack {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 15%;
+    width: 100%;
+    min-width: 620px;
+    background-color: #121212;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
