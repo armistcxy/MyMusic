@@ -1,10 +1,8 @@
 from fastapi import APIRouter
-from app.api import repo
-from app.service.artist import ArtistService
 from app.schema.artist import ArtistResponse, ArtistSimpleResponse, ArtistUploadForm
+import app.service.artist as artist_service
 
 artist_router = APIRouter(prefix="/artists", tags=["Artist"])
-artist_service = ArtistService(repo)
 
 
 @artist_router.post("/", response_model=ArtistResponse)

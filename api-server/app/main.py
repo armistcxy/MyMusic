@@ -15,14 +15,12 @@ api.include_router(category_router)
 api.include_router(playlist_router)
 
 
-def j4test():
-    from app.repository.track import TrackRepo
-    from app.repository.repo import get_session
+# def j4test():
 
-    # track_repo = TrackRepo()
-    # tracks = track_repo.get_all_tracks(session=get_session())
-    # for track in tracks:
-    #     print(track.name)
+# track_repo = TrackRepo()
+# tracks = track_repo.get_all_tracks(session=get_session())
+# for track in tracks:
+#     print(track.name)
 
 
 #     from repository.artist import ArtistRepo
@@ -62,6 +60,3 @@ def j4test():
 #     )
 #     track_response = track_service.upload_track(track_upload_form)
 #     print(track_response.model_dump())
-
-
-j4test()

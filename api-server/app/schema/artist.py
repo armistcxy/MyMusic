@@ -15,5 +15,3 @@ class ArtistUploadForm(BaseModel):
 
 class ArtistResponse(ArtistSimpleResponse):
     description: str | None = None
-
-

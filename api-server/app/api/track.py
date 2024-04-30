@@ -5,13 +5,11 @@ from app.schema.track import (
     TrackSimpleResponse,
     TrackDeleteResponse,
 )
-from app.service.track import TrackService
-from app.api import repo
 import uuid
 from fastapi.responses import JSONResponse
+import app.service.track as track_service
 
 track_router = APIRouter(prefix="/tracks", tags=["Track"])
-track_service = TrackService(repo)
 
 
 @track_router.post("/", response_model=TrackResponse)

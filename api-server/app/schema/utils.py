@@ -34,7 +34,9 @@ def track_model_to_detail_response(
         length=track.length,
         artists=[artist_model_to_simple_response(artist) for artist in track.artists],
         album=track.album,
-        categories=track.categories,
+        categories=[
+            category_model_to_response(category) for category in track.categories
+        ],
     )
     return track_response
 
@@ -69,3 +71,13 @@ def user_model_to_detail_response(
         email=user.email,
     )
     return user_response
+
+
+def category_model_to_response(
+    category: models.Category,
+) -> schema_category.CategoryResponse:
+    category_response = schema_category.CategoryResponse(
+        id=category.id,
+        name=category.name,
+    )
+    return category_response
