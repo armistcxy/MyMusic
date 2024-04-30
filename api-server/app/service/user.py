@@ -1,7 +1,7 @@
 from app.model import models
-from app.repository.general import Repo
 from app.repository.repo import get_session
 import app.schema.utils as schema_utils
+import app.repository.user as user_repo
 from app.schema.user import (
     UserDetailResponse,
     UserRegisterForm,
@@ -24,43 +24,42 @@ def check_password(password: str, hash_password: bytes) -> bool:
     return bcrypt.checkpw(password.encode("utf-8"), hash_password)
 
 
-class UserService:
-    def __init__(self, repo: Repo):
-        self.repo = repo
+def get_all_users() -> list[UserSimpleResponse]:
+    session = get_session()
+    users = user_repo.get_all_users(session)
+    response = []
+    for user in users:
+        response.append(schema_utils.user_model_to_simple_response(user))
+    session.close()
 
-    def get_all_users(self) -> list[UserSimpleResponse]:
-        session = get_session()
-        users = self.repo.user_repo.get_all_users(session)
-        response = []
-        for user in users:
-            response.append(schema_utils.user_model_to_simple_response(user))
-        session.close()
+    return response
 
-        return response
 
-    def get_user_by_id(self, id: uuid.UUID) -> list[UserDetailResponse]:
-        session = get_session()
-        user = self.repo.user_repo.get_user_by_id(id, session)
-        response = schema_utils.user_model_to_detail_response(user)
-        session.close()
-        return response
+def get_user_by_id(id: uuid.UUID) -> list[UserDetailResponse]:
+    session = get_session()
+    user = user_repo.get_user_by_id(id, session)
+    response = schema_utils.user_model_to_detail_response(user)
+    session.close()
+    return response
 
-    def register_user(self, register_form: UserRegisterForm) -> UserDetailResponse:
-        session = get_session()
 
-        password_to_store = hash_password(register_form.password)
+def register_user(register_form: UserRegisterForm) -> UserDetailResponse:
+    session = get_session()
 
-        user = models.User(
-            email=register_form.email,
-            username=register_form.name,
-            password=password_to_store,
-        )
+    password_to_store = hash_password(register_form.password)
 
-        user = self.repo.user_repo.insert_user(user, session)
-        response = schema_utils.user_model_to_detail_response(user)
-        session.close()
+    user = models.User(
+        email=register_form.email,
+        username=register_form.name,
+        password=password_to_store,
+    )
 
-        return response
+    user = user_repo.insert_user(user, session)
+    response = schema_utils.user_model_to_detail_response(user)
+    session.close()
 
-    def login_user(self, login_form: UserLogInForm) -> UserLogInResponse:
-        pass
+    return response
+
+
+def login_user(login_form: UserLogInForm) -> UserLogInResponse:
+    pass
