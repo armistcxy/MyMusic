@@ -17,6 +17,10 @@ def get_album_by_id(id: uuid.UUID, session: Session) -> models.Album:
     return album
 
 
+def get_album_by_name(name: str, session: Session) -> models.Album:
+    return session.query(models.Album).filter(models.Album.name == name).first()
+
+
 def delete_album(id: uuid.UUID, session: Session) -> bool:
     session = get_session()
     album = session.get(models.Album, ident=id)

@@ -25,6 +25,16 @@ def artist_model_to_simple_response(
     return artist_response
 
 
+def album_model_to_simple_response(
+    album: models.Track,
+) -> schema_album.AlbumSimpleResponse:
+    album_response = schema_album.AlbumSimpleResponse(
+        id=album.id,
+        name=album.name,
+    )
+    return album_response
+
+
 def track_model_to_detail_response(
     track: models.Track,
 ) -> schema_track.TrackResponse:
@@ -33,7 +43,7 @@ def track_model_to_detail_response(
         name=track.name,
         length=track.length,
         artists=[artist_model_to_simple_response(artist) for artist in track.artists],
-        album=track.album,
+        album=track_model_to_simple_response(track.album),
         categories=[
             category_model_to_response(category) for category in track.categories
         ],
@@ -81,3 +91,15 @@ def category_model_to_response(
         name=category.name,
     )
     return category_response
+
+
+def album_model_to_detail_response(
+    album: models.Album,
+) -> schema_album.AlbumDetailResponse:
+    album_response = schema_album.AlbumDetailResponse(
+        id=album.id,
+        name=album.name,
+        artists=[artist_model_to_simple_response(artist) for artist in album.artists],
+        tracks=[track_model_to_simple_response(track) for track in album.tracks],
+    )
+    return album_response
