@@ -7,6 +7,7 @@ from app.schema.playlist import (
     PlaylistDetailResponse,
     PlaylistUploadForm,
     PlaylistUpdateForm,
+    PlaylistSimpleResponse,
 )
 
 # create, get, update, delete playlist
@@ -35,6 +36,17 @@ def get_playlist_by_name(id: uuid.UUID) -> PlaylistDetailResponse:
     return playlist
 
 
+def get_all_playlists() -> list[PlaylistSimpleResponse]:
+    session = get_session()
+    playlists = playlist_repo.get_all_playlists(session)
+    response = [
+        schema_utils.playlist_model_to_simple_response(playlist)
+        for playlist in playlists
+    ]
+    session.close()
+    return response
+
+
 def update_playlist(update_form: PlaylistUpdateForm) -> PlaylistDetailResponse:
     session = get_session()
     # playlist = playlist_repo
@@ -46,3 +58,9 @@ def delete_playlist_by_id(id: uuid.UUID):
     session = get_session()
     playlist_repo.delete_playlist(id)
     session.close()
+
+
+def find_playlist_with_name(name: str) -> list[PlaylistSimpleResponse]:
+    session = get_session()
+    response = playlist_repo.find_playlist_with_name(name, session)
+    return response

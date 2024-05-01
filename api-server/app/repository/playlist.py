@@ -21,6 +21,10 @@ def get_playlist_by_name(name: str, session: Session) -> models.Playlist:
     return session.query(models.Playlist).filter(models.Playlist.name == name).first()
 
 
+def get_all_playlists(session: Session) -> list[models.Playlist]:
+    return session.query(models.Playlist).all()
+
+
 def delete_playlist(id: uuid.UUID, session: Session) -> bool:
     session = get_session()
     playlist = session.get(models.Playlist, ident=id)
