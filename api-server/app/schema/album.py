@@ -8,6 +8,10 @@ class AlbumUploadForm(BaseModel):
     artists_id: list[uuid.UUID]
 
 
+class AlbumUpdateForm(BaseModel):
+    name: str
+
+
 class AlbumSimpleResponse(BaseModel):
     id: uuid.UUID
     name: str
