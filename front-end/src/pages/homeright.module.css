@@ -1,0 +1,39 @@
+.HomeRight {
+    overflow-y: scroll;
+    background: transparent;
+    position: relative;
+    display: flex;
+}
+
+.IntoHR {
+    display: flex;
+    padding: 24px 32px 0;
+}
+
+.FirstSec {
+    display: grid;
+    grid-column-gap: 24px;
+    -webkit-column-gap: 24px;
+    column-gap: 24px;
+    overflow-y: hidden;
+}
+
+p { 
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    white-space: unset;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+h1 {
+    margin: 0px;
+    padding-bottom: 10px;
+}
+
+img {
+    width: inherit;
+    height: inherit;
+}

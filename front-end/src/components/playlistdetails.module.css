@@ -1,0 +1,9 @@
+.PlayListDetails {
+    cursor: pointer;
+    display: flex;
+}
+
+.ImgBox {
+    width: 80px;
+    height: 80px;
+}
