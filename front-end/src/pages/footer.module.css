@@ -12,3 +12,12 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.ImgBox {
+    width: 70px;
+    height: 70px;
+}
+
+.ButtonPlay {
+    cursor: pointer;
+}

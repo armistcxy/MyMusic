@@ -1,0 +1,22 @@
+.PlayListCard { 
+    position: relative;
+    height: 80px;
+    background-color: hsla(0, 0%, 100%, .1);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    cursor: pointer;
+}
+
+.ImgBox {
+    width: 80px;
+    height: 80px;
+}
+
+.Title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    color: #fff;
+}
