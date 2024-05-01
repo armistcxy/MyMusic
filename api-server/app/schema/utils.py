@@ -3,7 +3,7 @@ import app.schema.track as schema_track
 import app.schema.album as schema_album
 import app.schema.category as schema_category
 import app.schema.user as schema_user
-import app.schema.artist as schema_artist
+import app.schema.playlist as schema_playlist
 from app.model import models
 
 
@@ -26,13 +26,23 @@ def artist_model_to_simple_response(
 
 
 def album_model_to_simple_response(
-    album: models.Track,
+    album: models.Album,
 ) -> schema_album.AlbumSimpleResponse:
     album_response = schema_album.AlbumSimpleResponse(
         id=album.id,
         name=album.name,
     )
     return album_response
+
+
+def playlist_model_to_simple_response(
+    playlist: models.Playlist,
+) -> schema_playlist.PlaylistSimpleResponse:
+    playlist_response = schema_playlist.PlaylistSimpleResponse(
+        id=playlist.id,
+        name=playlist.name,
+    )
+    return playlist_response
 
 
 def track_model_to_detail_response(
@@ -103,3 +113,15 @@ def album_model_to_detail_response(
         tracks=[track_model_to_simple_response(track) for track in album.tracks],
     )
     return album_response
+
+
+def playlist_model_to_detail_response(
+    playlist: models.Playlist,
+) -> schema_playlist.PlaylistDetailResponse:
+    playlist_response = schema_playlist.PlaylistDetailResponse(
+        id=playlist.id,
+        name=playlist.name,
+        user=user_model_to_simple_response(playlist.user),
+        tracks=[track_model_to_simple_response(track) for track in playlist.tracks],
+    )
+    return playlist_response
