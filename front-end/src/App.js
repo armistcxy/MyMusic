@@ -1,11 +1,5 @@
-import './App.css';
-import Home from "./pages/home.js";
+import React from "react";
 
-
-function App() {
-  return (
-      <Home/>
-    );
-}
-
-export default App;
+export default function App() {
+  return <div>App</div>;
+};
