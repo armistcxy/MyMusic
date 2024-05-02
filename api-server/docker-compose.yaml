@@ -1,23 +1,52 @@
-version: '3'
+version: '3.5'
 
 services:
-  db:
-    image: postgres:latest
-    container_name: postgres
+  postgres:
+    container_name: postgres_container
+    image: postgres
     environment:
-      POSTGRES_DB: fapi
-      POSTGRES_USER: dev
-      POSTGRES_PASSWORD: 123456789
-      POSTGRES_HOST: localhost
-    ports:
-      - 5432:5432
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      PGDATA: /data/postgres
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
-    
-  web:
+       - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+  
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+       - pgadmin:/var/lib/pgadmin
+
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - postgres
+    restart: unless-stopped
+  
+  api:
+    container_name: api
     build: .
-    command: sh -c "uvicorn app.main:api --port=8080"
-    
-    links:
-      - db
-   
+    command: 'uvicorn app.main:api --port=8080'
+    depends_on:
+      - postgres
+    ports:
+      - 8080:8080
+    networks:
+      - postgres
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+    postgres:
+    pgadmin:
