@@ -1,6 +1,7 @@
 from app.model import models
 from app.repository.repo import get_session
 from app.schema.artist import ArtistResponse, ArtistUploadForm, ArtistSimpleResponse
+import app.repository.artist as artist_repo
 import app.schema.utils as schema_utils
 import uuid
 
@@ -19,11 +20,8 @@ def upload_artist(artist_form: ArtistUploadForm) -> ArtistResponse:
 
 def get_all_artists() -> list[ArtistSimpleResponse]:
     session = get_session()
-    artists = get_all_artists(session)
-    responses = [
-        schema_utils.artist_model_to_simple_response(artist) for artist in artists
-    ]
-
+    artists = artist_repo.get_all_artists(session)
+    responses = list(map(schema_utils.artist_model_to_simple_response, artists))
     session.close()
 
     return responses
