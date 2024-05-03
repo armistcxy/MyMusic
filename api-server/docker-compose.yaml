@@ -3,17 +3,14 @@ version: '3.5'
 services:
   postgres:
     container_name: postgres_container
-    image: postgres
+    image: postgres:15.1-alpine
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
-      PGDATA: /data/postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123456789}
     volumes:
-       - postgres:/data/postgres
-    ports:
-      - "5432:5432"
-    networks:
-      - postgres
+      - postgres_data:/var/lib/postgresql/data/
+    expose:
+      - 5432
     restart: unless-stopped
 
   
@@ -24,7 +21,8 @@ services:
     ports:
       - 8000:8000
     environment:
-      - DATABASE_URL=postgresql://dev@localhost
+      - DATABASE_URL=postgresql://dev@localhost/fapi
+      - SECRET_KEY=secret_key
 
 
 

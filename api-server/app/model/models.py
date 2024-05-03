@@ -99,6 +99,13 @@ class User(Base):
         "Artist", secondary=ArtistUser, back_populates="users", lazy=True
     )
 
+    playlists = relationship(
+        "Playlist",
+        back_populates="user",
+        lazy=True,
+        cascade="all, delete",  # delete a user cause to delete all playlist he/she created
+    )
+
 
 class Album(Base):
     __tablename__ = "albums"
@@ -117,7 +124,7 @@ class Playlist(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String, nullable=False)
     user_id = Column(UUID, ForeignKey("users.id"))
-    user = relationship("User", backref="playlists", lazy=True)
+    user = relationship("User", back_populates="playlists", lazy=True)
     tracks = relationship(
         "Track", secondary=TrackPlaylist, back_populates="playlists", lazy=True
     )
@@ -134,6 +141,15 @@ class Category(Base):
     )
 
 
+class Admin(Base):
+    __tablename__ = "admins"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String, unique=True, nullable=False)
+    email = Column(String, unique=True, nullable=False)
+    password = Column(String, unique=True, nullable=False)
+
+
 """
 All relationships: 
     track - artist = m : n      checked
@@ -145,4 +161,12 @@ All relationships:
     artist - album = m : n      checked
     
     user - playlist = 1 : n     checked
+"""
+
+
+"""
+When delete artist => can't use cascade because the relationship between track and artist is m : n
+=> So handle by own code
+
+When delete user => can use cascade delete because the relationship between user and playlist is 1 : n
 """

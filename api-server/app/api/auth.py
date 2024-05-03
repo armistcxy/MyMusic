@@ -2,9 +2,11 @@ from authx import AuthX, AuthXConfig
 import app.model.models as models
 import app.service.user as user_service
 import uuid
+import os
+
 
 auth_config = AuthXConfig()
-auth_config.JWT_SECRET_KEY = "secret_key"
+auth_config.JWT_SECRET_KEY = os.environ.get("SECRET_KEY", "secret_key")
 
 security = AuthX(config=auth_config)
 
