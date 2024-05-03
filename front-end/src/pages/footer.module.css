@@ -11,11 +11,19 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 17px 16px;
+    color: #fff;
 }
 
 .ImgBox {
     width: 70px;
     height: 70px;
+}
+
+.FooterLeft {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 .ButtonPlay {

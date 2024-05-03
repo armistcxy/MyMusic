@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 function ClickPlayList() {
-    let linkImg = "/data/img/mu.jpg";
+    let linkImg = "../data/img/mu.jpg";
     let nameSong = "Glory ManU";
 
     const [showImage, setShowImage] = useState(false);

@@ -6,7 +6,7 @@ function PlayListCard() {
         <Link to="/playlistdetails">
             <div className={styles.PlayListCard}>
                 <div className={styles.ImgBox}> 
-                    <img src="/data/img/mu.jpg" alt="Glory ManU"></img> 
+                    <img src="../data/img/mu.jpg" alt="Glory ManU"></img> 
                 </div> 
                 <div className={styles.Title}>
                     <p>Glory ManU</p>
