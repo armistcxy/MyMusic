@@ -24,7 +24,7 @@ def insert_user(user: models.User, session: Session) -> models.User:
     return user
 
 
-def delete_user(id: uuid.UUID, session: Session) -> bool:
+def delete_user_by_id(id: uuid.UUID, session: Session) -> bool:
     user = get_user_by_id(session, id)
     if user == None:
         return False

@@ -53,6 +53,13 @@ def find_users_with_name(name: str):
     pass
 
 
-@user_router.delete("/{id}")
-def delete_user(id: uuid.UUID):
-    pass
+@user_router.delete(
+    "/profile/delete", dependencies=[Depends(security.access_token_required)]
+)
+def delete_user(payload: TokenPayload = Depends(security.access_token_required)):
+    id = getattr(payload, "sub")
+    try:
+        id = uuid.UUID(id, version=4)
+        user_service.delete_user_by_id(id)
+    except Exception as e:
+        raise HTTPException(401, detail={"message": str(e)})

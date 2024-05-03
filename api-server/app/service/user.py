@@ -79,3 +79,9 @@ def login_user(login_form: UserLogInForm) -> UserLogInResult:
     session.close()
 
     return result
+
+
+def delete_user_by_id(id: uuid.UUID):
+    session = get_session()
+    user_repo.delete_user_by_id(id=id, session=session)
+    session.close()
