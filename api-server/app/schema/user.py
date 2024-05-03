@@ -11,7 +11,7 @@ class Gender(Enum):
 
 class UserSimpleResponse(BaseModel):
     id: uuid.UUID
-    name: str
+    username: str
 
 
 class UserDetailResponse(UserSimpleResponse):
@@ -42,3 +42,10 @@ class UserLogInResponse(BaseModel):
     email: EmailStr
     name: str
     token: str
+
+
+class UserLogInResult(BaseModel):
+    id: uuid.UUID | None = None
+    email: EmailStr | None = None
+    name: str | None = None
+    success: bool

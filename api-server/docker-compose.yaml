@@ -15,38 +15,18 @@ services:
     networks:
       - postgres
     restart: unless-stopped
-  
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-       - pgadmin:/var/lib/pgadmin
 
-    ports:
-      - "${PGADMIN_PORT:-5050}:80"
-    networks:
-      - postgres
-    restart: unless-stopped
   
-  api:
-    container_name: api
+  web:
+    container_name: web
     build: .
-    command: 'uvicorn app.main:api --port=8080'
-    depends_on:
-      - postgres
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000'
     ports:
-      - 8080:8080
-    networks:
-      - postgres
+      - 8000:8000
+    environment:
+      - DATABASE_URL=postgresql://dev@localhost
 
-networks:
-  postgres:
-    driver: bridge
+
 
 volumes:
-    postgres:
-    pgadmin:
+  postgres_data:
