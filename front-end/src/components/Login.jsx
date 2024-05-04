@@ -6,15 +6,15 @@ export default function Login() {
         // Quang ID
         // const clientId = 'a87c1d9aa662450e98fb9ed79e39f6b9';
         // Khanh ID
-        const clientId = '7131d87dac894fe1b287534e06edf234';
+        const clientId ='7131d87dac894fe1b287534e06edf234'; //'01b102c0da2d4838898f2fc13e925528'; //'7131d87dac894fe1b287534e06edf234';
         const redirectUrl = 'http://localhost:3000/'
         const apiUrl = 'https://accounts.spotify.com/authorize';
         const scope = [
             'user-read-private',
-            'user-read-email',
-            'user-modify-playback-state',
+            'user-read-email',            
             'user-read-playback-state',
             'user-read-currently-playing',
+            'user-modify-playback-state',            
             'user-read-recently-played',
             'user-top-read',
         ];
