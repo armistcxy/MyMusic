@@ -15,10 +15,10 @@ export default function Spotify() {
     const [navBackground, setNavBackground] = useState(false);
     const [headerBackground, setHeaderBackground] = useState(false);
     const bodyScrolled = () => {
-        bodyRef.current.srcrollTop >= 30
+        bodyRef.current.scrollTop >= 30
             ? setNavBackground(true)
             : setNavBackground(false);
-        bodyRef.current.srcrollTop >= 268
+        bodyRef.current.scrollTop >= 268
             ? setHeaderBackground(true)
             : setHeaderBackground(false); 
     }
