@@ -18,7 +18,7 @@ export default function Playlists() {
                 }
             );
             const { items } = response.data;
-            const playlists = items.map((name, id) => {
+            const playlists = items.map(({name, id}) => {
                 return { name, id };
             });
             dispatch({ type: reducerCases.SET_PLAYLISTS, playlists });
