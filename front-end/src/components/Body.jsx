@@ -7,7 +7,7 @@ import { type } from "@testing-library/user-event/dist/type";
 import reducer from "../utils/Reducer";
 import { reducerCases } from "../utils/Constants";
 
-export default function Body({headerBackGround}) {
+export default function Body({headerBackground}) {
     const [{ token, selectedPlaylistId, selectedPlaylist }, dispatch] = useStateProvider();
     useEffect(() => {
         const getInitialPlaylist = async () => {
@@ -49,7 +49,7 @@ export default function Body({headerBackGround}) {
         return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
     };
 
-    return <Container headerBackGround={headerBackGround}>
+    return <Container headerBackground={headerBackground}>
         {selectedPlaylist && (
             <>
                 <div className="playlist">
@@ -154,8 +154,8 @@ const Container = styled.div`
             top: 15vh;
             padding: 1rem 3rem;
             transition: 0.3s ease-in-out;
-            background-color: ${({headerBackGround}) => 
-                headerBackGround ? "#0000dc" : "none"};
+            background-color: ${({headerBackground}) => 
+                headerBackground ? "#000000dc" : "none"};
         }
         .tracks {
             margin: 0 2rem;
