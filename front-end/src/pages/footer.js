@@ -10,8 +10,8 @@ function Footer(props){
     return (
         <footer className={styles.PlayTrack}>
             { showImage && (
-                <div className={styles.ImgBox}>
-                    <img src={ linkImg } alt={ nameSong } />
+                <div className={styles.FooterLeft}>
+                    <img src={ linkImg } alt={ nameSong } className={styles.ImgBox} />
                     <p>{ nameSong }</p>
                 </div>    
             )}

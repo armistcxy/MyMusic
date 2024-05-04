@@ -10,10 +10,9 @@ export default function App() {
     const hash = window.location.hash;
     if (hash) {
         const token = hash.split(/[&=]/)[1];
-
         dispatch({ type: reducerCases.SET_TOKEN, token})
     }
-  },[token, dispatch])
+  }, [token, dispatch])
   return (
     <div>
       {token ? <Spotify /> : <Login />}
