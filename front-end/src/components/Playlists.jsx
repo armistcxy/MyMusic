@@ -24,7 +24,8 @@ export default function Playlists() {
             dispatch({ type: reducerCases.SET_PLAYLISTS, playlists });
         };
         getPlaylistData();
-    }, [token, dispatch])
+    }, [token, dispatch]);
+    
     return (
         <Container>
             <ul>
