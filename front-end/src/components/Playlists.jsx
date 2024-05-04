@@ -18,13 +18,15 @@ export default function Playlists() {
                 }
             );
             const { items } = response.data;
-            const playlists = items.map((name, id) => {
+            console.log(items);
+            const playlists = items.map(({name, id}) => {
                 return { name, id };
             });
             dispatch({ type: reducerCases.SET_PLAYLISTS, playlists });
         };
         getPlaylistData();
-    }, [token, dispatch])
+    }, [token, dispatch]);
+    
     return (
         <Container>
             <ul>
