@@ -13,7 +13,7 @@ from app.schema.playlist import (
 # create, get, update, delete playlist
 
 
-def insert_playlist(upload_form: PlaylistUploadForm) -> PlaylistDetailResponse:
+def create_playlist(upload_form: PlaylistUploadForm) -> PlaylistDetailResponse:
     session = get_session()
     playlist = models.playlist(name=upload_form.name)
     playlist = playlist_repo.insert_playlist(playlist=playlist)

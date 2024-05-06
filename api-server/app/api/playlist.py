@@ -12,7 +12,7 @@ playlist_router = APIRouter(prefix="/playlists", tags=["Playlist"])
 
 @playlist_router.post("/", response_model=PlaylistDetailResponse)
 def create_playlist(upload_form: PlaylistUploadForm):
-    response = playlist_service.insert_playlist(upload_form)
+    response = playlist_service.create_playlist(upload_form)
     return response
 
 

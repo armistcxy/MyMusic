@@ -23,8 +23,21 @@ def login_user(login_form: UserLogInForm):
     if not result.success:
         raise HTTPException(401, detail={"message": "Bad credentials"})
 
-    token = security.create_access_token(uid=str(result.id), id=str(result.id), age=22)
-    return {"access_token": token}
+    access_token = security.create_access_token(uid=str(result.id), fresh=True)
+    refresh_token = security.create_refresh_token(data=result.id)
+    return {
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+    }
+
+
+@user_router.post("/refresh")
+def refresh(refresh_payload: TokenPayload = Depends(security.refresh_token_required)):
+    access_token = security.create_access_token(
+        refresh_payload.sub,
+        fresh=False,
+    )
+    return {"access_token": access_token}
 
 
 @user_router.get("/whoami")

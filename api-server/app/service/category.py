@@ -40,9 +40,12 @@ def get_all_categories() -> list[CategoryResponse]:
     session.close()
     return response
 
+
 def find_category_with_name(name: str) -> list[CategoryResponse]:
     session = get_session()
     categories = category_repo.find_category_with_name(name)
+
+
 def update_category(update_form: CategoryUpdateForm) -> CategoryResponse:
     session = get_session()
     # category = category_repo
