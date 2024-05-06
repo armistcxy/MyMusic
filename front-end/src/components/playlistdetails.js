@@ -11,7 +11,6 @@ function PlayListDetails() {
             <p>Click to play</p>
         </div>
     );
-    {console.log(showImage)}
     
     return {thisComponent, linkImg, nameSong, showImage} 
 }
