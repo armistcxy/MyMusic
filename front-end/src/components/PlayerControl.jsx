@@ -103,7 +103,7 @@ export default function PlayerControls() {
 
                 />
                 <div className="duration" >
-
+                    <p>{Songs[0].song_length}</p>
                 </div>
             </Container2>
         </Container>
