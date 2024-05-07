@@ -6,6 +6,7 @@ import { reducerCases } from "../utils/Constants";
 
 export default function CurrentTrack() {
     const [{ token, currentPlaying }, dispatch] = useStateProvider();
+
     useEffect(() => {
         const getCurrentTrack = async () => {
             const response = await axios.get(
@@ -23,6 +24,7 @@ export default function CurrentTrack() {
                     name: response.data.item.name,
                     artists: response.data.item.artists.map((artist) => artist.name),
                     image: response.data.item.album.images[2].url,
+                    song: "/test_audio.mp3"
                 };
                 
                 dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
@@ -50,6 +52,7 @@ export default function CurrentTrack() {
         </Container>
     );
 }
+
 
 const Container = styled.div`
     .track {
