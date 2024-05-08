@@ -58,7 +58,8 @@ def get_user_by_id(payload: TokenPayload = Depends(security.access_token_require
 
 @user_router.get("/")
 def get_all_users():
-    pass
+    response = user_service.get_all_users()
+    return response
 
 
 @user_router.get("/search/{name}")

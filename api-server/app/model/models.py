@@ -122,7 +122,7 @@ class Playlist(Base):
     __tablename__ = "playlists"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    name = Column(String, nullable=False)
+    name = Column(String, nullable=False, unique=True)
     user_id = Column(UUID, ForeignKey("users.id"))
     user = relationship("User", back_populates="playlists", lazy=True)
     tracks = relationship(
