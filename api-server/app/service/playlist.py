@@ -13,10 +13,10 @@ from app.schema.playlist import (
 # create, get, update, delete playlist
 
 
-def insert_playlist(upload_form: PlaylistUploadForm) -> PlaylistDetailResponse:
+def create_playlist(upload_form: PlaylistUploadForm) -> PlaylistDetailResponse:
     session = get_session()
-    playlist = models.playlist(name=upload_form.name)
-    playlist = playlist_repo.insert_playlist(playlist=playlist)
+    playlist = models.Playlist(name=upload_form.name, user_id=upload_form.user_id)
+    playlist = playlist_repo.create_playlist(playlist=playlist, session=session)
     response = schema_utils.playlist_model_to_detail_response(playlist)
     session.close()
     return response
@@ -56,7 +56,7 @@ def update_playlist(update_form: PlaylistUpdateForm) -> PlaylistDetailResponse:
 
 def delete_playlist_by_id(id: uuid.UUID):
     session = get_session()
-    playlist_repo.delete_playlist(id)
+    playlist_repo.delete_playlist(id, session)
     session.close()
 
 

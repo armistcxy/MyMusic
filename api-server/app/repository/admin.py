@@ -5,11 +5,13 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 
-def get_user_by_username(session: Session, username: str) -> models.User:
-    return session.query(models.User).filter(models.User.username == username).first()
+def get_admin_by_username(session: Session, admin_name: str) -> models.User:
+    return (
+        session.query(models.Admin).filter(models.User.admin_name == admin_name).first()
+    )
 
 
-def get_user_by_email(session: Session, email: str) -> models.User:
+def get_admin_by_email(session: Session, email: str) -> models.User:
     return session.query(models.User).filter(models.User.email == email).first()
 
 
@@ -24,7 +26,7 @@ def insert_user(user: models.User, session: Session) -> models.User:
     return user
 
 
-def delete_user_by_id(id: uuid.UUID, session: Session) -> bool:
+def delete_user(id: uuid.UUID, session: Session) -> bool:
     user = get_user_by_id(session, id)
     if user == None:
         return False
