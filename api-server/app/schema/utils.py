@@ -28,6 +28,8 @@ def artist_model_to_simple_response(
 def album_model_to_simple_response(
     album: models.Album,
 ) -> schema_album.AlbumSimpleResponse:
+    if album is None:
+        return None
     album_response = schema_album.AlbumSimpleResponse(
         id=album.id,
         name=album.name,
@@ -53,7 +55,7 @@ def track_model_to_detail_response(
         name=track.name,
         length=track.length,
         artists=[artist_model_to_simple_response(artist) for artist in track.artists],
-        album=track_model_to_simple_response(track.album),
+        album=album_model_to_simple_response(track.album),
         categories=[
             category_model_to_response(category) for category in track.categories
         ],
@@ -77,7 +79,7 @@ def user_model_to_simple_response(
 ) -> schema_user.UserSimpleResponse:
     user_response = schema_user.UserSimpleResponse(
         id=user.id,
-        name=user.username,
+        username=user.username,
     )
     return user_response
 
@@ -87,7 +89,7 @@ def user_model_to_detail_response(
 ) -> schema_user.UserDetailResponse:
     user_response = schema_user.UserDetailResponse(
         id=user.id,
-        name=user.username,
+        username=user.username,
         email=user.email,
     )
     return user_response

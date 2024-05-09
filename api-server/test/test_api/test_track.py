@@ -1,6 +1,4 @@
-from fastapi.testclient import TestClient
-
-from test import client
+from test.test_api import client
 
 
 def test_get_track_by_id():
