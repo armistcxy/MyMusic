@@ -3,8 +3,22 @@ import styled from "styled-components";
 import { MdHomeFilled, MdSearch } from "react-icons/md";
 import { IoLibrary } from "react-icons/io5";
 import Playlists from "./Playlists";
+import { useEffect } from "react";
 
 export default function Sidebar() {
+
+    useEffect(() => {
+        const allLi = document
+        .querySelector(".top_links ul")
+        .querySelectorAll("li");
+
+        function changeMenuActive() {
+            allLi.forEach((n) => n.classList.remove("active"));
+            this.classList.add("active");
+        }
+        allLi.forEach((n) => n.addEventListener("click", changeMenuActive))
+    }, []);
+
     return (
         <Container>
             <div className="top_links">
@@ -63,6 +77,9 @@ const Container = styled.div`
                 gap: 1rem;
                 cursor: pointer;
                 transition: 0.2s ease-in-out;
+                &.active {
+                    color: white;
+                }
                 &:hover {
                     color: white;
                 }

@@ -20,7 +20,7 @@ export default function PlayerControls() {
 
     const audioPlayer = useRef();
     const progressBar = useRef(); 
-    const animationRef = useRef(); 
+    const animationRef = useRef();
 
     useEffect(() => {
         const seconds = Math.floor(audioPlayer.current.duration);
