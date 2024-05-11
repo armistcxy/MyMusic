@@ -21,6 +21,10 @@ def get_category_by_id(id: uuid.UUID, session: Session) -> models.Category:
     return category
 
 
+def get_all_categories(session: Session) -> list[models.Category]:
+    return session.query(models.Category).all()
+
+
 def delete_category(id: uuid.UUID, session: Session) -> bool:
     session = get_session()
     category = session.get(models.Category, ident=id)

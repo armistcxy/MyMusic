@@ -5,7 +5,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 
-def insert_playlist(playlist: models.Playlist, session: Session) -> models.Playlist:
+def create_playlist(playlist: models.Playlist, session: Session) -> models.Playlist:
     session.add(playlist)
     session.commit()
     session.refresh(playlist)

@@ -1,6 +1,8 @@
 import uuid
 from pydantic import BaseModel, EmailStr
 from enum import Enum
+from app.schema.auth import RegisterForm
+from typing import Final
 
 
 class Gender(Enum):
@@ -11,7 +13,7 @@ class Gender(Enum):
 
 class UserSimpleResponse(BaseModel):
     id: uuid.UUID
-    name: str
+    username: str
 
 
 class UserDetailResponse(UserSimpleResponse):
@@ -24,11 +26,8 @@ class UserLogInForm(BaseModel):
     remember_me: bool
 
 
-class UserRegisterForm(BaseModel):
-    email: EmailStr
-    password: str
-    name: str
-    # gender: Gender
+class UserRegisterForm(RegisterForm):
+    type: Final = "user"
 
 
 class UserRegisterResponse(BaseModel):
@@ -42,3 +41,10 @@ class UserLogInResponse(BaseModel):
     email: EmailStr
     name: str
     token: str
+
+
+class UserLogInResult(BaseModel):
+    id: uuid.UUID | None = None
+    email: EmailStr | None = None
+    name: str | None = None
+    success: bool
