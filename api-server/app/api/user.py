@@ -24,7 +24,9 @@ def login_user(login_form: UserLogInForm):
         raise HTTPException(401, detail={"message": "Bad credentials"})
 
     access_token = security.create_access_token(uid=str(result.id), fresh=True)
-    refresh_token = security.create_refresh_token(data=result.id)
+    refresh_token = security.create_refresh_token(
+        uid=str(result.id), data={"id": result.id}
+    )
     return {
         "access_token": access_token,
         "refresh_token": refresh_token,
