@@ -19,7 +19,7 @@ export default function PlayerControls() {
     const [currentTime, setCurrenttime] = useState(0);
 
     const audioPlayer = useRef();
-    const progressBar = useRef();
+    const progressBar = useRef(); 
     const animationRef = useRef();
 
     useEffect(() => {
