@@ -2,57 +2,75 @@ import { reducerCases } from "./Constants";
 
 export const initialState = {
     token: null,
+    user: {},
+    isAuthenticated: false,
     playlists: [],
     userInfo: null,
     selectedPlaylistId: "3AnJMxvBGp1QXMQv06AwTi", // Q: 7qimTUDzmrsBjZSrpCJPCH     K:3AnJMxvBGp1QXMQv06AwTi
     selectedPlaylist: null,
     currentPlaying: null,
     playerState: false,
+    volume: 0.75,
 };
 
 const reducer = (state, action) => {
     switch (action.type) {
-        case reducerCases.SET_TOKEN : {
+        case reducerCases.SET_TOKEN: {
             return {
-                ...state, 
+                ...state,
                 token: action.token,
             }
         }
-        case reducerCases.SET_PLAYLISTS : {
+        case reducerCases.SET_PLAYLISTS: {
             return {
-                ...state, 
+                ...state,
                 playlists: action.playlists,
             }
         }
-        case reducerCases.SET_PLAYLIST : {
+        case reducerCases.SET_PLAYLIST: {
             return {
-                ...state, 
+                ...state,
                 selectedPlaylist: action.selectedPlaylist,
             }
         }
-        case reducerCases.SET_USER : {
+        case reducerCases.SET_USER: {
             return {
-                ...state, 
+                ...state,
                 userInfo: action.userInfo,
             }
         }
-        case reducerCases.SET_PLAYING : {
+        case reducerCases.SET_PLAYING: {
             return {
-                ...state, 
+                ...state,
                 currentPlaying: action.currentPlaying,
             }
         }
-        case reducerCases.SET_PLAYER_STATE : {
+        case reducerCases.SET_PLAYER_STATE: {
             return {
-                ...state, 
+                ...state,
                 playerState: action.playerState,
             }
         }
-        case reducerCases.SET_PLAYLIST_ID : {
+        case reducerCases.SET_PLAYLIST_ID: {
             return {
-                ...state, 
+                ...state,
                 selectedPlaylistId: action.selectedPlaylistId,
             }
+        }
+        case reducerCases.SET_VOLUME: {
+            return {
+                ...state,
+                volume: action.volume,
+            }
+        }
+        case reducerCases.USER_LOGGED_IN: {
+            return { ...state, user: action.payload, isAuthenticated: true };
+        }
+        case reducerCases.USER_LOGGED_OUT: {
+            return { ...state, user: {}, isAuthenticated: false };
+        }
+        case reducerCases.USER_ABOUT: {
+            return { ...state, user: action.payload, isAuthenticated: true };
         }
         default:
             return state;

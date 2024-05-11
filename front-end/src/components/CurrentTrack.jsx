@@ -3,6 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
+import { TiHeartOutline, TiHeartFullOutline } from "react-icons/ti";
 
 export default function CurrentTrack() {
     const [{ token, currentPlaying }, dispatch] = useStateProvider();
@@ -47,6 +48,7 @@ export default function CurrentTrack() {
                             {currentPlaying.artists.join(", ")}
                         </h6>
                     </div>
+                    <TiHeartOutline />
                 </div>
             )}
         </Container>
@@ -70,6 +72,14 @@ const Container = styled.div`
             }
             &__track__artists {
                 color: #b3b3b3;
+            }
+        }
+        svg {
+            color: #b3b3b3;
+            transition: 0.2s ease-in-out;
+            transform: translateY(-6px) translateX(5px) scale(1.5);
+            &:hover {
+                color: #1db954;
             }
         }
     }
