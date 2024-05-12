@@ -4,6 +4,7 @@ import { MdHomeFilled, MdSearch } from "react-icons/md";
 import { IoLibrary } from "react-icons/io5";
 import Playlists from "./Playlists";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function Sidebar() {
 
@@ -30,16 +31,23 @@ export default function Sidebar() {
                 </div>
                 <ul>
                     <li>
-                        <MdHomeFilled />
-                        <span>Home</span>
+                        <Link to="/Home" className="link">
+                            <MdHomeFilled />
+                            <span>Home</span>
+                        </Link>
+                        
                     </li>
                     <li>
-                        <MdSearch />
-                        <span>Search</span>
+                        <Link to="/Search" className="link">
+                            <MdSearch />
+                            <span>Search</span>
+                        </Link>
                     </li>
                     <li>
-                        <IoLibrary />
-                        <span>Your Library</span>
+                        <Link to="/lib" className="link">
+                            <IoLibrary />
+                            <span>Your Library</span>
+                        </Link>
                     </li>
                 </ul>
             </div>
@@ -82,6 +90,11 @@ const Container = styled.div`
                 }
                 &:hover {
                     color: white;
+                }
+                .link {
+                    align-items: center;
+                    display: flex;
+                    gap: 1rem;
                 }
             }
         }
