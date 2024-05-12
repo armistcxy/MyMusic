@@ -1,11 +1,23 @@
-import React from "react";
-import { StrictMode } from "react"; // Import StrictMode
+import { StrictMode } from "react";
 import AppRouter from "./components/AppRouter";
-import { createRoot } from "react-dom"; // Import createRoot
+import { createRoot } from "react-dom";
+import React, {useEffect} from "react";
+import Login from "./components/Login";
+import { reducerCases } from "./utils/Constants";
+import { useStateProvider } from "./utils/StateProvider";
+import Spotify from "./components/Spotify";
 
 export default function App() {
+  const [{ token }, dispatch] = useStateProvider()
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+        const token = hash.split(/[&=]/)[1];
+        dispatch({ type: reducerCases.SET_TOKEN, token})
+    }
+  }, [token, dispatch])
   return (
-    <StrictMode> {/* Wrap your app in StrictMode */}
+    <StrictMode>
       <AppRouter />
     </StrictMode>
   );
