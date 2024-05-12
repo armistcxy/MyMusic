@@ -6,6 +6,10 @@ import axios from "axios";
 import { type } from "@testing-library/user-event/dist/type";
 import reducer from "../utils/Reducer";
 import { reducerCases } from "../utils/Constants";
+import Home from "./Home";
+import { Route, Routes } from "react-router-dom";
+import Search from "./Search";
+import Library from "./Library"
 
 export default function Body({headerBackground}) {
     const [{ token, selectedPlaylistId, selectedPlaylist }, dispatch] = useStateProvider();
@@ -89,7 +93,12 @@ export default function Body({headerBackground}) {
     };
 
     return <Container headerBackground={headerBackground}>
-        {selectedPlaylist && (
+        <Routes>
+            <Route path="/Home" element={<Home />}></Route>
+            <Route path="/Search" element={<Search/>}></Route>
+            <Route path="/lib" element={<Library/>}></Route>
+        </Routes>
+        {/*selectedPlaylist && (
             <>
                 <div className="playlist">
                     <div className="image">
@@ -156,7 +165,7 @@ export default function Body({headerBackground}) {
                 </div>
             </>
             )
-        }
+        */}
     </Container>
 }
 
