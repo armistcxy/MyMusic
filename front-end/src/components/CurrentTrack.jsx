@@ -8,33 +8,33 @@ import { TiHeartOutline, TiHeartFullOutline } from "react-icons/ti";
 export default function CurrentTrack() {
     const [{ token, currentPlaying }, dispatch] = useStateProvider();
 
-    useEffect(() => {
-        const getCurrentTrack = async () => {
-            const response = await axios.get(
-                "https://api.spotify.com/v1/me/player/currently-playing",
-                {
-                    headers: {
-                        Authorization: "Bearer " + token,
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
-            if (response.data !== "") {
-                const currentPlaying = {
-                    id: response.data.item.id,
-                    name: response.data.item.name,
-                    artists: response.data.item.artists.map((artist) => artist.name),
-                    image: response.data.item.album.images[2].url,
-                    song: "/test_audio.mp3"
-                };
+    // useEffect(() => {
+    //     const getCurrentTrack = async () => {
+    //         const response = await axios.get(
+    //             "https://api.spotify.com/v1/me/player/currently-playing",
+    //             {
+    //                 headers: {
+    //                     Authorization: "Bearer " + token,
+    //                     "Content-Type": "application/json",
+    //                 },
+    //             }
+    //         );
+    //         if (response.data !== "") {
+    //             const currentPlaying = {
+    //                 id: response.data.item.id,
+    //                 name: response.data.item.name,
+    //                 artists: response.data.item.artists.map((artist) => artist.name),
+    //                 image: response.data.item.album.images[2].url,
+    //                 song: "/test_audio.mp3"
+    //             };
                 
-                dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
-            } else {
-                dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: null });
-            }
-        };
-        getCurrentTrack();
-    }, [token, dispatch]);
+    //             dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
+    //         } else {
+    //             dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: null });
+    //         }
+    //     };
+    //     getCurrentTrack();
+    // }, [token, dispatch]);
     return (
         <Container>
             {currentPlaying && (
