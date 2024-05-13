@@ -4,12 +4,12 @@ import axios from 'axios';
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,24}$/;
-const EMAIL_REGEX = /^[a-z0-9]+(?:[-_.+!#$%&'*\/=?^`{|}]?[a-z0-9]+)*@[a-z0-9]+(?:[-.][a-z]+)*\.[a-z]+/;
+const EMAIL_REGEX = /^[a-z0-9]+(?:[-_.+!#$%&'*\\/=?^`{|}]?[a-z0-9]+)*@[a-z0-9]+(?:[-.][a-z]+)*\.[a-z]+/;
 const REGISTER_URL = 'http://127.0.0.1:8080/docs/users/register';
 
 const Container = styled.div`
    
-    background: #222D32;
+    background: #1b3029;
     font-family: 'Roboto', sans-serif;
     height: 100vh;
     display: flex;
@@ -50,7 +50,7 @@ const Container = styled.div`
         outline: none;
         background: #1A2226;
         color: #ECF0F5;
-        border-bottom: 2px solid #0DB8DE;
+        border-bottom: 2px solid #0d5919;
     }
 
     .invalid-feedback {
@@ -76,7 +76,7 @@ const Container = styled.div`
         padding: 12px 20px;
         border: none;
         border-radius: 4px;
-        background-color: #0DB8DE;
+        background-color: #0d5919;
         color: #fff;
         font-size: 16px;
         font-weight: bold;
@@ -85,7 +85,7 @@ const Container = styled.div`
     }
 
     button:hover {
-        background-color: #0AAABC;
+        background-color: #1fbd38;
     }
 
     .already-registered {
@@ -96,7 +96,7 @@ const Container = styled.div`
     }
 
     .already-registered a {
-        color: #0DB8DE;
+        color: #18a72e;
         text-decoration: none;
     }
 `;

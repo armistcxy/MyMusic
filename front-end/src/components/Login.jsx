@@ -6,13 +6,14 @@ import styled from 'styled-components';
 const LOGIN_URL = '/auth';
 
 const Container = styled.div`
-    background: #222D32;
+    background: #1b3029;
     font-family: 'Roboto', sans-serif;
     text-align: center;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-y: hidden;
 
     form {
         background: #1A2226;
@@ -45,7 +46,7 @@ const Container = styled.div`
         border-radius: 4px;
         background: #1A2226;
         color: #ECF0F5;
-        border-bottom: 2px solid #0DB8DE;
+        border-bottom: 2px solid #0d5919;
         outline: none;
     }
 
@@ -54,7 +55,7 @@ const Container = styled.div`
         padding: 12px 20px;
         border: none;
         border-radius: 4px;
-        background-color: #0DB8DE;
+        background-color: #0d5919;
         margin-bottom: 10px;
         color: #fff;
         font-size: 16px;
@@ -64,7 +65,7 @@ const Container = styled.div`
     }
 
     button:hover {
-        background-color: #0AAABC;
+        background-color: #1fbd38;
     }
 
     .error {
@@ -78,7 +79,7 @@ const Container = styled.div`
     }
 
     .signup-link a {
-        color: #0DB8DE;
+        color: #18a72e;
         text-decoration: none;
     }
 `;
