@@ -31,20 +31,20 @@ export default function Sidebar() {
                 </div>
                 <ul>
                     <li>
-                        <Link to="/Home" className="link">
+                        <Link to="/" className="link">
                             <MdHomeFilled />
                             <span>Home</span>
                         </Link>
                         
                     </li>
                     <li>
-                        <Link to="/Search" className="link">
+                        <Link to="search" className="link">
                             <MdSearch />
                             <span>Search</span>
                         </Link>
                     </li>
                     <li>
-                        <Link to="/lib" className="link">
+                        <Link to="lib" className="link">
                             <IoLibrary />
                             <span>Your Library</span>
                         </Link>

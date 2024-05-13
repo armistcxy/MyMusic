@@ -8,6 +8,7 @@ import Footer from "./Footer";
 import { useStateProvider } from "../utils/StateProvider";
 import axios from "axios";
 import { reducerCases } from "../utils/Constants";
+import { Outlet } from "react-router-dom";
 
 export default function Spotify() {
     const [{ token }, dispatch] = useStateProvider();
@@ -46,7 +47,9 @@ export default function Spotify() {
                 <div className="body" ref={bodyRef} onScroll={bodyScrolled}>
                     <Navbar navBackground={navBackground} />
                     <div className="body_contents">
-                        <Body headerBackground={headerBackground} />
+                        <Outlet>
+                            <Body headerBackground={headerBackground} />
+                        </Outlet>
                     </div>
                 </div>            
             </div>

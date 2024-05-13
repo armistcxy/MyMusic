@@ -1,6 +1,6 @@
 import PageContent from "./PageContent"
 
-export default function Home() {
+export default function Library() {
     return (
         <div className="
             bg-neutral-900

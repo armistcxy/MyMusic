@@ -17,8 +17,6 @@ export default function App() {
     }
   }, [token, dispatch])
   return (
-    <StrictMode>
       <AppRouter />
-    </StrictMode>
   );
 }

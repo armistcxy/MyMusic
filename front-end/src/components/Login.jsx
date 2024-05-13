@@ -2,7 +2,6 @@ import { useRef, useState, useEffect, useContext } from 'react';
 import AuthContext from "./context/AuthProvider";
 import axios from 'axios';
 import styled from 'styled-components';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 const LOGIN_URL = '/auth';
 
