@@ -69,7 +69,7 @@ export default function Spotify() {
             height: 100%;
             width: 100%;
             background: linear-gradient(transparent, rgba(0, 0, 0, 1));
-            background-color: rgb(32, 87, 100);
+            background-color: #171717;
             .body {
                 height: 100%;
                 width: 100%;

@@ -1,3 +1,6 @@
+import { StrictMode } from "react";
+import AppRouter from "./components/AppRouter";
+import { createRoot } from "react-dom";
 import React, {useEffect} from "react";
 import Login from "./components/Login";
 import { reducerCases } from "./utils/Constants";
@@ -14,8 +17,8 @@ export default function App() {
     }
   }, [token, dispatch])
   return (
-    <div>
-      {token ? <Spotify /> : <Login />}
-    </div>
+    <StrictMode>
+      <AppRouter />
+    </StrictMode>
   );
-};
+}
