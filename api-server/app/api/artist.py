@@ -13,6 +13,7 @@ artist_router = APIRouter(prefix="/artists", tags=["Artist"])
     responses={
         status.HTTP_201_CREATED: {"model": ArtistResponse},
         status.HTTP_409_CONFLICT: {},
+        status.HTTP_500_INTERNAL_SERVER_ERROR: {},
     },
 )
 def upload_artist(artist_form: ArtistUploadForm):
