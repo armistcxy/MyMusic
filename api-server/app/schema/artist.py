@@ -1,10 +1,9 @@
 from pydantic import BaseModel
 import uuid
-from fastapi import Response
 
 
-class ArtistSimpleResponse(BaseModel, Response):
-    id: uuid.UUID
+class ArtistSimpleResponse(BaseModel):
+    id: str
     name: str
 
 

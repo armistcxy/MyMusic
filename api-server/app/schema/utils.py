@@ -11,7 +11,7 @@ def track_model_to_simple_response(
     track: models.Track,
 ) -> schema_track.TrackSimpleResponse:
     track_response = schema_track.TrackSimpleResponse(
-        id=track.id,
+        id=str(track.id),
         name=track.name,
         length=track.length,
     )
@@ -21,7 +21,10 @@ def track_model_to_simple_response(
 def artist_model_to_simple_response(
     artist: models.Artist,
 ) -> schema_artist.ArtistSimpleResponse:
-    artist_response = schema_artist.ArtistSimpleResponse(id=artist.id, name=artist.name)
+    artist_response = schema_artist.ArtistSimpleResponse(
+        id=str(artist.id),
+        name=artist.name,
+    )
     return artist_response
 
 
@@ -67,7 +70,7 @@ def artist_model_to_detail_response(
     artist: models.Artist,
 ) -> schema_artist.ArtistResponse:
     artist_response = schema_artist.ArtistResponse(
-        id=artist.id,
+        id=str(artist.id),
         name=artist.name,
         description=artist.description,
     )

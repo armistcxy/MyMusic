@@ -1,6 +1,5 @@
-from fastapi import Response
 from pydantic import BaseModel
 
 
-class ErrorResponse(BaseModel, Response):
+class ErrorResponse(BaseModel):
     message: str

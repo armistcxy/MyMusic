@@ -4,6 +4,7 @@ from app.schema.artist import ArtistResponse, ArtistSimpleResponse, ArtistUpload
 import app.service.artist as artist_service
 import uuid
 from app.repository.error import IntegrityException, RepositoryError
+from app.schema.error import ErrorResponse
 
 artist_router = APIRouter(prefix="/artists", tags=["Artist"])
 
@@ -12,27 +13,36 @@ artist_router = APIRouter(prefix="/artists", tags=["Artist"])
     "/",
     responses={
         status.HTTP_201_CREATED: {"model": ArtistResponse},
-        status.HTTP_409_CONFLICT: {},
-        status.HTTP_500_INTERNAL_SERVER_ERROR: {},
+        status.HTTP_409_CONFLICT: {"model": ErrorResponse},
+        status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ErrorResponse},
     },
 )
 def upload_artist(artist_form: ArtistUploadForm):
     try:
         response = artist_service.upload_artist(artist_form)
-        response.status_code = status.HTTP_201_CREATED
-        return response
-    except IntegrityException as e:
         return JSONResponse(
-            status_code=status.HTTP_409_CONFLICT, content={"message": str(e)}
+            status_code=status.HTTP_201_CREATED, content=response.model_dump()
+        )
+    except IntegrityException as e:
+        error_response = ErrorResponse(message=str(e))
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content=error_response.model_dump(),
         )
     except RepositoryError as e:
+        error_response = ErrorResponse(message=str(e))
         return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            content={"message": str(e)},
+            content=error_response.model_dump(),
         )
 
 
-@artist_router.get("/", response_model=list[ArtistSimpleResponse])
+@artist_router.get(
+    "/",
+    responses={
+        status.HTTP_200_OK: {"model": list[ArtistSimpleResponse]},
+    },
+)
 def get_all_artists():
     response = artist_service.get_all_artists()
     return response
