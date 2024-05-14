@@ -5,7 +5,7 @@ import axios from 'axios';
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,24}$/;
 const EMAIL_REGEX = /^[a-z0-9]+(?:[-_.+!#$%&'*\\/=?^`{|}]?[a-z0-9]+)*@[a-z0-9]+(?:[-.][a-z]+)*\.[a-z]+/;
-const REGISTER_URL = 'http://127.0.0.1:8080/docs/users/register';
+const REGISTER_URL = 'http://127.0.0.1:8000/users/register';
 
 const Container = styled.div`
    
@@ -154,7 +154,7 @@ const Register = () => {
                 JSON.stringify({ email, name : user, password : pwd}),
                 {
                     headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
+                    withCredentials: false
                 }
             );
             console.log(response?.data);
@@ -220,7 +220,7 @@ const Register = () => {
                             />
                         </label>
                         {!validName && user ? (
-                            <span className="invalid-feedback">Invalid email format</span>
+                            <span className="invalid-feedback">Invalid username format</span>
                         ): <span className="valid-feedback" > t  </span>}
 
                         <label htmlFor="password">
@@ -235,7 +235,7 @@ const Register = () => {
                             />
                         </label>
                         {!validPwd && pwd ? (
-                            <span className="invalid-feedback">Invalid email format</span>
+                            <span className="invalid-feedback">Invalid password format</span>
                         ): <span className="valid-feedback" > t  </span>}
 
                         <label htmlFor="confirm_pwd">

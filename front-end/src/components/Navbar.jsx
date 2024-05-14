@@ -12,8 +12,7 @@ import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
 
 export default function Navbar({navBackground}) {
-    const [{ isAuthenticated }, dispatch] = useStateProvider();
-
+    const [{ isAuthenticated}, dispatch] = useStateProvider();
     const location = useLocation();
     const [query, setQuery] = useState("");
 
