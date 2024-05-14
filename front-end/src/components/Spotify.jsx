@@ -24,6 +24,9 @@ export default function Spotify() {
             ? setHeaderBackground(true)
             : setHeaderBackground(false); 
     }
+    useEffect(()=>{
+        console.log(token);
+    })
 
     return (
         <Container>

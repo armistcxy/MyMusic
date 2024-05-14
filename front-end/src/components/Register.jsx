@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,24}$/;
@@ -120,6 +121,8 @@ const Register = () => {
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         userRef.current.focus();
     }, [])
@@ -160,6 +163,7 @@ const Register = () => {
             console.log(response?.data);
             console.log(response?.accessToken);
             console.log(JSON.stringify(response))
+            navigate('/login');
             setSuccess(true);
             setEmail('');
             setUser('');

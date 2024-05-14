@@ -9,6 +9,5 @@ export const reducerCases = {
     SET_VOLUME: "SET_VOLUME",
     USER_LOGGED_IN : "USER_LOGGED_IN",
     USER_LOGGED_OUT : "USER_LOGGED_OUT",
-    USER_ABOUT : "USER_ABOUT",
 };
 
