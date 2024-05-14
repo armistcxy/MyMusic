@@ -48,9 +48,20 @@ def get_all_artists():
     return response
 
 
-@artist_router.get("/{id}", response_model=ArtistResponse)
+@artist_router.get(
+    "/{id}",
+    responses={
+        status.HTTP_200_OK: {"model": ArtistResponse},
+        status.HTTP_404_NOT_FOUND: {},
+    },
+)
 def get_artist_by_id(id: uuid.UUID):
     response = artist_service.get_artist_by_id(id)
+    if response is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Not found artist with id: {str(id)}",
+        )
     return response
 
 
