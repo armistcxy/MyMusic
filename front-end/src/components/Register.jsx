@@ -183,7 +183,7 @@ const Register = () => {
                 <section>
                     <h1>Success!</h1>
                     <p>
-                        <a href="/Login">Sign In</a>
+                        <a href="/login">Sign In</a>
                     </p>
                 </section>
             ) : (
@@ -256,7 +256,7 @@ const Register = () => {
                         <button disabled={!validName || !validPwd || !validMatch || !validEmail}>Sign Up</button>
                     </form>
                     <p className="already-registered">
-                        Already registered? <a href="/Login">Sign In</a>
+                        Already registered? <a href="/login">Sign In</a>
                     </p>
                 </section>
             )}

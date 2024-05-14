@@ -172,7 +172,7 @@ const Login = () => {
                         <button type="submit">Sign In</button>
                         <p className="signup-link">
                         Need an Account?<br />
-                        <a href="/Register">Sign Up</a>
+                        <a href="/register">Sign Up</a>
                     </p>
                     </form>
                     

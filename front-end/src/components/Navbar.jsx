@@ -48,7 +48,7 @@ export default function Navbar({navBackground}) {
                 // onChange={filterSongs}
                 className={`block  w-full rounded-full pl-12 border-0  text-gray-300 shadow-sm ring ring-transparent placeholder:text-gray-400 focus:ring-[3px] focus:ring-inset focus:ring-white outline-none p-3 hover:ring-white/20 bg-[#1a1919]`}
               />
-              <FaSearch className="absolute left-4 top-8" />
+              <FaSearch className="absolute left-4 top-8" style={{ color: 'white' }}/>
             </div>
           </div>
     
