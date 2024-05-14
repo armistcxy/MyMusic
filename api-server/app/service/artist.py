@@ -28,7 +28,7 @@ def get_all_artists() -> list[ArtistSimpleResponse]:
     return responses
 
 
-def get_artist_by_id(self, id: uuid.UUID) -> ArtistResponse:
+def get_artist_by_id(id: uuid.UUID) -> ArtistResponse:
     session = get_session()
     artist = artist_repo.get_artist_by_id(session=session, id=id)
     response = schema_utils.artist_model_to_detail_response(artist)
@@ -36,8 +36,13 @@ def get_artist_by_id(self, id: uuid.UUID) -> ArtistResponse:
     return response
 
 
-def get_artist_by_name(self, name: str) -> ArtistResponse:
+def get_artist_by_name(name: str) -> ArtistResponse:
     session = get_session()
     artist = artist_repo.get_artist_by_name(session=session, name=name)
     response = schema_utils.artist_model_to_detail_response(artist)
     return response
+
+
+def delete_artist_by_id(id: uuid.UUID):
+    session = get_session()
+    artist_repo.delete_artist(session=session, id=id)

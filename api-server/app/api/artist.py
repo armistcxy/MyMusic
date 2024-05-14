@@ -8,10 +8,17 @@ from app.repository.error import IntegrityException, RepositoryError
 artist_router = APIRouter(prefix="/artists", tags=["Artist"])
 
 
-@artist_router.post("/", responses={200: {"model": ArtistResponse}, 409: {}})
+@artist_router.post(
+    "/",
+    responses={
+        status.HTTP_201_CREATED: {"model": ArtistResponse},
+        status.HTTP_409_CONFLICT: {},
+    },
+)
 def upload_artist(artist_form: ArtistUploadForm):
     try:
         response = artist_service.upload_artist(artist_form)
+        response.status_code = status.HTTP_201_CREATED
         return response
     except IntegrityException as e:
         return JSONResponse(
@@ -40,3 +47,11 @@ def get_artist_by_id(id: uuid.UUID):
 def get_artist_by_name(name: str):
     response = artist_service.get_artist_by_name(name)
     return response
+
+
+@artist_router.delete("/{id}")
+def delete_artist_by_id(id: uuid.UUID):
+    try:
+        artist_service.delete_artist_by_id(id=id)
+    except Exception as e:
+        return JSONResponse()
