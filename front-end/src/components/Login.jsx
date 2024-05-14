@@ -108,8 +108,7 @@ const Login = () => {
 
     useEffect(()=> {
         dispatch({ type: reducerCases.SET_TOKEN,token: auth?.access_token})
-    },[token]
-    )
+    },[token])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -126,8 +125,8 @@ const Login = () => {
             const accessToken = response?.data?.access_token;
             const refreshToken = response?.data?.refresh_token;
             const roles = response?.data?.roles;
-            setAuth({ user, pwd, accessToken, refreshToken});
             setSuccess(true);
+            setAuth({ user, pwd, accessToken, refreshToken});
             setUser('');
             setPwd('');
         } catch (err) {
