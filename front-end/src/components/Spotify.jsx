@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useContext, useRef, useState } from "react";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
@@ -7,6 +7,7 @@ import Footer from "./Footer";
 
 import { useStateProvider } from "../utils/StateProvider";
 import axios from "axios";
+import { AuthProvider } from "./context/AuthProvider";
 import { reducerCases } from "../utils/Constants";
 import { Outlet } from "react-router-dom";
 
@@ -24,22 +25,6 @@ export default function Spotify() {
             : setHeaderBackground(false); 
     }
 
-    // useEffect(() => {
-    //     const getUserInfo = async () => {
-    //         const { data } = await axios.get("https://api.spotify.com/v1/me", {
-    //             headers: {
-    //                 Authorization: "Bearer " + token,
-    //                 "Content-Type": "application/json",
-    //             },
-    //         });
-    //         const userInfo = {
-    //             userId: data.id,
-    //             userName: data.display_name,
-    //         };
-    //         dispatch({ type: reducerCases.SET_USER, userInfo })
-    //     };
-    //     getUserInfo();
-    // }, [dispatch, token])
     return (
         <Container>
             <div className="spotify_body">
@@ -57,7 +42,7 @@ export default function Spotify() {
                 <Footer />
             </div>
         </Container>
-        );
+    )
     }
     
     const Container = styled.div`

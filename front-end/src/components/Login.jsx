@@ -2,8 +2,10 @@ import { useRef, useState, useEffect, useContext } from 'react';
 import AuthContext from "./context/AuthProvider";
 import axios from 'axios';
 import styled from 'styled-components';
+import { useStateProvider } from "../utils/StateProvider";
+import { reducerCases } from "../utils/Constants";
 
-const LOGIN_URL = '/auth';
+const LOGIN_URL = 'http://localhost:8000/users/login';
 
 const Container = styled.div`
     background: #1b3029;
@@ -85,15 +87,17 @@ const Container = styled.div`
 `;
 
 const Login = () => {
-    const { setAuth } = useContext(AuthContext);
+    const { auth, setAuth } = useContext(AuthContext);
     const userRef = useRef();
+    const a = true;
     const errRef = useRef();
 
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
-
+    const [{ token }, dispatch] = useStateProvider()
+    
     useEffect(() => {
         userRef.current.focus();
     }, [])
@@ -102,24 +106,30 @@ const Login = () => {
         setErrMsg('');
     }, [user, pwd])
 
+    useEffect(()=> {
+        dispatch({ type: reducerCases.SET_TOKEN,token: auth?.access_token})
+    },[token]
+    )
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
             const response = await axios.post(LOGIN_URL,
-                JSON.stringify({ user, pwd }),
+                JSON.stringify({ email : user,password : pwd, remember_me : a }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 }
             );
             console.log(JSON.stringify(response?.data));
-            const accessToken = response?.data?.accessToken;
+            const accessToken = response?.data?.access_token;
+            const refreshToken = response?.data?.refresh_token;
             const roles = response?.data?.roles;
-            setAuth({ user, pwd, accessToken });
+            setAuth({ user, pwd, accessToken, refreshToken});
+            setSuccess(true);
             setUser('');
             setPwd('');
-            setSuccess(true);
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No Server Response');
@@ -141,7 +151,7 @@ const Login = () => {
                     <h1>You are logged in!</h1>
                     <br />
                     <p>
-                        <a href="#">Go to Home</a>
+                        <a href="/">Go to Home</a>
                     </p>
                 </section>
             ) : (
@@ -149,7 +159,7 @@ const Login = () => {
                     <p ref={errRef} className={errMsg ? "error" : "offscreen"} aria-live="assertive">{errMsg}</p>
                     <h1>Sign In</h1>
                     <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">Username:</label>
+                        <label htmlFor="username">Email:</label>
                         <input
                             type="text"
                             id="username"
