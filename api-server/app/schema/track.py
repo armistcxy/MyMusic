@@ -13,7 +13,7 @@ class TrackUploadForm(BaseModel):
 
 
 class TrackSimpleResponse(BaseModel):
-    id: uuid.UUID
+    id: str
     name: str
     length: int
 

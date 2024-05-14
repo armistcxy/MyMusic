@@ -13,7 +13,7 @@ class PlaylistUpdateForm(BaseModel):
 
 
 class PlaylistSimpleResponse(BaseModel):
-    id: uuid.UUID
+    id: str
     name: str
 
 
