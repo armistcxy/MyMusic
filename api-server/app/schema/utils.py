@@ -77,6 +77,8 @@ def track_model_to_detail_response(
 def artist_model_to_detail_response(
     artist: models.Artist,
 ) -> schema_artist.ArtistResponse | None:
+    if artist is None:
+        return None
     artist_response = schema_artist.ArtistResponse(
         id=str(artist.id),
         name=artist.name,

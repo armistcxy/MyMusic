@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, HTTPException
 from fastapi.responses import JSONResponse
 from app.schema.artist import ArtistResponse, ArtistSimpleResponse, ArtistUploadForm
 import app.service.artist as artist_service
@@ -54,9 +54,19 @@ def get_artist_by_id(id: uuid.UUID):
     return response
 
 
-@artist_router.get("/name/{name}", response_model=ArtistResponse)
+@artist_router.get(
+    "/name/{name}",
+    responses={
+        status.HTTP_200_OK: {"model": ArtistResponse},
+        status.HTTP_404_NOT_FOUND: {},
+    },
+)
 def get_artist_by_name(name: str):
     response = artist_service.get_artist_by_name(name)
+    if response is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Not found artist {name}"
+        )
     return response
 
 
