@@ -36,15 +36,13 @@ def delete_track_by_id(id: uuid.UUID):
     response = track_service.delete_track_by_id(id)
     # return empty content if delete is done (204 code)
     if response is None:
-        return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
+        return JSONResponse(content={}, status_code=status.HTTP_204_NO_CONTENT)
 
     # return 202 code if request has been accepted for processing,
     # but the processing has not been completed
 
     # return 500 if there's internal server error
-    return JSONResponse(
-        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content=response
-    )
+    return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={})
 
 
 @track_router.get("/search/{name}", response_model=list[TrackSimpleResponse])

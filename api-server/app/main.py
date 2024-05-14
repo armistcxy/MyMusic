@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from app.api.track import track_router
 from app.api.artist import artist_router
 from app.api.user import user_router
@@ -21,8 +21,10 @@ api.include_router(crawl_router)
 api.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 origins = [
-    "http://localhost:8080",
+    "http://localhost:8080/health",
     "http://localhost",
+    "http://localhost:8000/health",
+    "about:blank",
 ]
 
 api.add_middleware(
@@ -35,6 +37,8 @@ api.add_middleware(
 
 
 @api.get("/health")
-def healthcheck():
+def healthcheck(request: Request):
     server_info = {"host": "localhost", "port": 8000, "mode": "dev", "status": "good"}
+    for k, v in request.headers.items():
+        server_info[k] = v
     return server_info

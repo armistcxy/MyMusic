@@ -12,6 +12,7 @@ def upload_artist(artist_form: ArtistUploadForm) -> ArtistResponse:
         name=artist_form.name,
         description=artist_form.description,
     )
+    artist = artist_repo.insert_artist(session=session, artist=artist)
     session.close()
     response = schema_utils.artist_model_to_detail_response(artist)
 
@@ -20,7 +21,7 @@ def upload_artist(artist_form: ArtistUploadForm) -> ArtistResponse:
 
 def get_all_artists() -> list[ArtistSimpleResponse]:
     session = get_session()
-    artists = artist_repo.get_all_artists(session)
+    artists = artist_repo.get_all_artists(session=session)
     responses = list(map(schema_utils.artist_model_to_simple_response, artists))
     session.close()
 
@@ -29,7 +30,14 @@ def get_all_artists() -> list[ArtistSimpleResponse]:
 
 def get_artist_by_id(self, id: uuid.UUID) -> ArtistResponse:
     session = get_session()
-    artist = self.repo.artist_repo.get_artist_by_id(id, session)
+    artist = artist_repo.get_artist_by_id(session=session, id=id)
     response = schema_utils.artist_model_to_detail_response(artist)
     session.close()
+    return response
+
+
+def get_artist_by_name(self, name: str) -> ArtistResponse:
+    session = get_session()
+    artist = artist_repo.get_artist_by_name(session=session, name=name)
+    response = schema_utils.artist_model_to_detail_response(artist)
     return response
