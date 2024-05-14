@@ -1,3 +1,4 @@
+from typing import Iterator
 from app.model import models
 import app.repository.artist as artist_repo
 import app.repository.track as track_repo
@@ -11,6 +12,9 @@ from app.schema.track import (
 )
 import app.schema.utils as schema_utils
 import uuid
+from os.path import join
+from app.service.error import StreamError
+from app.repository.error import NotFoundError
 
 
 def upload_track(track_form: TrackUploadForm) -> TrackResponse:
@@ -84,3 +88,18 @@ def find_track_with_name(name: str) -> list[TrackSimpleResponse]:
         response.append(schema_utils.track_model_to_simple_response(track))
     session.close()
     return response
+
+
+BASE_TRACK_PATH = "app/static"
+
+
+def stream_track(id: uuid.UUID) -> Iterator[bytes]:
+    if track_repo.get_track_by_id(id) is None:
+        raise NotFoundError(type="Track")
+    file_name = f"{id}.mp3"
+    path = join(BASE_TRACK_PATH, file_name)
+    try:
+        with open(path, "rb") as file:
+            yield from file
+    except Exception as e:
+        raise StreamError(str(e))
