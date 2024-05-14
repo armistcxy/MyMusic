@@ -4,6 +4,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
+import { useNavigate } from 'react-router-dom';
 
 const LOGIN_URL = 'http://localhost:8000/users/login';
 
@@ -97,7 +98,8 @@ const Login = () => {
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
     const [{ token }, dispatch] = useStateProvider()
-    
+    const navigate = useNavigate();
+
     useEffect(() => {
         userRef.current.focus();
     }, [])
@@ -106,10 +108,13 @@ const Login = () => {
         setErrMsg('');
     }, [user, pwd])
 
+<<<<<<< HEAD
     useEffect(()=> {
         dispatch({ type: reducerCases.SET_TOKEN,token: auth?.access_token})
     },[token])
 
+=======
+>>>>>>> ca340db5f401b8a2fcfdd3ddb79a82926c85b218
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -121,11 +126,18 @@ const Login = () => {
                     withCredentials: true
                 }
             );
-            console.log(JSON.stringify(response?.data));
+
             const accessToken = response?.data?.access_token;
             const refreshToken = response?.data?.refresh_token;
             const roles = response?.data?.roles;
+<<<<<<< HEAD
             setSuccess(true);
+=======
+            dispatch({ type: reducerCases.SET_TOKEN, token: accessToken});
+            dispatch({type: reducerCases.USER_LOGGED_IN});
+            setSuccess(true);
+            navigate('/');
+>>>>>>> ca340db5f401b8a2fcfdd3ddb79a82926c85b218
             setAuth({ user, pwd, accessToken, refreshToken});
             setUser('');
             setPwd('');
@@ -145,7 +157,7 @@ const Login = () => {
 
     return (
         <Container>
-            {success ? (
+            {success ? (                
                 <section>
                     <h1>You are logged in!</h1>
                     <br />

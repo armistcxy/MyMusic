@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import {
     FaAngleLeft,
@@ -12,18 +12,20 @@ import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
 
 export default function Navbar({navBackground}) {
-    const [{ isAuthenticated}, dispatch] = useStateProvider();
+    const [{token, isAuthenticated}, dispatch] = useStateProvider();
     const location = useLocation();
     const [query, setQuery] = useState("");
 
     const [showDropDown, setShowDropDown] = useState(false);
     const navigate = useNavigate();
 
+    useEffect(()=> {
+      console.log(isAuthenticated);
+    },[token])
     const logoutUser = () => {
-        localStorage.removeItem('token')
-        navigate('/login')
+        dispatch({ type: reducerCases.SET_TOKEN, token: null});
         dispatch({
-            type: reducerCases.SET_USER_LOGGED_OUT,
+            type: reducerCases.USER_LOGGED_OUT,
         });
     }
 
