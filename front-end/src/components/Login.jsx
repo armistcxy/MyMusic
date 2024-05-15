@@ -108,13 +108,6 @@ const Login = () => {
         setErrMsg('');
     }, [user, pwd])
 
-<<<<<<< HEAD
-    useEffect(()=> {
-        dispatch({ type: reducerCases.SET_TOKEN,token: auth?.access_token})
-    },[token])
-
-=======
->>>>>>> ca340db5f401b8a2fcfdd3ddb79a82926c85b218
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -130,14 +123,10 @@ const Login = () => {
             const accessToken = response?.data?.access_token;
             const refreshToken = response?.data?.refresh_token;
             const roles = response?.data?.roles;
-<<<<<<< HEAD
-            setSuccess(true);
-=======
             dispatch({ type: reducerCases.SET_TOKEN, token: accessToken});
             dispatch({type: reducerCases.USER_LOGGED_IN});
             setSuccess(true);
             navigate('/');
->>>>>>> ca340db5f401b8a2fcfdd3ddb79a82926c85b218
             setAuth({ user, pwd, accessToken, refreshToken});
             setUser('');
             setPwd('');

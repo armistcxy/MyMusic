@@ -47,7 +47,7 @@ export default function Navbar({navBackground}) {
                 autoComplete="off"
                 value={query}
                 // onChange={filterSongs}
-                className={`block  w-full rounded-full pl-12 border-0  text-gray-300 shadow-sm ring ring-transparent placeholder:text-gray-400 focus:ring-[3px] focus:ring-inset focus:ring-white outline-none p-3 hover:ring-white/20 bg-[#1a1919]`}
+                className={`block  w-full rounded-full pl-12 border-0  text-gray-300 shadow-sm ring ring-transparent placeholder:text-gray-400 focus:ring-[3px] focus:ring-inset focus:ring-white outline-none p-3 hover:ring-white/20 bg-[#0f0f0f]`}
               />
               <FaSearch className="absolute left-4 top-8" style={{ color: 'white' }}/>
             </div>
@@ -58,14 +58,14 @@ export default function Navbar({navBackground}) {
               <div>
                 <Link
                   to={"/register"}
-                  className="rounded-full  mt-4 px-8 text-base  py-2 text-gray-500 font-semibold hover:text-white hover:font-bold transition-all duration-200"
+                  className="rounded-full mt-4 px-8 text-base py-2 text-gray-300 font-semibold hover:text-white hover:font-bold transition-all duration-200"
                 >
                   Sign up
                 </Link>
     
                 <Link
                   to={"/login"}
-                  className="rounded-full text-black mt-4 px-8 text-base  py-3 bg-gray-300 font-semibold hover:bg-white hover:font-bold transition-all duration-200"
+                  className="rounded-full text-black mt-4 px-8 text-base py-3 bg-gray-300 font-semibold hover:bg-white hover:font-bold transition-all duration-200"
                 >
                   Log in
                 </Link>

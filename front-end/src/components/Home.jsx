@@ -1,3 +1,4 @@
+import About from "./About"
 import PageContent from "./PageContent"
 
 export default function Home() {
@@ -8,16 +9,16 @@ export default function Home() {
             h-full
             w-full
             overflow-hiden
-            overflow-y-auto">
+            overflow-y-auto"
+            >
             <div className="mt-2 mb-7 px-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-white text-2xl font-semibold">
                         Newest Songs
                     </h1>
                 </div>
-                <div>
-                    <PageContent/>
-                </div>
+                <PageContent/>
+                <About></About>
             </div>
         </div>
     )
