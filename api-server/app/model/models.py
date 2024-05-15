@@ -111,7 +111,7 @@ class Album(Base):
     __tablename__ = "albums"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    name = Column(String, nullable=False)
+    name = Column(String, nullable=False, unique=True)
 
     artists = relationship(
         "Artist", secondary=ArtistAlbum, back_populates="albums", lazy=True
