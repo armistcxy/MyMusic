@@ -47,9 +47,13 @@ def delete_album(id: uuid.UUID, session: Session) -> bool:
     if album == None:
         return False
     else:
-        session.delete(album)
-        session.commit()
-        return True
+        try:
+            session.delete(album)
+            session.commit()
+            return True
+        except Exception as e:
+            session.rollback()
+            raise e
 
 
 def find_album_with_name(name: str, session: Session) -> list[models.Album]:
