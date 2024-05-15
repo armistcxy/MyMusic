@@ -6,7 +6,7 @@ import { reducerCases } from "../utils/Constants";
 import { usePopper } from 'react-popper';
 import { Link } from "react-router-dom";
 
-export default function Playlists() {
+export default function Playlists({ openModal }) {
   const [{ token, playlists, isAuthenticated }, dispatch] = useStateProvider();
   const [showDialog, setShowDialog] = useState(false);
   const [referenceElement, setReferenceElement] = useState(null);
@@ -36,7 +36,7 @@ export default function Playlists() {
 
   const handleCreatePlaylist = () => {
     if (isAuthenticated) {
-      //Create Playlist Logic
+      openModal();
     } else {
       setShowDialog(true);
     }

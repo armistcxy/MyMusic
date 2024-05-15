@@ -7,7 +7,7 @@ import Playlists from "./Playlists";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-export default function Sidebar() {
+export default function Sidebar({openModal}) {
 
     useEffect(() => {
         const allLi = document
@@ -52,7 +52,7 @@ export default function Sidebar() {
                     </li>
                 </ul>
             </div>
-            <Playlists />
+            <Playlists openModal={openModal}/>
             <div className="mt-4 px-4 grid grid-cols-2 gap-4 text-left">
                 <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
                     Legal
