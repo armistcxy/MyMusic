@@ -11,7 +11,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
 
-export default function Navbar({navBackground}) {
+export default function Navbar() {
     const [{token, isAuthenticated}, dispatch] = useStateProvider();
     const location = useLocation();
     const [query, setQuery] = useState("");
@@ -73,7 +73,7 @@ export default function Navbar({navBackground}) {
             ) : (
               <div className="relative ">
                 <button onClick={() => setShowDropDown(!showDropDown)}>
-                  <FaUser />
+                  <FaUser style={{ color: 'white' }}/>
                 </button>
                 {showDropDown && (
                   <div className="absolute dropdown bg-[#282828] top-8 text-sm right-0 w-[12rem]">

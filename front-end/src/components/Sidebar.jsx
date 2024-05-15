@@ -7,7 +7,7 @@ import Playlists from "./Playlists";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-export default function Sidebar() {
+export default function Sidebar({openModal}) {
 
     useEffect(() => {
         const allLi = document
@@ -52,7 +52,38 @@ export default function Sidebar() {
                     </li>
                 </ul>
             </div>
+<<<<<<< HEAD
             <Playlists />
+=======
+            <Playlists openModal={openModal}/>
+            <div className="mt-4 px-4 grid grid-cols-2 gap-4 text-left">
+                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                    Legal
+                </button>
+                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                    Center
+                </button>
+                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                    Policy
+                </button>
+                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                    Cookies
+                </button>
+                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                    About Ads
+                </button>
+                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                    Accessibility
+                </button>
+            </div>
+
+
+            <button className="mx-4 mt-4 text-sm border-white border rounded-full flex gap-2 px-3 py-1 items-center  text-white ">
+                <TbWorld />
+                <span className="text-white font-bold">English</span>
+            </button>
+
+>>>>>>> 0a779d7f73ee4c63ac78d0b57b49ccf829a778fe
         </Container>
     );
 }
