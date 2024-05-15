@@ -21,10 +21,7 @@ api.include_router(crawl_router)
 api.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 origins = [
-    "http://localhost:8080/health",
-    "http://localhost",
-    "http://localhost:8000/health",
-    "about:blank",
+    "http://localhost/3000",
 ]
 
 api.add_middleware(
