@@ -86,4 +86,7 @@ def delete_artist_by_id(id: uuid.UUID):
     try:
         artist_service.delete_artist_by_id(id=id)
     except Exception as e:
-        return JSONResponse()
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"message: {str(e)}",
+        )

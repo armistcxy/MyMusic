@@ -22,14 +22,14 @@ def insert_album(upload_form: AlbumUploadForm) -> AlbumDetailResponse:
     return response
 
 
-def get_album_by_id(id: uuid.UUID) -> AlbumDetailResponse:
+def get_album_by_id(id: uuid.UUID) -> AlbumDetailResponse | None:
     session = get_session()
     album = album_repo.get_album_by_id(id, session)
     session.close()
     return album
 
 
-def get_album_by_name(id: uuid.UUID) -> AlbumDetailResponse:
+def get_album_by_name(id: uuid.UUID) -> AlbumDetailResponse | None:
     session = get_session()
     album = album_repo.get_album_by_name(id, session)
     session.close()
@@ -63,4 +63,3 @@ def find_album_with_name(name: str) -> list[AlbumSimpleResponse]:
     response = [schema_utils.album_model_to_simple_response(album) for album in albums]
     session.close()
     return response
-

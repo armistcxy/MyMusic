@@ -3,22 +3,38 @@ from app.repository.repo import get_session
 import uuid
 from sqlalchemy import func
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
+from app.repository.error import IntegrityException, RepositoryError
 
 
 def insert_album(album: models.Album, session: Session) -> models.Album:
-    session.add(album)
-    session.commit()
-    session.refresh(album)
-    return album
+    try:
+        session.add(album)
+        session.commit()
+        session.refresh(album)
+        return album
+    except IntegrityError:
+        session.rollback()
+        raise IntegrityException
+    except Exception as e:
+        session.rollback()
+        raise RepositoryError(message=str(e.__class__.__name__))
 
 
 def get_album_by_id(id: uuid.UUID, session: Session) -> models.Album:
-    album = session.get(models.Album, ident=id)
-    return album
+    try:
+        album = session.get(models.Album, ident=id)
+        return album
+    except Exception as e:
+        raise RepositoryError(message=str(e))
 
 
 def get_album_by_name(name: str, session: Session) -> models.Album:
-    return session.query(models.Album).filter(models.Album.name == name).first()
+    try:
+        album = session.query(models.Album).filter(models.Album.name == name).first()
+        return album
+    except Exception as e:
+        raise RepositoryError(message=str(e))
 
 
 def get_all_albums(session: Session) -> list[models.Album]:
