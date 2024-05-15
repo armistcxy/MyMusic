@@ -7,7 +7,7 @@ import os
 
 auth_config = AuthXConfig()
 auth_config.JWT_SECRET_KEY = os.environ.get("SECRET_KEY", "secret_key")
-
+auth_config.JWT_TOKEN_LOCATION = ["headers", "query", "cookies", "json"]
 security = AuthX(config=auth_config)
 
 

@@ -47,7 +47,20 @@ def create_playlist(
 def get_all_playlists_belong_to_user(
     payload: TokenPayload = Depends(security.access_token_required),
 ):
-    pass
+    try:
+        user_id = getattr(payload, "sub")
+        user_id = uuid.UUID(user_id, version=4)
+        response = playlist_service.get_all_playlists_belong_to_user(user_id=user_id)
+        return response
+    except AttributeError as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="must login to operate this method",
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        )
 
 
 @playlist_router.get("/", response_model=list[PlaylistSimpleResponse])
