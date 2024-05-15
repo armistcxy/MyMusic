@@ -3,6 +3,7 @@ from app.model import models
 import app.repository.artist as artist_repo
 import app.repository.track as track_repo
 import app.repository.category as category_repo
+import app.repository.album as album_repo
 from app.repository.repo import get_session
 from app.schema.track import (
     TrackResponse,
@@ -20,17 +21,19 @@ from app.repository.error import NotFoundError
 def upload_track(track_form: TrackUploadForm) -> TrackResponse:
     session = get_session()
     artists = [
-        artist_repo.get_artist_by_id(artist_id, session)
+        artist_repo.get_artist_by_id(session=session, id=artist_id)
         for artist_id in track_form.artists_id
     ]
     categories = [
         category_repo.get_category_by_name(category_name, session)
         for category_name in track_form.categories
     ]
+
     track = models.Track(
         name=track_form.name,
         length=track_form.length,
         artists=artists,
+        album_id=track_form.album_id,
         categories=categories,
     )
     track = track_repo.insert_track(track, session)
