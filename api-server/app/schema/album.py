@@ -21,7 +21,5 @@ from app.schema.track import TrackSimpleResponse
 
 
 class AlbumDetailResponse(AlbumSimpleResponse):
-    id: str
-    name: str
     artists: list[ArtistSimpleResponse]
     tracks: list[TrackSimpleResponse] | None

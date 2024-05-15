@@ -14,10 +14,21 @@ from app.service.error import StreamError
 track_router = APIRouter(prefix="/tracks", tags=["Track"])
 
 
-@track_router.post("/", response_model=TrackResponse)
+@track_router.post(
+    "/",
+    responses={
+        status.HTTP_201_CREATED: {"model": TrackResponse},
+        status.HTTP_500_INTERNAL_SERVER_ERROR: {},
+    },
+)
 def upload_track(track_form: TrackUploadForm):
-    response = track_service.upload_track(track_form)
-    return response
+    try:
+        response = track_service.upload_track(track_form)
+        return response
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        )
 
 
 @track_router.get("/", response_model=list[TrackSimpleResponse])

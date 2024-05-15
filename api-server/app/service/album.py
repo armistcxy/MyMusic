@@ -30,14 +30,15 @@ def insert_album(upload_form: AlbumUploadForm) -> AlbumDetailResponse:
 
 def get_album_by_id(id: uuid.UUID) -> AlbumDetailResponse | None:
     session = get_session()
-    album = album_repo.get_album_by_id(id, session)
+    album = album_repo.get_album_by_id(session=session, id=id)
+    response = schema_utils.album_model_to_detail_response(album)
     session.close()
-    return album
+    return response
 
 
-def get_album_by_name(id: uuid.UUID) -> AlbumDetailResponse | None:
+def get_album_by_name(name: str) -> AlbumDetailResponse | None:
     session = get_session()
-    album = album_repo.get_album_by_name(id, session)
+    album = album_repo.get_album_by_name(session=session, name=name)
     session.close()
     return album
 
