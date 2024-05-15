@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from app.schema.playlist import (
     PlaylistDetailResponse,
     PlaylistSimpleResponse,
@@ -8,6 +8,7 @@ import app.service.playlist as playlist_service
 import uuid
 from app.api.auth import security
 import app.model.models as models
+from authx import TokenPayload
 
 playlist_router = APIRouter(prefix="/playlists", tags=["Playlist"])
 
@@ -19,11 +20,26 @@ playlist_router = APIRouter(prefix="/playlists", tags=["Playlist"])
 )
 def create_playlist(
     upload_form: PlaylistUploadForm,
-    user: models.User = Depends(security.get_current_subject),
+    payload: TokenPayload = Depends(security.access_token_required),
 ):
-    upload_form.user_id = user.id
-    response = playlist_service.create_playlist(upload_form)
-    return response
+    try:
+        user_id = getattr(payload, "sub")
+        user_id = uuid.UUID(user_id, version=4)
+        upload_form.user_id = user_id
+        response = playlist_service.create_playlist(upload_form)
+        return response
+    except AttributeError as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="must login to operate this method",
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        )
+
+
+
 
 
 @playlist_router.get("/", response_model=list[PlaylistSimpleResponse])
