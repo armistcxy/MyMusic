@@ -5,7 +5,7 @@ import uuid
 
 class PlaylistUploadForm(BaseModel):
     name: str
-    user_id: uuid.UUID
+    user_id: uuid.UUID | None = None
 
 
 class PlaylistUpdateForm(BaseModel):

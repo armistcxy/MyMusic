@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from app.schema.playlist import (
     PlaylistDetailResponse,
     PlaylistSimpleResponse,
@@ -6,12 +6,22 @@ from app.schema.playlist import (
 )
 import app.service.playlist as playlist_service
 import uuid
+from app.api.auth import security
+import app.model.models as models
 
 playlist_router = APIRouter(prefix="/playlists", tags=["Playlist"])
 
 
-@playlist_router.post("/", response_model=PlaylistDetailResponse)
-def create_playlist(upload_form: PlaylistUploadForm):
+@playlist_router.post(
+    "/",
+    response_model=PlaylistDetailResponse,
+    dependencies=[Depends(security.access_token_required)],
+)
+def create_playlist(
+    upload_form: PlaylistUploadForm,
+    user: models.User = Depends(security.get_current_subject),
+):
+    upload_form.user_id = user.id
     response = playlist_service.create_playlist(upload_form)
     return response
 
