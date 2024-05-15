@@ -21,6 +21,14 @@ def get_playlist_by_name(name: str, session: Session) -> models.Playlist:
     return session.query(models.Playlist).filter(models.Playlist.name == name).first()
 
 
+def get_all_playlists_belong_to_user(
+    session: Session, user_id: uuid.UUID
+) -> list[models.Playlist]:
+    return (
+        session.query(models.Playlist).filter(models.Playlist.user_id == user_id).all()
+    )
+
+
 def get_all_playlists(session: Session) -> list[models.Playlist]:
     return session.query(models.Playlist).all()
 

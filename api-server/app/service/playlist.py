@@ -31,9 +31,24 @@ def get_playlist_by_id(id: uuid.UUID) -> PlaylistDetailResponse:
 
 def get_playlist_by_name(id: uuid.UUID) -> PlaylistDetailResponse:
     session = get_session()
-    playlist = playlist_repo.get_playlist_by_name(id, session)
+    playlist = playlist_repo.get_playlist_by_name(id=id, sesion=session)
     session.close()
     return playlist
+
+
+def get_all_playlists_belong_to_user(
+    user_id: uuid.UUID,
+) -> list[PlaylistSimpleResponse]:
+    session = get_session()
+    playlists = playlist_repo.get_all_playlists_belong_to_user(
+        session=session, user_id=user_id
+    )
+    response = [
+        schema_utils.playlist_model_to_simple_response(playlist)
+        for playlist in playlists
+    ]
+    session.close()
+    return response
 
 
 def get_all_playlists() -> list[PlaylistSimpleResponse]:

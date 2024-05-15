@@ -39,7 +39,15 @@ def create_playlist(
         )
 
 
-
+@playlist_router.get(
+    "/me",
+    response_model=list[PlaylistSimpleResponse],
+    dependencies=[Depends(security.access_token_required)],
+)
+def get_all_playlists_belong_to_user(
+    payload: TokenPayload = Depends(security.access_token_required),
+):
+    pass
 
 
 @playlist_router.get("/", response_model=list[PlaylistSimpleResponse])
