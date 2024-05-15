@@ -10,8 +10,20 @@ from fastapi.responses import JSONResponse, StreamingResponse
 import app.service.track as track_service
 from app.repository.error import NotFoundError
 from app.service.error import StreamError
+import random
 
 track_router = APIRouter(prefix="/tracks", tags=["Track"])
+
+CATEGORIES = [
+    "Pop",
+    "Rock",
+    "Country",
+    "Classical",
+    "Jazz",
+    "Indie",
+    "Hip hop",
+    "Rhythm",
+]
 
 
 @track_router.post(
@@ -23,6 +35,9 @@ track_router = APIRouter(prefix="/tracks", tags=["Track"])
 )
 def upload_track(track_form: TrackUploadForm):
     try:
+        # using fake data for category:
+        if track_form.categories is None:
+            track_form.categories = [random.choice(CATEGORIES)]
         response = track_service.upload_track(track_form)
         return response
     except Exception as e:

@@ -24,8 +24,9 @@ def upload_track(track_form: TrackUploadForm) -> TrackResponse:
         artist_repo.get_artist_by_id(session=session, id=artist_id)
         for artist_id in track_form.artists_id
     ]
+
     categories = [
-        category_repo.get_category_by_name(category_name, session)
+        category_repo.get_category_by_name(name=category_name, session=session)
         for category_name in track_form.categories
     ]
 
@@ -49,6 +50,7 @@ def upload_track(track_form: TrackUploadForm) -> TrackResponse:
             schema_utils.category_model_to_response(category)
             for category in track.categories
         ],
+        album=schema_utils.album_model_to_simple_response(track.album),
     )
     session.close()
 
