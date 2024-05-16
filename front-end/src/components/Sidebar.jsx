@@ -2,9 +2,25 @@ import React from "react";
 import styled from "styled-components";
 import { MdHomeFilled, MdSearch } from "react-icons/md";
 import { IoLibrary } from "react-icons/io5";
+import { TbWorld } from "react-icons/tb";
 import Playlists from "./Playlists";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
-export default function Sidebar() {
+export default function Sidebar({openModal}) {
+
+    useEffect(() => {
+        const allLi = document
+            .querySelector(".top_links ul")
+            .querySelectorAll("li");
+
+        function changeMenuActive() {
+            allLi.forEach((n) => n.classList.remove("active"));
+            this.classList.add("active");
+        }
+        allLi.forEach((n) => n.addEventListener("click", changeMenuActive))
+    }, []);
+
     return (
         <Container>
             <div className="top_links">
@@ -16,20 +32,58 @@ export default function Sidebar() {
                 </div>
                 <ul>
                     <li>
-                        <MdHomeFilled />
-                        <span>Home</span>
+                        <Link to="/" className="link">
+                            <MdHomeFilled />
+                            <span>Home</span>
+                        </Link>
+
                     </li>
                     <li>
-                        <MdSearch />
-                        <span>Search</span>
+                        <Link to="search" className="link">
+                            <MdSearch />
+                            <span>Search</span>
+                        </Link>
                     </li>
                     <li>
-                        <IoLibrary />
-                        <span>Your Library</span>
+                        <Link to="lib" className="link">
+                            <IoLibrary />
+                            <span>Your Library</span>
+                        </Link>
                     </li>
                 </ul>
             </div>
+<<<<<<< HEAD
             <Playlists />
+=======
+            <Playlists openModal={openModal}/>
+            <div className="mt-4 px-4 grid grid-cols-2 gap-4 text-left">
+                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                    Legal
+                </button>
+                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                    Center
+                </button>
+                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                    Policy
+                </button>
+                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                    Cookies
+                </button>
+                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                    About Ads
+                </button>
+                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                    Accessibility
+                </button>
+            </div>
+
+
+            <button className="mx-4 mt-4 text-sm border-white border rounded-full flex gap-2 px-3 py-1 items-center  text-white ">
+                <TbWorld />
+                <span className="text-white font-bold">English</span>
+            </button>
+
+>>>>>>> 0a779d7f73ee4c63ac78d0b57b49ccf829a778fe
         </Container>
     );
 }
@@ -46,7 +100,7 @@ const Container = styled.div`
         flex-direction: column;
         .logo {
             text-align: center;
-            margin: 1rem 0;
+            margin: 1rem 10px;
             img {
                 max-inline-size: 80%;
                 block-size: auto;
@@ -63,8 +117,16 @@ const Container = styled.div`
                 gap: 1rem;
                 cursor: pointer;
                 transition: 0.2s ease-in-out;
+                &.active {
+                    color: white;
+                }
                 &:hover {
                     color: white;
+                }
+                .link {
+                    align-items: center;
+                    display: flex;
+                    gap: 1rem;
                 }
             }
         }

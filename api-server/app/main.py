@@ -21,7 +21,8 @@ api.include_router(crawl_router)
 api.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 origins = [
-    "http://localhost/3000",
+    "http://localhost:8080",
+    "http://localhost:3000",
 ]
 
 api.add_middleware(
