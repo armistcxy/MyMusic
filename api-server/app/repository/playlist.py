@@ -1,9 +1,10 @@
 from app.model import models
 from app.repository.repo import get_session
 import uuid
-from sqlalchemy import func
+from sqlalchemy import func, text
 from sqlalchemy.orm import Session
 from app.repository.error import RepositoryError
+import app.repository.track as track_repo
 
 
 def create_playlist(playlist: models.Playlist, session: Session) -> models.Playlist:
@@ -66,37 +67,45 @@ def change_playlist_name(session: Session, new_name: str | None, id: uuid.UUID):
             session.commit()
         else:
             session.rollback()
-            raise RepositoryError(message="Fault happen when modifying playlist")
+            raise RepositoryError(message="Fault happen when modifying playlist's name")
 
 
 def remove_track_from_playlist(
     session: Session, playlist_id: uuid.UUID, remove_track_id_list: list[uuid.UUID]
 ):
-    raw_sql_query = """
-        DELETE * FROM "tracks-playlists" 
-        WHERE playlist_id=:playlist_id AND track_id IN (:remove_track_id_list)"""
+    # raw_sql_query = """
+    #     DELETE * FROM "tracks-playlists"
+    #     WHERE playlist_id=:playlist_id AND track_id IN (:remove_track_id_list)"""
 
-    params = {
-        "playlist_id": playlist_id,
-        "remove_track_id_list": set(remove_track_id_list),
-    }
-    session.execute(statement=raw_sql_query, params=params)
+    # params = {
+    #     "playlist_id": playlist_id,
+    #     "remove_track_id_list": set(remove_track_id_list),
+    # }
+    # session.execute(statement=raw_sql_query, params=params)
+    # session.commit()
+    playlist = get_playlist_by_id(id=playlist_id, session=session)
+    for track_id in remove_track_from_playlist:
+        playlist.tracks.remove(track_repo.get_track_by_id(id=track_id, session=session))
     session.commit()
 
 
 def add_track_into_playlist(
     session: Session, playlist_id: uuid.UUID, add_track_id_list: list[uuid.UUID]
 ):
-    raw_sql_query = """
-        INSERT INTO "tracks-playlists" (track_id, playlist_id)
-        VALUES(:track_id, :playlist_id)
-    """
-    data = [
-        {"track_id": track_id, "playlist_id": playlist_id}
-        for track_id in add_track_id_list
-    ]
-    for params in data:
-        session.execute(raw_sql_query, params=params)
+    # raw_sql_query = """INSERT INTO "tracks-playlists" (track_id, playlist_id)
+    #     VALUES(:track_id, :playlist_id)
+    # """
+
+    # data = [
+    #     {"track_id": track_id, "playlist_id": playlist_id}
+    #     for track_id in add_track_id_list
+    # ]
+    # for params in data:
+    #     session.execute(text(raw_sql_query), params=params)
+    playlist = get_playlist_by_id(id=playlist_id, session=session)
+    for track_id in add_track_id_list:
+        playlist.tracks.append(track_repo.get_track_by_id(id=track_id, session=session))
+    # this could lead to N + 1 problems, but just ignore this, I will find out the solution later
     session.commit()
 
 
