@@ -10,18 +10,34 @@ import {
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
+import axios from "axios";
 
 export default function Navbar() {
-    const [{token, isAuthenticated}, dispatch] = useStateProvider();
+    const [{token, userInfo, isAuthenticated}, dispatch] = useStateProvider();
     const location = useLocation();
     const [query, setQuery] = useState("");
 
     const [showDropDown, setShowDropDown] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(()=> {
-      console.log(isAuthenticated);
-    },[token])
+    useEffect(() => {
+      const getUser = async () => {
+        const response = await axios.get(
+          'http://localhost:8000/users/profile',
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+       dispatch({ type: reducerCases.SET_USER, userInfo: response.data });
+      };
+      if (token) {
+          getUser();
+      }
+    }, [token, dispatch]);
+
     const logoutUser = () => {
         dispatch({ type: reducerCases.SET_TOKEN, token: null});
         dispatch({
@@ -43,7 +59,7 @@ export default function Navbar() {
                 type="text"
                 id="username"
                 name="username"
-                placeholder="Search"
+                placeholder="What do you want to play?"
                 autoComplete="off"
                 value={query}
                 // onChange={filterSongs}
@@ -71,9 +87,10 @@ export default function Navbar() {
                 </Link>
               </div>
             ) : (
-              <div className="relative">
-                <button onClick={() => setShowDropDown(!showDropDown)}>
-                  <FaUser style={{ color: 'white' }}/>
+              <div className="relative flex items-center gap-2">
+                <button onClick={() => setShowDropDown(!showDropDown)} className="flex items-center gap-2">
+                  <FaUser className="text-white"/>
+                  <span className="text-white font-bold">{userInfo.username}</span>
                 </button>
                 {showDropDown && (
                   <div className="absolute dropdown bg-[#282828] top-8 text-white right-0 w-[12rem]">

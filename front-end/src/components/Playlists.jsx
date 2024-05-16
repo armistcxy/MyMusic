@@ -17,7 +17,7 @@ export default function Playlists({ openModal }) {
       {
         name: 'offset',
         options: {
-          offset: [0, 20], // Dịch sang phải 20px
+          offset: [0, 20],
         },
       },
     ],
@@ -33,12 +33,11 @@ export default function Playlists({ openModal }) {
           },
         }
       );
-      //const { items } = response;
-      console.log(response);
-      // const playlists = items.map(({name, id}) => {
-      //     return { name, id };
-      // });
-      // dispatch({ type: reducerCases.SET_PLAYLISTS, playlists });
+      const items = response.data;
+      const playlists = items.map(({name, id}) => {
+           return { name, id };
+      });
+     dispatch({ type: reducerCases.SET_PLAYLISTS, playlists: playlists });
     };
     if (token) {
       getPlaylistData();
