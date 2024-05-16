@@ -80,6 +80,7 @@ export default function Spotify() {
                 height: 100%;
                 width: 100%;
                 overflow: auto;
+                position: relative;
                 &::-webkit-scrollbar {
                     width: 0.7rem;
                     &-thumb {
