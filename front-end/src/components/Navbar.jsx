@@ -42,10 +42,11 @@ export default function Navbar() {
 
     const logoutUser = () => {
         dispatch({ type: reducerCases.SET_TOKEN, token: null});
-        dispatch({ type: reducerCases.SET_PLAYLISTS, playlists: []});
+        dispatch({ type: reducerCases.SET_PLAYLISTS, playlists: null});
         dispatch({
             type: reducerCases.USER_LOGGED_OUT,
         });
+        window.location.reload();
     }
 
     return (

@@ -37,6 +37,7 @@ export default function Playlists({ openModal }) {
       const playlists = items.map(({name, id}) => {
            return { name, id };
       });
+      //console.log(playlists);
      dispatch({ type: reducerCases.SET_PLAYLISTS, playlists: playlists });
     };
     if (token) {
@@ -75,7 +76,8 @@ export default function Playlists({ openModal }) {
 
 
   return <Container>
-    {(playlists.length !== 0) ?
+    {(playlists !== null && playlists.length !== 0) ?
+      (
       <ul>
         {
           playlists.map(({ name, id }) => {
@@ -87,6 +89,7 @@ export default function Playlists({ openModal }) {
           })
         }
       </ul>
+      )
       : (
         <div className="your_library">
           <div className="leading-8 tertiary_bg rounded-lg py-6 px-4">

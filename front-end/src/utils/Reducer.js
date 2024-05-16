@@ -67,7 +67,7 @@ const reducer = (state, action) => {
             return { ...state, user: action.payload, isAuthenticated: true };
         }
         case reducerCases.USER_LOGGED_OUT: {
-            return { ...state, user: {}, isAuthenticated: false };
+            return { ...state, user: null, isAuthenticated: false };
         }
         default:
             return state;
