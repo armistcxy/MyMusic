@@ -60,7 +60,7 @@ export default function Spotify() {
         </Container>
     )
     }
-    
+    // background: linear-gradient(transparent, rgba(0, 0, 0, 1));background-color: #171717;
     const Container = styled.div`
         max-width: 100vw;
         max-height: 100vh;
@@ -75,8 +75,7 @@ export default function Spotify() {
             grid-template-columns: 15vw 85vw;
             height: 100%;
             width: 100%;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 1));
-            background-color: #171717;
+            background-color: rgb(23 23 23);
             .body {
                 height: 100%;
                 width: 100%;

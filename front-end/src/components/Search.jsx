@@ -1,4 +1,5 @@
-import PageContent from "./PageContent"
+import About from "./About"
+import SearchContent from "./SearchContent"
 
 export default function Search() {
     return (
@@ -10,14 +11,19 @@ export default function Search() {
             overflow-hiden
             overflow-y-auto">
             <div className="mt-2 mb-7 px-6">
-            <div className="flex justify-between items-center">
-                <h1 className="text-white text-2xl font-semibold">
-                        Search
+                <div className="flex justify-between items-center">
+                    <h1 className="text-white text-xl font-semibold">
+                        Recent
                     </h1>
                 </div>
-                <div>
-                    <PageContent/>
+                <SearchContent/>
+                <div className="flex justify-between items-center pt-6">
+                    <h1 className="text-white text-xl font-semibold">
+                        Popular
+                    </h1>
                 </div>
+                <SearchContent/>
+                <About/>               
             </div>
         </div>
     )

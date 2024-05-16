@@ -32,7 +32,7 @@ export default function SongItem() {
                 </img>
             </div>
             <div className="flex flex-col items-start w-full pt-4 gap-y-1">
-                <p className="font-semibold truncate w-full">title</p>
+                <p className="text-neutral-100 text-lg font-semibold truncate w-full">title</p>
                 <p className="text-neutral-400 text-smpb-4 w-full truncate">by</p>
                 <div className="
                 absolute
