@@ -4,3 +4,4 @@ config.yml
 \.pytest_cache
 \postgres-data
 .vscode
+app/static/
