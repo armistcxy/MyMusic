@@ -3,6 +3,7 @@ from app.schema.playlist import (
     PlaylistDetailResponse,
     PlaylistSimpleResponse,
     PlaylistUploadForm,
+    PlaylistModifyForm
 )
 import app.service.playlist as playlist_service
 import uuid
@@ -89,10 +90,11 @@ def delete_playlist_by_id(id: uuid.UUID):
 @playlist_router.patch("/{id}", dependencies=[Depends(security.access_token_required)])
 def modify_track_in_playlist(
     playlist_id: uuid.UUID,
-    track_id_list: list[uuid.UUID] | None,
-    name: str | None = None,
+    modify_form: PlaylistModifyForm,
     payload: TokenPayload = Depends(security.access_token_required),
-):
+):  
+    rename = modify_form.rename
+    track_id_list = modify_form.track_id_list
     try:
         user_id = getattr(payload, "sub")
         user_id = uuid.UUID(user_id, version=4)
@@ -103,8 +105,8 @@ def modify_track_in_playlist(
                 status_code=status.HTTP_405_METHOD_NOT_ALLOWED,
                 detail=f"User {user_id} have no right to modify playlist {playlist_id}",
             )
-        if name:
-            playlist_service.change_playlist_name(new_name=name, id=playlist_id)
+        if rename:
+            playlist_service.change_playlist_name(new_name=rename, id=playlist_id)
         if track_id_list:
             playlist_service.update_track_in_playlist(
                 playlist_id=id, track_id_list=track_id_list
