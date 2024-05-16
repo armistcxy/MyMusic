@@ -90,7 +90,7 @@ export default function Navbar() {
               <div className="relative flex items-center gap-2">
                 <button onClick={() => setShowDropDown(!showDropDown)} className="flex items-center gap-2">
                   <FaUser className="text-white"/>
-                  <span className="text-white font-bold">{userInfo.username}</span>
+                  <span className="text-white font-bold">{userInfo?.username}</span>
                 </button>
                 {showDropDown && (
                   <div className="absolute dropdown bg-[#282828] top-8 text-white right-0 w-[12rem]">
