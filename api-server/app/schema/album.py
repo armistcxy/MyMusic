@@ -13,7 +13,7 @@ class AlbumUpdateForm(BaseModel):
 
 
 class AlbumSimpleResponse(BaseModel):
-    id: uuid.UUID
+    id: str
     name: str
 
 
@@ -21,7 +21,5 @@ from app.schema.track import TrackSimpleResponse
 
 
 class AlbumDetailResponse(AlbumSimpleResponse):
-    id: uuid.UUID
-    name: str
     artists: list[ArtistSimpleResponse]
     tracks: list[TrackSimpleResponse] | None

@@ -31,9 +31,24 @@ def get_playlist_by_id(id: uuid.UUID) -> PlaylistDetailResponse:
 
 def get_playlist_by_name(id: uuid.UUID) -> PlaylistDetailResponse:
     session = get_session()
-    playlist = playlist_repo.get_playlist_by_name(id, session)
+    playlist = playlist_repo.get_playlist_by_name(id=id, sesion=session)
     session.close()
     return playlist
+
+
+def get_all_playlists_belong_to_user(
+    user_id: uuid.UUID,
+) -> list[PlaylistSimpleResponse]:
+    session = get_session()
+    playlists = playlist_repo.get_all_playlists_belong_to_user(
+        session=session, user_id=user_id
+    )
+    response = [
+        schema_utils.playlist_model_to_simple_response(playlist)
+        for playlist in playlists
+    ]
+    session.close()
+    return response
 
 
 def get_all_playlists() -> list[PlaylistSimpleResponse]:
@@ -63,4 +78,21 @@ def delete_playlist_by_id(id: uuid.UUID):
 def find_playlist_with_name(name: str) -> list[PlaylistSimpleResponse]:
     session = get_session()
     response = playlist_repo.find_playlist_with_name(name, session)
+    session.close()
     return response
+
+
+def change_playlist_name(new_name: str, id: uuid.UUID):
+    session = get_session()
+    playlist_repo.change_playlist_name(session=session, new_name=new_name, id=id)
+    session.close()
+
+
+def update_track_in_playlist(playlist_id: uuid.UUID, track_id_list: list[uuid.UUID]):
+    session = get_session()
+    playlist_repo.update_track_in_playlist(
+        session=session,
+        playlist_id=playlist_id,
+        track_id_list=track_id_list,
+    )
+    session.close()

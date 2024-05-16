@@ -11,5 +11,5 @@ class CategoryUpdateForm(BaseModel):
 
 
 class CategoryResponse(BaseModel):
-    id: uuid.UUID
+    id: str
     name: str

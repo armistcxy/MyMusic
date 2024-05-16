@@ -5,7 +5,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 
-def insert_category(category: models.Category, session: Session) -> models.Category:
+def insert_category(session: Session, category: models.Category) -> models.Category:
     session.add(category)
     session.commit()
     session.refresh(category)

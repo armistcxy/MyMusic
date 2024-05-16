@@ -1,23 +1,32 @@
 import { useState } from "react";
+import { useStateProvider } from "../utils/StateProvider";
+import axios from "axios";
 
 export default function CreatePlaylistModal({ closeModal }) {
+    const [{token},dispatch] = useStateProvider();
     const [playlistName, setPlaylistName] = useState("");
     const [playlistThumbnail, setPlaylistThumbnail] = useState("");
 
-    // const createPlaylist = async () => {
-    //     const response = await makeAuthenticatedPOSTRequest(
-    //         "/playlist/create",
-    //         {name: playlistName, thumbnail: playlistThumbnail, songs: []}
-    //     );
-    //     if (response._id) {
-    //         closeModal();
-    //     }
-    // };
-    
+    const createPlaylist = async () => {
+        const response = await axios.post(
+            "http://localhost:8000/playlists",
+            {name: playlistName},
+            {
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        if (response.status == 200) {
+            closeModal();
+        }
+    };
+
 
     return (
         <div
-            className="absolute bg-black w-screen h-screen bg-opacity-50 flex justify-center items-center"
+            className="fixed bg-black w-screen h-screen bg-opacity-60 flex justify-center items-center"
             onClick={closeModal}
         >
             <div
@@ -66,7 +75,7 @@ export default function CreatePlaylistModal({ closeModal }) {
                     </div>
                     <div
                         className="bg-white w-1/3 rounded flex font-semibold justify-center items-center py-3 mt-4 cursor-pointer"
-                        // onClick={createPlaylist}
+                        onClick={createPlaylist}
                     >
                         Create
                     </div>

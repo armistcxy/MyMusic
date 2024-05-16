@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, Body
+from fastapi import APIRouter, HTTPException, Depends, Body, status
 import uuid
 from app.api.auth import security
 from pydantic import BaseModel
@@ -7,6 +7,7 @@ import app.service.user as user_service
 from starlette.responses import RedirectResponse
 from authx import TokenPayload, RequestToken
 import app.model.models as models
+from fastapi.responses import JSONResponse
 
 user_router = APIRouter(prefix="/users", tags=["User"])
 
@@ -39,7 +40,9 @@ def refresh(refresh_payload: TokenPayload = Depends(security.refresh_token_requi
         refresh_payload.sub,
         fresh=False,
     )
-    return {"access_token": access_token}
+    return JSONResponse(
+        content={"access_token": access_token}, status_code=status.HTTP_201_CREATED
+    )
 
 
 @user_router.get("/whoami")

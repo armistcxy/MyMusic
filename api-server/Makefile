@@ -1,7 +1,7 @@
 run: db api
 
 api:
-	uvicorn app.main:api --port 8000 --workers 4
+	uvicorn app.main:api --port 8000 --workers 4 --reload
 db:
 	docker run -d \
 		--name postgres \

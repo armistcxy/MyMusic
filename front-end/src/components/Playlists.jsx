@@ -13,26 +13,37 @@ export default function Playlists({ openModal }) {
   const [popperElement, setPopperElement] = useState(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: 'right',
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: [0, 20], // Dịch sang phải 20px
+        },
+      },
+    ],
   });
-  // useEffect(() => {
-  //     const getPlaylistData = async () => {
-  //         const response = await axios.get(
-  //             'https://api.spotify.com/v1/me/playlists',
-  //             {
-  //                 headers: {
-  //                     Authorization: "Bearer " + token,
-  //                     "Content-Type": "application/json",
-  //                 },
-  //             }
-  //         );
-  //         const { items } = response.data;
-  //         const playlists = items.map(({name, id}) => {
-  //             return { name, id };
-  //         });
-  //         dispatch({ type: reducerCases.SET_PLAYLISTS, playlists });
-  //     };
-  //     getPlaylistData();
-  // }, [token, dispatch]);
+  useEffect(() => {
+    const getPlaylistData = async () => {
+      const response = await axios.get(
+        'http://localhost:8000/playlists/me',
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      //const { items } = response;
+      console.log(response);
+      // const playlists = items.map(({name, id}) => {
+      //     return { name, id };
+      // });
+      // dispatch({ type: reducerCases.SET_PLAYLISTS, playlists });
+    };
+    if (token) {
+      getPlaylistData();
+    }
+  }, [token, dispatch]);
 
   const handleCreatePlaylist = () => {
     if (isAuthenticated) {

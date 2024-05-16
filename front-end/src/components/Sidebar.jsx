@@ -52,7 +52,6 @@ export default function Sidebar({openModal}) {
                     </li>
                 </ul>
             </div>
-
             <Playlists openModal={openModal}/>
             <div className="mt-4 px-4 grid grid-cols-2 gap-4 text-left">
                 <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
@@ -80,7 +79,6 @@ export default function Sidebar({openModal}) {
                 <TbWorld />
                 <span className="text-white font-bold">English</span>
             </button>
-
         </Container>
     );
 }

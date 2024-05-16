@@ -25,57 +25,55 @@ export default function Spotify() {
             : setNavBackground(false);
         bodyRef.current.scrollTop >= 268
             ? setHeaderBackground(true)
-            : setHeaderBackground(false); 
+            : setHeaderBackground(false);
     }
-    useEffect(()=>{
-        console.log(token);
-    })
 
     return (
         <Container >
-            {createPlaylistModalOpen && (
-                <CreatePlaylistModal className="form_create_playlist"
-                    closeModal={() => {
-                        setCreatePlaylistModalOpen(false);
-                    }}
-                />
-            )}
             <div className="spotify_body">
+                {createPlaylistModalOpen && (
+                    <CreatePlaylistModal className="form_create"
+                        closeModal={() => {
+                            setCreatePlaylistModalOpen(false);
+                        }}
+                    />
+                )}
                 <Sidebar openModal={() => {
-                        setCreatePlaylistModalOpen(true);
-                    }}/>
+                    setCreatePlaylistModalOpen(true);
+                }} />
                 <div className="body" ref={bodyRef} onScroll={bodyScrolled}>
+
                     <Navbar navBackground={navBackground} />
                     <div className="body_contents">
                         <Outlet>
                             <Body headerBackground={headerBackground} />
                         </Outlet>
-                    <Footer />
+                        <Footer />
                     </div>
-                </div>            
+                </div>
             </div>
             <div className="spotify_play_bar">
-                <PlayBar/>
+                <PlayBar />
             </div>
         </Container>
     )
-    }
-    // background: linear-gradient(transparent, rgba(0, 0, 0, 1));background-color: #171717;
-    const Container = styled.div`
+}
+// background: linear-gradient(transparent, rgba(0, 0, 0, 1));background-color: #171717;
+const Container = styled.div`
         max-width: 100vw;
         max-height: 100vh;
         overflow: hidden;
         display: grid;
         grid-template-rows: 88vh 12vh;
-        .form_create_playlist {
-            z-index: 1000;
-        }
         .spotify_body {
+            position: relative;
             display: grid;
             grid-template-columns: 15vw 85vw;
             height: 100%;
             width: 100%;
             background-color: rgb(23 23 23);
+            .form_create {
+            }
             .body {
                 height: 100%;
                 width: 100%;
@@ -87,11 +85,13 @@ export default function Spotify() {
                         background-color: rgba(255, 255, 255, 0.6);
                     }
                 }
+                .body_contents {
+                    z-index: 1;
+                }
+                .form_create {
+                    z-index: 100;
+                }
             }
-        }
-
-        .spotify_play_bar {
-            z-index: 0;
         }
         `
     ;

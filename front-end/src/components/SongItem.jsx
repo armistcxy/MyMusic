@@ -4,7 +4,8 @@ export default function SongItem() {
     return (
         <div
         onClick={() => {}}
-        className="relative
+        className="
+        relative
         group
         flex
         flex-col

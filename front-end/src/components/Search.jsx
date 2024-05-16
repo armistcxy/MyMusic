@@ -21,7 +21,7 @@ export default function Search() {
                         Popular
                     </h1>
                 </div>
-                <SearchContent/>
+                <SearchContent/>           
             </div>
         </div>
     )
