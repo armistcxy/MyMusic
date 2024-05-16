@@ -5,6 +5,7 @@ import app.schema.category as schema_category
 import app.schema.user as schema_user
 import app.schema.playlist as schema_playlist
 from app.model import models
+from slugify import slugify
 
 
 def track_model_to_simple_response(
@@ -148,3 +149,8 @@ def playlist_model_to_detail_response(
         tracks=[track_model_to_simple_response(track) for track in playlist.tracks],
     )
     return playlist_response
+
+
+def convert_name_to_slug(name: str) -> str:
+    # this package's seem interesting
+    return slugify(name)

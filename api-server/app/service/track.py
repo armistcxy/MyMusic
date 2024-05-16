@@ -3,7 +3,6 @@ from app.model import models
 import app.repository.artist as artist_repo
 import app.repository.track as track_repo
 import app.repository.category as category_repo
-import app.repository.album as album_repo
 from app.repository.repo import get_session
 from app.schema.track import (
     TrackResponse,
@@ -98,10 +97,12 @@ def find_track_with_name(name: str) -> list[TrackSimpleResponse]:
 BASE_TRACK_PATH = "app/static"
 
 
-def stream_track(id: uuid.UUID) -> Iterator[bytes]:
-    if track_repo.get_track_by_id(id) is None:
-        raise NotFoundError(type="Track")
-    file_name = f"{id}.mp3"
+# I consider using track_name for convenient way for develop, when deploy consider using id => better way IMO
+def stream_track(track_name: str) -> Iterator[bytes]:
+    # track_name has already been converted to slug
+    # if track_repo.get_track_by_name() is None:
+    #     raise NotFoundError(type="Track")
+    file_name = f"{track_name}.mp3"
     path = join(BASE_TRACK_PATH, file_name)
     try:
         with open(path, "rb") as file:
