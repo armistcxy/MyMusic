@@ -97,7 +97,7 @@ const Login = () => {
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
-    const [{ token }, dispatch] = useStateProvider()
+    const [{ }, dispatch] = useStateProvider()
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -123,6 +123,7 @@ const Login = () => {
             const accessToken = response?.data?.access_token;
             const refreshToken = response?.data?.refresh_token;
             const roles = response?.data?.roles;
+            console.log(accessToken);
             dispatch({ type: reducerCases.SET_TOKEN, token: accessToken});
             dispatch({type: reducerCases.USER_LOGGED_IN});
             setSuccess(true);

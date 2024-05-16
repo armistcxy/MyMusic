@@ -27,14 +27,11 @@ export default function Spotify() {
             ? setHeaderBackground(true)
             : setHeaderBackground(false); 
     }
-    useEffect(()=>{
-        console.log(token);
-    })
 
     return (
         <Container >
             {createPlaylistModalOpen && (
-                <CreatePlaylistModal className="form_create_playlist"
+                <CreatePlaylistModal
                     closeModal={() => {
                         setCreatePlaylistModalOpen(false);
                     }}
@@ -67,9 +64,6 @@ export default function Spotify() {
         overflow: hidden;
         display: grid;
         grid-template-rows: 88vh 12vh;
-        .form_create_playlist {
-            z-index: 1000;
-        }
         .spotify_body {
             display: grid;
             grid-template-columns: 15vw 85vw;
@@ -87,10 +81,6 @@ export default function Spotify() {
                     }
                 }
             }
-        }
-
-        .spotify_play_bar {
-            z-index: 0;
         }
         `
     ;

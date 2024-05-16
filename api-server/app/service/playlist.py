@@ -25,8 +25,9 @@ def create_playlist(upload_form: PlaylistUploadForm) -> PlaylistDetailResponse:
 def get_playlist_by_id(id: uuid.UUID) -> PlaylistDetailResponse:
     session = get_session()
     playlist = playlist_repo.get_playlist_by_id(id, session)
+    response = schema_utils.playlist_model_to_detail_response(playlist)
     session.close()
-    return playlist
+    return response
 
 
 def get_playlist_by_name(id: uuid.UUID) -> PlaylistDetailResponse:

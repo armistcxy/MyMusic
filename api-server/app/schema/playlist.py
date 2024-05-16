@@ -23,3 +23,8 @@ from app.schema.track import TrackSimpleResponse
 class PlaylistDetailResponse(PlaylistSimpleResponse):
     user: UserSimpleResponse
     tracks: list[TrackSimpleResponse]
+
+
+class PlaylistModifyForm(BaseModel):
+    rename: str | None = None
+    track_id_list: list[uuid.UUID]
