@@ -116,7 +116,7 @@ def modify_track_in_playlist(
     except AttributeError as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="must login to operate this method",
+            detail="must login to operate this method}",
         )
     except Exception as e:
         raise HTTPException(

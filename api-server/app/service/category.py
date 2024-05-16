@@ -19,7 +19,7 @@ def insert_category(upload_form: CategoryUploadForm) -> CategoryResponse:
 
 def get_category_by_id(id: uuid.UUID) -> CategoryResponse | None:
     session = get_session()
-    category = category_repo.get_category_by_id(id, session)
+    category = category_repo.get_category_by_id(session=session, id=id)
     response = schema_utils.category_model_to_response(category)
     session.close()
     return response
@@ -27,7 +27,7 @@ def get_category_by_id(id: uuid.UUID) -> CategoryResponse | None:
 
 def get_category_by_name(name: str) -> CategoryResponse | None:
     session = get_session()
-    category = category_repo.get_category_by_name(name, session)
+    category = category_repo.get_category_by_name(session=session, name=name)
     response = schema_utils.category_model_to_response(category)
     session.close()
     return response
@@ -43,7 +43,9 @@ def get_all_categories() -> list[CategoryResponse]:
 
 def find_category_with_name(name: str) -> list[CategoryResponse]:
     session = get_session()
-    categories = category_repo.find_category_with_name(name)
+    categories = category_repo.find_category_with_name(session=session, name=name)
+    session.close()
+    return categories
 
 
 def update_category(update_form: CategoryUpdateForm) -> CategoryResponse:
@@ -55,5 +57,5 @@ def update_category(update_form: CategoryUpdateForm) -> CategoryResponse:
 
 def delete_category_by_id(id: uuid.UUID):
     session = get_session()
-    category_repo.delete_category(id)
+    category_repo.delete_category(session=session, id=id)
     session.close()

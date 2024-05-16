@@ -5,6 +5,11 @@ from sqlalchemy import func, text
 from sqlalchemy.orm import Session
 from app.repository.error import RepositoryError
 import app.repository.track as track_repo
+import logging
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 def create_playlist(playlist: models.Playlist, session: Session) -> models.Playlist:
@@ -59,9 +64,9 @@ def find_playlist_with_name(name: str, session: Session) -> list[models.Playlist
 def change_playlist_name(session: Session, new_name: str | None, id: uuid.UUID):
     if new_name:
         result = (
-            session.query(models.User)
-            .filter(models.User.id == id)
-            .update({models.User.name: new_name})
+            session.query(models.Playlist)
+            .filter(models.Playlist.id == id)
+            .update({models.Playlist.name: new_name})
         )
         if result == 1:
             session.commit()
@@ -84,7 +89,7 @@ def remove_track_from_playlist(
     # session.execute(statement=raw_sql_query, params=params)
     # session.commit()
     playlist = get_playlist_by_id(id=playlist_id, session=session)
-    for track_id in remove_track_from_playlist:
+    for track_id in remove_track_id_list:
         playlist.tracks.remove(track_repo.get_track_by_id(id=track_id, session=session))
     session.commit()
 
@@ -112,6 +117,7 @@ def add_track_into_playlist(
 def update_track_in_playlist(
     session: Session, playlist_id: uuid.UUID, track_id_list: list[uuid.UUID]
 ):
+    logger.info("function has been called")
     playlist = get_playlist_by_id(session=session, id=playlist_id)
     current_tracks = playlist.tracks
 
@@ -120,17 +126,24 @@ def update_track_in_playlist(
     for track in current_tracks:
         if track.id not in track_id_list:
             remove_track_id_list.append(track.id)
-        current_tracks_id.add(track_id)
+        current_tracks_id.add(track.id)
 
-    remove_track_from_playlist(
-        session, playlist_id=playlist_id, remove_track_id_list=remove_track_id_list
-    )
+    logger.info(remove_track_id_list)
+    if len(remove_track_id_list) > 0:
+        remove_track_from_playlist(
+            session=session,
+            playlist_id=playlist_id,
+            remove_track_id_list=remove_track_id_list,
+        )
 
     add_track_id_list = []
     for track_id in track_id_list:
         if track_id not in current_tracks_id:
             add_track_id_list.append(track_id)
 
-    add_track_into_playlist(
-        session, playlist_id=playlist_id, add_track_id_list=add_track_id_list
-    )
+    if len(add_track_id_list) > 0:
+        add_track_into_playlist(
+            session=session,
+            playlist_id=playlist_id,
+            add_track_id_list=add_track_id_list,
+        )
