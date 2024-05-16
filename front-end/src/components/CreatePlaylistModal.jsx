@@ -26,7 +26,7 @@ export default function CreatePlaylistModal({ closeModal }) {
 
     return (
         <div
-            className="fixed bg-black w-screen h-screen bg-opacity-60 flex justify-center items-center"
+            className="fixed bg-black w-screen h-screen bg-opacity-60 flex justify-center items-center z-[20]"
             onClick={closeModal}
         >
             <div
