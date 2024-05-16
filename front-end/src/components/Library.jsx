@@ -1,6 +1,8 @@
+import { useStateProvider } from "../utils/StateProvider"
 import PageContent from "./PageContent"
 
 export default function Library() {
+    const [{isAuthenticated}] = useStateProvider();
     return (
         <div className="
             bg-neutral-900

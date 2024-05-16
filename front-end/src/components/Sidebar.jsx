@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import { MdHomeFilled, MdSearch } from "react-icons/md";
 import { IoLibrary } from "react-icons/io5";
@@ -6,9 +6,12 @@ import { TbWorld } from "react-icons/tb";
 import Playlists from "./Playlists";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { FaPlusCircle } from "react-icons/fa";
+import { useStateProvider } from "../utils/StateProvider";
 
-export default function Sidebar({openModal}) {
-
+export default function Sidebar({ openModal }) {
+    const [{isAuthenticated}] = useStateProvider();
+    const [isHovered, setIsHovered] = useState(false);
     useEffect(() => {
         const allLi = document
             .querySelector(".top_links ul")
@@ -44,15 +47,25 @@ export default function Sidebar({openModal}) {
                             <span>Search</span>
                         </Link>
                     </li>
-                    <li>
-                        <Link to="lib" className="link">
-                            <IoLibrary />
-                            <span>Your Library</span>
-                        </Link>
-                    </li>
                 </ul>
             </div>
-            <Playlists openModal={openModal}/>
+            <div className="border-b border-white/30 w-full"></div>
+            <div>
+                <Link
+                    to="lib"
+                    className="flex items-center space-x-2 library ml-5 mt-5 relative"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                >
+                    <IoLibrary className="text-xl" />
+                    <span>Your Library</span>
+                    {isHovered && isAuthenticated && (
+                        <FaPlusCircle className="text-xl hover:text-green-500 scale-125 absolute right-5" onClick={openModal}/>
+                    )}
+                </Link>
+                <Playlists openModal={openModal} />
+            </div>
+
             <div className="mt-4 px-4 grid grid-cols-2 gap-4 text-left">
                 <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
                     Legal

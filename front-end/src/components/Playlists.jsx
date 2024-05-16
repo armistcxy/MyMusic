@@ -42,7 +42,7 @@ export default function Playlists({ openModal }) {
     if (token) {
       getPlaylistData();
     }
-  }, [token, dispatch]);
+  }, [token, playlists, dispatch]);
 
   const changeCurrentPlaylist = (selectedPlaylistId) => {
     dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId: selectedPlaylistId});
@@ -89,7 +89,7 @@ export default function Playlists({ openModal }) {
       </ul>
       : (
         <div className="your_library">
-          <div className="leading-8 mt-2 tertiary_bg rounded-lg py-6 px-4">
+          <div className="leading-8 tertiary_bg rounded-lg py-6 px-4">
             <p className="font-bold">Create your first playlist</p>
             <p className="font-semibold">
               It's easy, we'll help you
