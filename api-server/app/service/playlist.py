@@ -78,4 +78,21 @@ def delete_playlist_by_id(id: uuid.UUID):
 def find_playlist_with_name(name: str) -> list[PlaylistSimpleResponse]:
     session = get_session()
     response = playlist_repo.find_playlist_with_name(name, session)
+    session.close()
     return response
+
+
+def change_playlist_name(new_name: str, id: uuid.UUID):
+    session = get_session()
+    playlist_repo.change_playlist_name(session=session, new_name=new_name, id=id)
+    session.close()
+
+
+def update_track_in_playlist(playlist_id: uuid.UUID, track_id_list: list[uuid.UUID]):
+    session = get_session()
+    playlist_repo.update_track_in_playlist(
+        session=session,
+        playlist_id=playlist_id,
+        track_id_list=track_id_list,
+    )
+    session.close()
