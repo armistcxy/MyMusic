@@ -1,7 +1,30 @@
+import { useEffect } from "react";
 import SongItem from "./SongItem"
+import axios from "axios";
+import { useStateProvider } from "../utils/StateProvider";
+import { reducerCases } from "../utils/Constants";
 
 export default function PageContent() {
     // const router = useRouter();
+    // const [{ token, playlists, isAuthenticated }, dispatch] = useStateProvider();
+
+    // useEffect(() => {
+    //         const getPlaylistData = async () => {
+    //             const response = await axios.get("http://localhost:8000/playlists",
+    //                 JSON.stringify({ id, name: name, tracks: tracks }),
+    //                 {
+    //                     headers: { 'Content-Type': 'application/json' },
+    //                     withCredentials: true
+    //                 }
+    //             );
+    //             const { items } = response.data;
+    //             const playlists = items.map(({name, id}) => {
+    //                 return { name, id };
+    //             });
+    //             dispatch({ type: reducerCases.SET_PLAYLISTS, playlists });
+    //         };
+    //         getPlaylistData();
+    //     }, [token, dispatch]);
 
     const onClick = () => {
         //...
