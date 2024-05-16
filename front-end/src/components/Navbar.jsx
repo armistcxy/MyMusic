@@ -30,7 +30,7 @@ export default function Navbar() {
     }
 
     return (
-        <Container className="flex sticky top-0 justify-between ml-2 rounded-[6px]  mt-2 px-8 secondary_bg items-center ">
+        <Container className="flex sticky bg-neutral-900 top-0 justify-between ml-2 rounded-[6px] pt-2 px-8 secondary_bg items-center z-[10]">
           <div className="flex gap-2 items-center  w-1/2">
             <FaAngleLeft className="bg-white/10 text-3xl p-1  rounded-[50%] " />
             <FaAngleRight className="bg-white/10 text-3xl p-1  rounded-[50%] " />
