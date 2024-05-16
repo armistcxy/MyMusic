@@ -6,7 +6,7 @@ export const initialState = {
     isAuthenticated: false,
     playlists: [],
     userInfo: null,
-    selectedPlaylistId: "3AnJMxvBGp1QXMQv06AwTi", // Q: 7qimTUDzmrsBjZSrpCJPCH     K:3AnJMxvBGp1QXMQv06AwTi
+    selectedPlaylistId: null,
     selectedPlaylist: null,
     currentPlaying: null,
     playerState: false,

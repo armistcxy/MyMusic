@@ -11,6 +11,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
 import axios from "axios";
+import Playlists from "./Playlists";
+import { CgProfile } from "react-icons/cg";
 
 export default function Navbar() {
     const [{token, userInfo, isAuthenticated}, dispatch] = useStateProvider();
@@ -40,6 +42,7 @@ export default function Navbar() {
 
     const logoutUser = () => {
         dispatch({ type: reducerCases.SET_TOKEN, token: null});
+        dispatch({ type: reducerCases.SET_PLAYLISTS, playlists: []});
         dispatch({
             type: reducerCases.USER_LOGGED_OUT,
         });
@@ -89,7 +92,7 @@ export default function Navbar() {
             ) : (
               <div className="relative flex items-center gap-2">
                 <button onClick={() => setShowDropDown(!showDropDown)} className="flex items-center gap-2">
-                  <FaUser className="text-white"/>
+                  <CgProfile className="text-white scale-[2.0] mr-3"/>
                   <span className="text-white font-bold">{userInfo?.username}</span>
                 </button>
                 {showDropDown && (
