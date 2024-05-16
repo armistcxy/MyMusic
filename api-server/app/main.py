@@ -22,7 +22,7 @@ api.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 origins = [
     "http://localhost:8080",
-    "http://localhost",
+    "http://localhost:3000",
 ]
 
 api.add_middleware(
