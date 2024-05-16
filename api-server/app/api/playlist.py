@@ -101,7 +101,7 @@ def modify_track_in_playlist(
         user_id = getattr(payload, "sub")
         user_id = uuid.UUID(user_id, version=4)
         playlist_response = playlist_service.get_playlist_by_id(id=playlist_id)
-        
+
         if playlist_response.user.id != str(user_id):
             raise HTTPException(
                 status_code=status.HTTP_405_METHOD_NOT_ALLOWED,
