@@ -3,7 +3,7 @@ from app.schema.playlist import (
     PlaylistDetailResponse,
     PlaylistSimpleResponse,
     PlaylistUploadForm,
-    PlaylistModifyForm
+    PlaylistModifyForm,
 )
 import app.service.playlist as playlist_service
 import uuid
@@ -87,20 +87,22 @@ def delete_playlist_by_id(id: uuid.UUID):
     playlist_service.delete_playlist_by_id(id)
 
 
-@playlist_router.patch("/{id}", dependencies=[Depends(security.access_token_required)])
+@playlist_router.patch(
+    "/{playlist_id}", dependencies=[Depends(security.access_token_required)]
+)
 def modify_track_in_playlist(
     playlist_id: uuid.UUID,
     modify_form: PlaylistModifyForm,
     payload: TokenPayload = Depends(security.access_token_required),
-):  
+):
     rename = modify_form.rename
     track_id_list = modify_form.track_id_list
     try:
         user_id = getattr(payload, "sub")
         user_id = uuid.UUID(user_id, version=4)
-        playlist_response = playlist_service.get_playlist_by_id(id=id)
-
-        if playlist_response.user.id != user_id:
+        playlist_response = playlist_service.get_playlist_by_id(id=playlist_id)
+        
+        if playlist_response.user.id != str(user_id):
             raise HTTPException(
                 status_code=status.HTTP_405_METHOD_NOT_ALLOWED,
                 detail=f"User {user_id} have no right to modify playlist {playlist_id}",
@@ -109,7 +111,7 @@ def modify_track_in_playlist(
             playlist_service.change_playlist_name(new_name=rename, id=playlist_id)
         if track_id_list:
             playlist_service.update_track_in_playlist(
-                playlist_id=id, track_id_list=track_id_list
+                playlist_id=playlist_id, track_id_list=track_id_list
             )
     except AttributeError as e:
         raise HTTPException(
