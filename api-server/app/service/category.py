@@ -57,5 +57,5 @@ def update_category(update_form: CategoryUpdateForm) -> CategoryResponse:
 
 def delete_category_by_id(id: uuid.UUID):
     session = get_session()
-    category_repo.delete_category(id)
+    category_repo.delete_category(session=session, id=id)
     session.close()
