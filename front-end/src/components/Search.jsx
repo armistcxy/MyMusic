@@ -1,4 +1,3 @@
-import About from "./About"
 import SearchContent from "./SearchContent"
 
 export default function Search() {
@@ -22,8 +21,7 @@ export default function Search() {
                         Popular
                     </h1>
                 </div>
-                <SearchContent/>
-                <About/>               
+                <SearchContent/>           
             </div>
         </div>
     )

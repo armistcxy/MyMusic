@@ -13,6 +13,14 @@ export default function Playlists({ openModal }) {
   const [popperElement, setPopperElement] = useState(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: 'right',
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: [0, 20], // Dịch sang phải 20px
+        },
+      },
+    ],
   });
   // useEffect(() => {
   //     const getPlaylistData = async () => {
