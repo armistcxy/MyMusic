@@ -16,7 +16,7 @@ def get_all_tracks(session: Session) -> list[models.Track]:
     return tracks
 
 
-def get_track_by_id(id: uuid.UUID, session: Session) -> models.Track:
+def get_track_by_id(id: uuid.UUID, session: Session) -> models.Track | None:
     track = session.get(models.Track, ident=id)
     return track
 

@@ -9,29 +9,36 @@ from app.schema.album import (
     AlbumUpdateForm,
     AlbumSimpleResponse,
 )
+import app.repository.artist as artist_repo
 
 # create, get, update, delete album
 
 
 def insert_album(upload_form: AlbumUploadForm) -> AlbumDetailResponse:
     session = get_session()
-    album = models.album(name=upload_form.name)
-    album = album_repo.insert_album(album=album)
+
+    artists = [
+        artist_repo.get_artist_by_id(session=session, id=artist_id)
+        for artist_id in upload_form.artists_id
+    ]
+    album = models.Album(name=upload_form.name, artists=artists)
+    album = album_repo.insert_album(session=session, album=album)
     response = schema_utils.album_model_to_detail_response(album)
     session.close()
     return response
 
 
-def get_album_by_id(id: uuid.UUID) -> AlbumDetailResponse:
+def get_album_by_id(id: uuid.UUID) -> AlbumDetailResponse | None:
     session = get_session()
-    album = album_repo.get_album_by_id(id, session)
+    album = album_repo.get_album_by_id(session=session, id=id)
+    response = schema_utils.album_model_to_detail_response(album)
     session.close()
-    return album
+    return response
 
 
-def get_album_by_name(id: uuid.UUID) -> AlbumDetailResponse:
+def get_album_by_name(name: str) -> AlbumDetailResponse | None:
     session = get_session()
-    album = album_repo.get_album_by_name(id, session)
+    album = album_repo.get_album_by_name(session=session, name=name)
     session.close()
     return album
 
@@ -63,4 +70,3 @@ def find_album_with_name(name: str) -> list[AlbumSimpleResponse]:
     response = [schema_utils.album_model_to_simple_response(album) for album in albums]
     session.close()
     return response
-
