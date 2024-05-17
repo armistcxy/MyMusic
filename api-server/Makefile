@@ -12,4 +12,8 @@ db:
 		-p 5432:5432 \
 		postgres:14-alpine
 
-.PHONY: api run db
+dropdb:
+	docker stop postgres
+	docker remove postgres
+
+.PHONY: api run db dropdb

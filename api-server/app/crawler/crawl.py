@@ -54,7 +54,7 @@ async def run(
 import time
 
 
-async def crawl(track_infos: list[(str, str)], save_path: str | None = None):
+async def crawl(track_infos: list[(str, str | None)], save_path: str | None = None):
     print(f"started at: {time.strftime('%X')}")
     async with async_playwright() as playwright:
         await run(playwright, track_infos, save_path)
