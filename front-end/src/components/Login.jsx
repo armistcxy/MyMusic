@@ -11,20 +11,66 @@ const LOGIN_URL = 'http://localhost:8000/users/login';
 const Container = styled.div`
     background: #1b3029;
     font-family: 'Roboto', sans-serif;
-    text-align: center;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow-y: hidden;
+`;
 
-    form {
-        background: #1A2226;
-        padding: 40px;
-        border-radius: 8px;
-        width: 300px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+const ContentWrapper = styled.div`
+    display: flex;
+    width: 600px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+`;
+
+const Sidebar = styled.div`
+    background: linear-gradient(135deg, #dd5919, #18a72e, #1fbd38);
+    color: #ECF0F5;
+    width: 100%;
+    max-width: 300px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px 0 0 8px;
+
+    @media (min-width: 768px) {
+        width: 50%;
+        padding: 40px 20px;
     }
+
+    h2 {
+        font-size: 250%;
+        font-family: 'Playfair Display', serif;
+        margin-bottom: 10px;
+        margin-top: -20px;
+        text-align: center;
+    }
+
+    p {
+        font-family: 'Abel', sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        text-align: center;
+    }
+`;
+
+const FormContainer = styled.div`
+    width: 50%;
+    background: #1A2226;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 0 8px 8px 0;
+`;
+
+const Form = styled.form`
+    display: flex;
+    flex-direction: column;
 
     h1 {
         font-size: 24px;
@@ -44,13 +90,28 @@ const Container = styled.div`
     input[type="password"] {
         width: 100%;
         padding: 10px;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         border: none;
         border-radius: 4px;
         background: #1A2226;
         color: #ECF0F5;
         border-bottom: 2px solid #0d5919;
         outline: none;
+    }
+
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+
+        label {
+            margin: 0;
+            margin-right: 10px;
+        }
+
+        input[type="checkbox"] {
+            margin-left: 10px;
+        }
     }
 
     button {
@@ -69,6 +130,20 @@ const Container = styled.div`
 
     button:hover {
         background-color: #1fbd38;
+    }
+
+    .show-password-btn {
+        margin-top: -10px;
+        margin-bottom: 20px;
+        background-color: transparent;
+        border: none;
+        color: #18a72e;
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+    .show-password-btn:hover {
+        color: #1fbd38;
     }
 
     .error {
@@ -90,47 +165,53 @@ const Container = styled.div`
 const Login = () => {
     const { auth, setAuth } = useContext(AuthContext);
     const userRef = useRef();
-    const a = true;
     const errRef = useRef();
 
-    const [user, setUser] = useState('');
-    const [pwd, setPwd] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
     const [errMsg, setErrMsg] = useState('');
-    const [success, setSuccess] = useState(false);
-    const [{ }, dispatch] = useStateProvider()
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [{}, dispatch] = useStateProvider();
     const navigate = useNavigate();
 
+    // Focus on email input on component mount
     useEffect(() => {
         userRef.current.focus();
-    }, [])
+    }, []);
 
+    // Clear error message on input change
     useEffect(() => {
         setErrMsg('');
-    }, [user, pwd])
+    }, [email, password]);
 
+    // Toggle password visibility
+    const toggleShowPassword = () => {
+        setShowPassword(prevState => !prevState);
+    };
+
+    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
             const response = await axios.post(LOGIN_URL,
-                JSON.stringify({ email : user, password : pwd, remember_me : a }),
+                JSON.stringify({ email, password, remember_me: rememberMe }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 }
             );
 
-            const accessToken = response?.data?.access_token;
-            const refreshToken = response?.data?.refresh_token;
-            const roles = response?.data?.roles;
-            console.log(accessToken);
-            dispatch({ type: reducerCases.SET_TOKEN, token: accessToken});
-            dispatch({type: reducerCases.USER_LOGGED_IN});
-            setSuccess(true);
+            const { access_token, refresh_token, roles } = response?.data;
+            dispatch({ type: reducerCases.SET_TOKEN, token: access_token });
+            dispatch({ type: reducerCases.USER_LOGGED_IN });
+            setAuth({ email, password, access_token, refresh_token });
+            setIsSuccess(true);
             navigate('/');
-            setAuth({ user, pwd, accessToken, refreshToken});
-            setUser('');
-            setPwd('');
+            setEmail('');
+            setPassword('');
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No Server Response');
@@ -143,54 +224,76 @@ const Login = () => {
             }
             errRef.current.focus();
         }
-    }
+    };
 
     return (
         <Container>
-            {success ? (                
-                <section>
-                    <h1>You are logged in!</h1>
-                    <br />
+            <ContentWrapper>
+                <Sidebar>
+                    <h2>Welcome</h2>
                     <p>
-                        <a href="/">Go to Home</a>
+                        Discover and enjoy your favorite music with Flotify.
                     </p>
-                </section>
-            ) : (
-                <section>
-                    <p ref={errRef} className={errMsg ? "error" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                    <h1>Sign In</h1>
-                    <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">Email:</label>
-                        <input
-                            type="text"
-                            id="username"
-                            ref={userRef}
-                            autoComplete="off"
-                            onChange={(e) => setUser(e.target.value)}
-                            value={user}
-                            required
-                        />
-                        <br />
-                        <label htmlFor="password">Password:</label>
-                        <input
-                            type="password"
-                            id="password"
-                            onChange={(e) => setPwd(e.target.value)}
-                            value={pwd}
-                            required
-                        />
-                        <br />
-                        <button type="submit">Sign In</button>
-                        <p className="signup-link">
-                        Need an Account?<br />
-                        <a href="/register">Sign Up</a>
-                    </p>
-                    </form>
-                    
-                </section>
-            )}
+                </Sidebar>
+                <FormContainer>
+                    {isSuccess ? (
+                        <section>
+                            <h1>You are logged in!</h1>
+                            <p>
+                                <a href="/">Go to Home</a>
+                            </p>
+                        </section>
+                    ) : (
+                        <section>
+                            <p ref={errRef} className={errMsg ? "error" : "offscreen"} aria-live="assertive">{errMsg}</p>
+                            <Form onSubmit={handleSubmit}>
+                                <h1>Sign In</h1>
+                                <label htmlFor="email">Email:</label>
+                                <input
+                                    type="text"
+                                    id="email"
+                                    ref={userRef}
+                                    autoComplete="off"
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={email}
+                                    required
+                                />
+                                <label htmlFor="password">Password:</label>
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    id="password"
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    value={password}
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    className="show-password-btn"
+                                    onClick={toggleShowPassword}
+                                >
+                                    {showPassword ? "Hide Password" : "Show Password"}
+                                </button>
+                                <div className="checkbox-container">
+                                    <label htmlFor="rememberMe">Remember Me</label>
+                                    <input
+                                        type="checkbox"
+                                        id="rememberMe"
+                                        checked={rememberMe}
+                                        onChange={(e) => setRememberMe(e.target.checked)}
+                                    />
+                                </div>
+                                <button type="submit">Sign In</button>
+                                <p className="signup-link">
+                                    Need an Account?<br />
+                                    <a href="/register">Sign Up</a>
+                                </p>
+                            </Form>
+                        </section>
+                    )}
+                </FormContainer>
+            </ContentWrapper>
         </Container>
-    )
-}
+    );
+};
 
 export default Login;
