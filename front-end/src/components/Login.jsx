@@ -26,7 +26,7 @@ const ContentWrapper = styled.div`
 `;
 
 const Sidebar = styled.div`
-    background: linear-gradient(135deg, #dd5919, #18a72e, #1fbd38);
+    background: linear-gradient(135deg, #019, #02272e, #1fbd38);
     color: #ECF0F5;
     width: 100%;
     max-width: 300px;
@@ -110,7 +110,7 @@ const Form = styled.form`
         }
 
         input[type="checkbox"] {
-            margin-left: 10px;
+            margin-left: 0;
         }
     }
 
@@ -266,13 +266,7 @@ const Login = () => {
                                     value={password}
                                     required
                                 />
-                                <button
-                                    type="button"
-                                    className="show-password-btn"
-                                    onClick={toggleShowPassword}
-                                >
-                                    {showPassword ? "Hide Password" : "Show Password"}
-                                </button>
+
                                 <div className="checkbox-container">
                                     <label htmlFor="rememberMe">Remember Me</label>
                                     <input
