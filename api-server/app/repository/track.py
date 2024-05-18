@@ -60,8 +60,6 @@ def update_track(track: models.Track, session: Session) -> models.Track:
 
 
 def get_newest_track(session: Session, amount: int) -> list[models.Track]:
-    tracks = (
-        session.query(models.Track).order_by(models.Track.id.desc()).limit(amount).all()
-    )
+    tracks = session.query(models.Track).limit(amount).all()
     logging.info(tracks)
     return tracks
