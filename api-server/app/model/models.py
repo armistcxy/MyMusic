@@ -150,6 +150,17 @@ class Admin(Base):
     password = Column(String, unique=True, nullable=False)
 
 
+class UserMetadata(Base):
+    __tablename__ = "usermetas"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(UUID, ForeignKey("users.id"))
+    user = relationship("User", lazy=True)
+
+    track_id = Column(UUID, ForeignKey("tracks.id"))
+    track = relationship("Track", lazy=True)
+
+
 """
 All relationships: 
     track - artist = m : n      checked
