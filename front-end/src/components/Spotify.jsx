@@ -2,7 +2,6 @@ import React, { useEffect, useContext, useRef, useState } from "react";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
-import Body from "./Body";
 import PlayBar from "./PlayBar";
 import Footer from "./Footer";
 
@@ -16,17 +15,17 @@ import CreatePlaylistModal from "./CreatePlaylistModal";
 export default function Spotify() {
     const [{ token }, dispatch] = useStateProvider();
     const bodyRef = useRef();
-    const [navBackground, setNavBackground] = useState(false);
-    const [headerBackground, setHeaderBackground] = useState(false);
+    // const [navBackground, setNavBackground] = useState(false);
+    // const [headerBackground, setHeaderBackground] = useState(false);
     const [createPlaylistModalOpen, setCreatePlaylistModalOpen] = useState(false);
-    const bodyScrolled = () => {
-        bodyRef.current.scrollTop >= 30
-            ? setNavBackground(true)
-            : setNavBackground(false);
-        bodyRef.current.scrollTop >= 268
-            ? setHeaderBackground(true)
-            : setHeaderBackground(false); 
-    }
+    // const bodyScrolled = () => {
+    //     bodyRef.current.scrollTop >= 30
+    //         ? setNavBackground(true)
+    //         : setNavBackground(false);
+    //     bodyRef.current.scrollTop >= 268
+    //         ? setHeaderBackground(true)
+    //         : setHeaderBackground(false); 
+    // }
 
     return (
         <Container >
@@ -41,13 +40,11 @@ export default function Spotify() {
                 <Sidebar openModal={() => {
                         setCreatePlaylistModalOpen(true);
                     }}/>
-                <div className="body" ref={bodyRef} onScroll={bodyScrolled}>
-                    <Navbar navBackground={navBackground} />
+                <div className="body" ref={bodyRef} >{/*onScroll={bodyScrolled}*/}
+                    <Navbar />{/*navBackground={navBackground}*/} 
                     <div className="body_contents">
-                        <Outlet>
-                            <Body headerBackground={headerBackground} />
-                        </Outlet>
-                    <Footer />
+                        <Outlet/>
+                        <Footer />
                     </div>
                 </div>            
             </div>

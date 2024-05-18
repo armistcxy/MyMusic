@@ -43,7 +43,7 @@ export default function Playlists({ openModal }) {
     if (token) {
       getPlaylistData();
     }
-  }, [token, playlists, dispatch]);
+  }, [token, dispatch]);
 
   const changeCurrentPlaylist = (selectedPlaylistId) => {
     console.log(selectedPlaylistId);
@@ -83,7 +83,7 @@ export default function Playlists({ openModal }) {
         {
           playlists.map(({ name, id }) => {
             return (
-              <li key={id} onClick= {() => changeCurrentPlaylist(1)}>
+              <li key={id} onClick= {() => changeCurrentPlaylist(id)}>
                 <Link to="lib/id">
                   {name}                
                 </Link>

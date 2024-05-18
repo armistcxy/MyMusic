@@ -6,7 +6,7 @@ import Spotify from './Spotify';
 import Search from './Search';
 import Library from './Library';
 import Home from './Home';
-import Body from './Body';
+import PlaylistSelected from './PlaylistSelected';
 
 const AppRouter = () => {
   return (
@@ -17,10 +17,10 @@ const AppRouter = () => {
             <Route index element={<Home/>}></Route>
             <Route path="search" element={<Search/>}></Route>
             <Route path="lib" element={<Library/>}></Route>
-            <Route path="lib/id" element={<Body/>}></Route>
+            <Route path="lib/id" element={<PlaylistSelected />}></Route>
         </Route>
       </Routes>
   );
 };
-
+// <PlaylistSelected headerBackground={headerBackground}/>
 export default AppRouter;

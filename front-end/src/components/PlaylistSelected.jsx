@@ -11,35 +11,36 @@ import Library from "./Library";
 import Home from "./Home";
 import Search from "./Search";
 
-export default function Body({headerBackground}) {
-    const [{ token, selectedPlaylistId, selectedPlaylist }, dispatch] = useStateProvider();
+export default function PlaylistSelected({headerBackground}) {
+    const [{ token, selectedPlaylistId, selectedPlaylist, isAuthenticated }, dispatch] = useStateProvider();
 
     useEffect(() => {
         const getInitialPlaylist = async () => {
-                    const response = await axios.get(
-                        `http://localhost:8000/playlists/${selectedPlaylistId}`, 
-                        {
-                            headers: {
-                                Authorization: "Bearer " + token,
-                                "Content-Type": "application/json",
-                            },
-                        }
-                    );
-                    
-                    const selectedPlaylist = {
-                        id: response.data.id,
-                        name: response.data.name,
-                        user_id: response.data.user.id,
-                        user_name: response.data.user.username,
-                        tracks: response.data.tracks.map(({ track }) => ({
-                            id: track.id,
-                            name: track.name,
-                            length: track.length,
-                        })),
-                    };
-                    dispatch({type: reducerCases.SET_PLAYLIST, selectedPlaylist})
-                };
-                getInitialPlaylist();
+            const response = await axios.get(
+                `http://localhost:8000/playlists/${selectedPlaylistId}`, 
+                {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            
+            const selectedPlaylist = {
+                id: response.data.id,
+                playlist_name: response.data.name,
+                user_id: response.data.user.id,
+                user_name: response.data.user.username,
+                tracks: response.data.tracks.map(({ track }) => ({
+                    id: track.id,
+                    name: track.name,
+                    length: track.length,
+                    track_image_path: track.track_image_path,
+                })),
+            };
+            dispatch({type: reducerCases.SET_PLAYLIST, selectedPlaylist})
+        };
+        getInitialPlaylist();
     }, [token, dispatch, selectedPlaylistId]);
 
     
@@ -151,17 +152,15 @@ export default function Body({headerBackground}) {
     })
 
     return <Container headerBackground={headerBackground}>
-        {{/*must be selectedPlaylist, selectedPlaylistId only be used for test*/}
-         && selectedPlaylistId && (
+        {selectedPlaylist && (
             <>
                 <div className="playlist">
-                    <div className="image">{/*test by songs[0](temporary replacement for selectedPlaylist) */}
-                        <img src={songs[0].link_pic} alt={songs[0].title}></img>
+                    <div className="image">
+                        <img src={selectedPlaylist.tracks.length !== 0 ? selectedPlaylist.tracks[0].track_image_path : "https://www.gravatar.com/avatar/?fbclid=IwAR1Eib3mYRBaVR1_aYmz-RBx35wCvLvdxonshz_futx0MMykIZbxbZQIy1U"} alt={selectedPlaylist.playlist_name}></img>
                     </div>
                     <div className="details">
                         <span className="type">PLAYLIST</span>
-                        <h1 className="title">{songs[0].title}</h1>
-                        <p className="description">{songs[0].description}</p>
+                        <h1 className="title">{selectedPlaylist.playlist_name}</h1>
                     </div>
                 </div>
                 <div className="list">
@@ -180,16 +179,12 @@ export default function Body({headerBackground}) {
                         </div>
                     </div>
                     <div className="tracks">
-                        {songs.map(
+                        {selectedPlaylist.tracks.map(
                             ({
                                 id,
-                                title,
-                                artist,
-                                link_pic,
-                                duration,
-                                album,
-                                context_uri,
-                                track_number,
+                                name,
+                                length,
+                                track_image_path,
                             }, index) => {
                                 return (
                                     <div className="row" key={id} /*onClick={() => playTrack()}*/>
@@ -198,18 +193,18 @@ export default function Body({headerBackground}) {
                                         </div>
                                         <div className="col detail">
                                             <div className="image">
-                                                <img src={link_pic} alt="track" />
+                                                <img src={track_image_path} alt="track" />
                                             </div>
                                             <div className="info">
-                                                <span className="name">{title}</span>
-                                                <span>{artist}</span>
+                                                <span className="name">{name}</span>
+                                                <span>Name Artist: Null</span>
                                             </div>
                                         </div>
                                         <div className="col">
-                                            <span>{album}</span>
+                                            <span>Album: Null</span>
                                         </div>
                                         <div className="col">
-                                            <span>{msToMinutesAndSeconds(duration)}</span>
+                                            <span>{msToMinutesAndSeconds(length)}</span>
                                         </div>
                                     </div>
                                 )
