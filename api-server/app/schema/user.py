@@ -48,3 +48,8 @@ class UserLogInResult(BaseModel):
     email: EmailStr | None = None
     name: str | None = None
     success: bool
+
+
+class MetaData(BaseModel):
+    current_track_id: str | None = None
+    user_id: str | None = None

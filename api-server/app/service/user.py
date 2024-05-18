@@ -2,6 +2,7 @@ from app.model import models
 from app.repository.repo import get_session
 import app.schema.utils as schema_utils
 import app.repository.user as user_repo
+import app.repository.meta as meta_repo
 from app.schema.user import (
     UserDetailResponse,
     UserRegisterForm,
@@ -9,7 +10,10 @@ from app.schema.user import (
     UserSimpleResponse,
     UserLogInResponse,
     UserLogInResult,
+    MetaData,
 )
+from app.service.track import get_track_by_id
+from app.schema.track import TrackResponse
 import uuid
 import bcrypt
 
@@ -85,3 +89,36 @@ def delete_user_by_id(id: uuid.UUID):
     session = get_session()
     user_repo.delete_user_by_id(id=id, session=session)
     session.close()
+
+
+def get_current_track(id: uuid.UUID) -> TrackResponse | None:
+    try:
+        session = get_session()
+        meta_info = meta_repo.get_meta_info(session=session, user_id=id)
+        if meta_info is None:
+            raise Exception("there's no current track")
+        track_id = meta_info.track_id
+        session.close()
+        return get_track_by_id(id=track_id)
+    except Exception as e:
+        raise e
+
+
+def update_current_track(user_id: uuid.UUID, track_id: uuid.UUID) -> MetaData:
+    try:
+        session = get_session()
+        if meta_repo.get_meta_info(session=session, user_id=user_id) is None:
+            meta_repo.create_meta_info(
+                session=session, user_id=user_id, track_id=track_id
+            )
+        else:
+            meta_repo.update_meta_info(
+                session=session, user_id=user_id, track_id=track_id
+            )
+        session.close()
+
+        response = MetaData(current_track_id=str(track_id), user_id=str(user_id))
+        return response
+    except Exception as e:
+        session.rollback()
+        raise e

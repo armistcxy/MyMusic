@@ -16,6 +16,7 @@ class TrackSimpleResponse(BaseModel):
     id: str
     name: str
     length: int
+    track_image_path: str | None = None
 
 
 from app.schema.album import AlbumSimpleResponse

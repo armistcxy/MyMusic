@@ -11,6 +11,12 @@ import app.service.track as track_service
 from app.repository.error import NotFoundError
 from app.service.error import StreamError
 import random
+import app.schema.utils as schema_utils
+import logging
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 track_router = APIRouter(prefix="/tracks", tags=["Track"])
 
@@ -84,13 +90,22 @@ def find_track_with_name(name: str):
 
 @track_router.get("/stream/{id}")
 def stream_track(id: uuid.UUID):
+    track_response = track_service.get_track_by_id(id)
+    if track_response is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(f"there's no track with {id}"),
+        )
     try:
+        slug_name = schema_utils.convert_name_to_slug(track_response.name)
         stream_response = StreamingResponse(
-            content=track_service.stream_track(id=id),
+            content=track_service.stream_track(track_name=slug_name),
             media_type="audio/mp3",
         )
     except NotFoundError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except StreamError as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        )
     return stream_response
