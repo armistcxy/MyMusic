@@ -11,13 +11,13 @@ import Library from "./Library";
 import Home from "./Home";
 import Search from "./Search";
 
-export default function PlaylistSelected({headerBackground}) {
-    const [{ token, selectedPlaylistId, selectedPlaylist, isAuthenticated }, dispatch] = useStateProvider();
+export default function PlaylistSelected({ headerBackground }) {
+    const [{ token, selectedPlaylistId, selectedPlaylist }, dispatch] = useStateProvider();
 
     useEffect(() => {
         const getInitialPlaylist = async () => {
             const response = await axios.get(
-                `http://localhost:8000/playlists/${selectedPlaylistId}`, 
+                `http://localhost:8000/playlists/${selectedPlaylistId}`,
                 {
                     headers: {
                         Authorization: "Bearer " + token,
@@ -25,25 +25,27 @@ export default function PlaylistSelected({headerBackground}) {
                     },
                 }
             );
-            
+                console.log(response);
             const selectedPlaylist = {
                 id: response.data.id,
                 playlist_name: response.data.name,
                 user_id: response.data.user.id,
                 user_name: response.data.user.username,
-                tracks: response.data.tracks.map(({ track }) => ({
+                tracks: response.data.tracks.map(( track ) => ({
                     id: track.id,
                     name: track.name,
                     length: track.length,
-                    track_image_path: track.track_image_path,
+                    track_image_path: `http://localhost:8000/static/${track.track_image_path}`,
                 })),
             };
-            dispatch({type: reducerCases.SET_PLAYLIST, selectedPlaylist})
+            dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist: selectedPlaylist })
         };
-        getInitialPlaylist();
+        if (token) {
+            getInitialPlaylist();
+        }
     }, [token, dispatch, selectedPlaylistId]);
 
-    
+
 
     // useEffect(() => {
     //     const getInitialPlaylist = async () => {
@@ -56,7 +58,7 @@ export default function PlaylistSelected({headerBackground}) {
     //                 },
     //             }
     //         );
-            
+
     //         const selectedPlaylist = {
     //             id: response.data.id,
     //             name: response.data.name,
@@ -118,38 +120,11 @@ export default function PlaylistSelected({headerBackground}) {
     //     }
     //   }
 
-    const songs = [
-        {
-            id: 1,
-            title: "Lạc trôi",
-            artist: "Sơn Tùng MTP",
-            mp3: new Audio("/data/mp3/Lac Troi.mp3"),
-            link_pic: "/data/img/SonTung.jpg",
-            description: "Best Music",
-            duration: 200,
-            album: "Sky Tour",
-        },
-        {
-            id: 2,
-            title: "Lạc trôi",
-            artist: "Sơn Tùng MTP",
-            mp3: new Audio("/data/mp3/Lac Troi.mp3"),
-            link_pic: "/data/img/SonTung.jpg",
-            description: "Best Music",
-            duration: 200,
-            album: "Sky Tour",
-        },
-        ]
-
     const msToMinutesAndSeconds = (ms) => {
         var minutes = Math.floor(ms / 60000);
         var seconds = ((ms % 60000) / 1000).toFixed(0);
         return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
     };
-
-    useEffect(() => {
-        console.log(selectedPlaylist);
-    })
 
     return <Container headerBackground={headerBackground}>
         {selectedPlaylist && (
@@ -175,7 +150,7 @@ export default function PlaylistSelected({headerBackground}) {
                             <span>ALBUM</span>
                         </div>
                         <div className="col">
-                            <AiFillClockCircle/>
+                            <AiFillClockCircle />
                         </div>
                     </div>
                     <div className="tracks">
@@ -189,7 +164,7 @@ export default function PlaylistSelected({headerBackground}) {
                                 return (
                                     <div className="row" key={id} /*onClick={() => playTrack()}*/>
                                         <div className="col">
-                                            <span>{index+1}</span>
+                                            <span>{index + 1}</span>
                                         </div>
                                         <div className="col detail">
                                             <div className="image">
@@ -213,7 +188,7 @@ export default function PlaylistSelected({headerBackground}) {
                     </div>
                 </div>
             </>
-            )
+        )
         }
     </Container>
 }
@@ -251,8 +226,8 @@ const Container = styled.div`
             top: 15vh;
             padding: 1rem 3rem;
             transition: 0.3s ease-in-out;
-            background-color: ${({headerBackground}) => 
-                headerBackground ? "#000000dc" : "none"};
+            background-color: ${({ headerBackground }) =>
+        headerBackground ? "#000000dc" : "none"};
         }
         .tracks {
             margin: 0 2rem;

@@ -8,7 +8,7 @@ export const initialState = {
     userInfo: null,
     selectedPlaylistId: null,
     selectedPlaylist: null,
-    currentPlaying: null,
+    currentPlaying: {},
     playerState: false,
     volume: 0.75,
 };

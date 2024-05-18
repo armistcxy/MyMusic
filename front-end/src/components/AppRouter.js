@@ -17,7 +17,7 @@ const AppRouter = () => {
             <Route index element={<Home/>}></Route>
             <Route path="search" element={<Search/>}></Route>
             <Route path="lib" element={<Library/>}></Route>
-            <Route path="lib/id" element={<PlaylistSelected />}></Route>
+            <Route path="lib/playlist" element={<PlaylistSelected />}></Route>
         </Route>
       </Routes>
   );

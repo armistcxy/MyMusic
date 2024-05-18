@@ -205,6 +205,7 @@ const Login = () => {
             );
 
             const { access_token, refresh_token, roles } = response?.data;
+            console.log(access_token);
             dispatch({ type: reducerCases.SET_TOKEN, token: access_token });
             dispatch({ type: reducerCases.USER_LOGGED_IN });
             setAuth({ email, password, access_token, refresh_token });

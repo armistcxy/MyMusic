@@ -8,44 +8,47 @@ import { TiHeartOutline, TiHeartFullOutline } from "react-icons/ti";
 export default function CurrentTrack() {
     const [{ token, currentPlaying }, dispatch] = useStateProvider();
 
-    // useEffect(() => {
-    //     const getCurrentTrack = async () => {
-    //         const response = await axios.get(
-    //             "https://api.spotify.com/v1/me/player/currently-playing",
-    //             {
-    //                 headers: {
-    //                     Authorization: "Bearer " + token,
-    //                     "Content-Type": "application/json",
-    //                 },
-    //             }
-    //         );
-    //         if (response.data !== "") {
-    //             const currentPlaying = {
-    //                 id: response.data.item.id,
-    //                 name: response.data.item.name,
-    //                 artists: response.data.item.artists.map((artist) => artist.name),
-    //                 image: response.data.item.album.images[2].url,
-    //                 song: "/test_audio.mp3"
-    //             };
+    useEffect(() => {
+        const getCurrentTrack = async () => {
+            const response = await axios.get(
+                "http://localhost:8000/users/me/last",
+                {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            console.log(response);
+            if (response.data !== "") {
+                const currentPlaying = {
+                    id: response.data.id,
+                    name: response.data.name,
+                    artists: response.data.artists.map((artist) => artist.name),
+                    image: `http://localhost:8000/static/${response.data.track_image_path}`,
+                    song: `http://localhost:8000/static/${response.data.id}.mp3`
+                };
                 
-    //             dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
-    //         } else {
-    //             dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: null });
-    //         }
-    //     };
-    //     getCurrentTrack();
-    // }, [token, dispatch]);
+                dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: currentPlaying });
+            } else {
+                dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: null });
+            }
+        };
+        if(token) {
+            getCurrentTrack();
+        }
+    }, [token, dispatch]);
     return (
         <Container>
-            {currentPlaying && (
+            {currentPlaying && currentPlaying.id && (
                 <div className="track">
                     <div className="track__image">
-                        <img src={currentPlaying.image} alt="currentPlaying" />
+                        <img src={currentPlaying?.image} alt="currentPlaying" />
                     </div>
                     <div className="track__info">
-                        <h4 className="track__info__track__name">{currentPlaying.name}</h4>
+                        <h4 className="track__info__track__name">{currentPlaying?.name}</h4>
                         <h6 className="track__info__track__artists">
-                            {currentPlaying.artists.join(", ")}
+                            {currentPlaying?.artists?.join(", ")}
                         </h6>
                     </div>
                     <TiHeartOutline />

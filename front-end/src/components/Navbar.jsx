@@ -43,6 +43,9 @@ export default function Navbar() {
     const logoutUser = () => {
         dispatch({ type: reducerCases.SET_TOKEN, token: null});
         dispatch({ type: reducerCases.SET_PLAYLISTS, playlists: null});
+        dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: false});
+        dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist: null});
+        dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId: null});
         dispatch({
             type: reducerCases.USER_LOGGED_OUT,
         });

@@ -19,13 +19,12 @@ export default function PlayerControls() {
     const [currentTime, setCurrenttime] = useState(0);
 
     const audioPlayer = useRef();
-    const progressBar = useRef(); 
+    const progressBar = useRef();
     const animationRef = useRef();
 
     useEffect(() => {
         const seconds = Math.floor(audioPlayer.current.duration);
         setDuration(seconds);
-
         // set max prop with out seconds in input[range]
         progressBar.current.max = seconds;
     }, [audioPlayer?.current?.loadedmetada, audioPlayer?.current?.readyState]);
@@ -50,7 +49,6 @@ export default function PlayerControls() {
             "--played-width",
             `${(progressBar.current.value / duration) * 100}%`
         );
-
         setCurrenttime(progressBar.current.value);
     };
 
@@ -63,29 +61,25 @@ export default function PlayerControls() {
     };
 
     const changeState = async () => {
-        // const state = playerState ? "pause" : "play";
-        // await axios.put(
-        //     `https://api.spotify.com/v1/me/player/${state}`,
-        //     {},
-        //     {
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //             Authorization: "Bearer " + token,
-        //         },
-        //     }
-        // );
-        if (!playerState) {
-            audioPlayer.current.play();
-            animationRef.current = requestAnimationFrame(whilePlaying);
-        } else {
-            audioPlayer.current.pause();
-            cancelAnimationFrame(animationRef.current);
-        }
+        if (currentPlaying.id) {
+            if (!playerState) {
+                audioPlayer.current.play();
+                progressBar.current.style.setProperty(
+                    "--played-width",
+                    `${(progressBar.current.value / duration) * 100}%`
+                );
+                //console.log((progressBar.current.value / duration) * 100);
+                animationRef.current = requestAnimationFrame(whilePlaying);
+            } else {
+                audioPlayer.current.pause();
+                cancelAnimationFrame(animationRef.current);
+            }
 
-        dispatch({
-            type: reducerCases.SET_PLAYER_STATE,
-            playerState: !playerState,
-        });
+            dispatch({
+                type: reducerCases.SET_PLAYER_STATE,
+                playerState: !playerState,
+            });
+        }
     };
 
 
@@ -261,5 +255,5 @@ const Container2 = styled.div`
             opacity: 1;
         }
       }
-` 
+`
 

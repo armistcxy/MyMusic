@@ -84,7 +84,7 @@ export default function Playlists({ openModal }) {
           playlists.map(({ name, id }) => {
             return (
               <li key={id} onClick= {() => changeCurrentPlaylist(id)}>
-                <Link to="lib/id">
+                <Link to="lib/playlist">
                   {name}                
                 </Link>
               </li>
