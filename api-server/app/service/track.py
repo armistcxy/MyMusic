@@ -94,6 +94,43 @@ def find_track_with_name(name: str) -> list[TrackSimpleResponse]:
     return response
 
 
+def find_track_with_name_ver2(name: str) -> list[TrackSimpleResponse]:
+    session = get_session()
+    full_tracks = track_repo.get_all_tracks(session=session)
+    track_names = [track.name for track in full_tracks]
+    session.close()
+    candidate = set(filter_by_lev_distance(search_name=name, track_names=track_names))
+    response = [
+        schema_utils.track_model_to_simple_response(track=track)
+        for track in full_tracks
+        if track.name in candidate
+    ]
+    return response
+
+
+def calc_lev(s1: str, s2: str):
+    size1, size2 = len(s1), len(s2)
+    lev = [[0] * size2 for _ in range(size1)]
+    for i in range(size1):
+        for j in range(size2):
+            if min(i, j) == 0:
+                lev[i][j] = max(i, j)
+            else:
+                lev[i][j] = min(lev[i - 1][j] + 1, lev[i][j - 1] + 1)
+                lev[i][j] = min(lev[i][j], lev[i - 1][j - 1] + int(s1[i] != s2[j]))
+    return lev[-1][-1]
+
+
+def filter_by_lev_distance(
+    search_name: str, track_names: list[str], threshhold: int = 5
+):
+    result = []
+    for track_name in track_names:
+        if calc_lev(track_name, search_name) <= threshhold:
+            result.append(track_name)
+    return result
+
+
 BASE_TRACK_PATH = "app/static"
 
 
