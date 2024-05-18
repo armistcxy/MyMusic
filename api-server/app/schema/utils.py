@@ -157,6 +157,9 @@ def playlist_model_to_detail_response(
         playlist_response.tracks = [
             track_model_to_detail_response(track) for track in playlist.tracks
         ]
+    else:
+        playlist_response.tracks = []
+
     return playlist_response
 
 
