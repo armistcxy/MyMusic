@@ -13,6 +13,37 @@ import Search from "./Search";
 
 export default function Body({headerBackground}) {
     const [{ token, selectedPlaylistId, selectedPlaylist }, dispatch] = useStateProvider();
+
+    useEffect(() => {
+        const getInitialPlaylist = async () => {
+                    const response = await axios.get(
+                        `http://localhost:8000/playlists/${selectedPlaylistId}`, 
+                        {
+                            headers: {
+                                Authorization: "Bearer " + token,
+                                "Content-Type": "application/json",
+                            },
+                        }
+                    );
+                    
+                    const selectedPlaylist = {
+                        id: response.data.id,
+                        name: response.data.name,
+                        user_id: response.data.user.id,
+                        user_name: response.data.user.username,
+                        tracks: response.data.tracks.map(({ track }) => ({
+                            id: track.id,
+                            name: track.name,
+                            length: track.length,
+                        })),
+                    };
+                    dispatch({type: reducerCases.SET_PLAYLIST, selectedPlaylist})
+                };
+                getInitialPlaylist();
+    }, [token, dispatch, selectedPlaylistId]);
+
+    
+
     // useEffect(() => {
     //     const getInitialPlaylist = async () => {
     //         const response = await axios.get(
@@ -86,23 +117,51 @@ export default function Body({headerBackground}) {
     //     }
     //   }
 
+    const songs = [
+        {
+            id: 1,
+            title: "Lạc trôi",
+            artist: "Sơn Tùng MTP",
+            mp3: new Audio("/data/mp3/Lac Troi.mp3"),
+            link_pic: "/data/img/SonTung.jpg",
+            description: "Best Music",
+            duration: 200,
+            album: "Sky Tour",
+        },
+        {
+            id: 2,
+            title: "Lạc trôi",
+            artist: "Sơn Tùng MTP",
+            mp3: new Audio("/data/mp3/Lac Troi.mp3"),
+            link_pic: "/data/img/SonTung.jpg",
+            description: "Best Music",
+            duration: 200,
+            album: "Sky Tour",
+        },
+        ]
+
     const msToMinutesAndSeconds = (ms) => {
         var minutes = Math.floor(ms / 60000);
         var seconds = ((ms % 60000) / 1000).toFixed(0);
         return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
     };
 
+    useEffect(() => {
+        console.log(selectedPlaylist);
+    })
+
     return <Container headerBackground={headerBackground}>
-        {selectedPlaylist && (
+        {{/*must be selectedPlaylist, selectedPlaylistId only be used for test*/}
+         && selectedPlaylistId && (
             <>
                 <div className="playlist">
-                    <div className="image">
-                        <img src={selectedPlaylist.image}></img>
+                    <div className="image">{/*test by songs[0](temporary replacement for selectedPlaylist) */}
+                        <img src={songs[0].link_pic} alt={songs[0].title}></img>
                     </div>
                     <div className="details">
                         <span className="type">PLAYLIST</span>
-                        <h1 className="title">{selectedPlaylist.name}</h1>
-                        <p className="description">{selectedPlaylist.description}</p>
+                        <h1 className="title">{songs[0].title}</h1>
+                        <p className="description">{songs[0].description}</p>
                     </div>
                 </div>
                 <div className="list">
@@ -121,12 +180,12 @@ export default function Body({headerBackground}) {
                         </div>
                     </div>
                     <div className="tracks">
-                        {selectedPlaylist.tracks.map(
+                        {songs.map(
                             ({
                                 id,
-                                name,
-                                artists,
-                                image,
+                                title,
+                                artist,
+                                link_pic,
                                 duration,
                                 album,
                                 context_uri,
@@ -139,11 +198,11 @@ export default function Body({headerBackground}) {
                                         </div>
                                         <div className="col detail">
                                             <div className="image">
-                                                <img src={image} alt="track" />
+                                                <img src={link_pic} alt="track" />
                                             </div>
                                             <div className="info">
-                                                <span className="name">{name}</span>
-                                                <span>{artists}</span>
+                                                <span className="name">{title}</span>
+                                                <span>{artist}</span>
                                             </div>
                                         </div>
                                         <div className="col">
@@ -205,10 +264,11 @@ const Container = styled.div`
             display: flex;
             flex-direction: column;
             margin-bottom: 5rem;
+            cursor: pointer;
             .row {
                 padding: 0.5rem 1rem;
                 display: grid;
-                grid-template-columns: 0.3fr 3.1fr 1.9fr 0.1fr;
+                grid-template-columns: 0.3fr 3.1fr 2fr 0.1fr;
                 &:hover {
                     background-color: rgba(0, 0, 0, 0.7);
                 }

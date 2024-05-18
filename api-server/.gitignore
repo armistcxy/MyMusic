@@ -3,5 +3,6 @@ config.yml
 \__pycache__
 \.pytest_cache
 \postgres-data
+\.venv
 .vscode
 handle_csv.ipynb

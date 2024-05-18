@@ -11,15 +11,15 @@ export default function SearchContent() {
             id: Math.random * Date.now(),
             title: "Lạc trôi",
             artist: "Sơn Tùng MTP",
-            mp3: new Audio("/tmp/Lac Troi.mp3"),
-            link_pic: "/tmp/SonTung.jpg",
+            mp3: new Audio("/data/mp3/Lac Troi.mp3"),
+            link_pic: "/data/img/SonTung.jpg",
         },
         {
             id: Math.random * Date.now(),
             title: "Lạc trôi",
             artist: "Sơn Tùng MTP",
-            mp3: new Audio("/tmp/Lac Troi.mp3"),
-            link_pic: "/tmp/SonTung.jpg",
+            mp3: new Audio("/data/mp3/Lac Troi.mp3"),
+            link_pic: "/data/img/SonTung.jpg",
         },
         ]
     

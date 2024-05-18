@@ -46,6 +46,7 @@ export default function Playlists({ openModal }) {
   }, [token, playlists, dispatch]);
 
   const changeCurrentPlaylist = (selectedPlaylistId) => {
+    console.log(selectedPlaylistId);
     dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId: selectedPlaylistId});
   };
 
@@ -82,8 +83,10 @@ export default function Playlists({ openModal }) {
         {
           playlists.map(({ name, id }) => {
             return (
-              <li key={id} onClick= {() => changeCurrentPlaylist(id)}>
-                {name}
+              <li key={id} onClick= {() => changeCurrentPlaylist(1)}>
+                <Link to="lib/id">
+                  {name}                
+                </Link>
               </li>
             );
           })
