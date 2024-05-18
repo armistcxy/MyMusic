@@ -154,4 +154,3 @@ def get_newest_track(amount: int) -> list[TrackResponse]:
     response = [schema_utils.track_model_to_detail_response(track) for track in tracks]
     session.close()
     return response
-
