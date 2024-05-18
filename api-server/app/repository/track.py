@@ -3,6 +3,12 @@ import uuid
 from sqlalchemy import func, text, update
 from sqlalchemy.orm import Session
 
+import logging
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
 
 def insert_track(track: models.Track, session: Session) -> models.Track:
     session.add(track)
@@ -54,4 +60,6 @@ def update_track(track: models.Track, session: Session) -> models.Track:
 
 
 def get_newest_track(session: Session, amount: int) -> list[models.Track]:
-    pass
+    tracks = session.query(models.Track).limit(amount).all()
+    logging.info(tracks)
+    return tracks
