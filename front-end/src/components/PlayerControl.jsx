@@ -13,7 +13,7 @@ import { reducerCases } from "../utils/Constants";
 import { Songs } from "./Songs";
 
 export default function PlayerControls() {
-    const [{ token, playerState, currentPlaying, volume }, dispatch] = useStateProvider();
+    const [{ token, playerState, currentPlaying, readyToListen, volume }, dispatch] = useStateProvider();
 
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrenttime] = useState(0);
@@ -32,6 +32,18 @@ export default function PlayerControls() {
     useEffect(() => {
         audioPlayer.current.volume = volume;
     }, [volume]);
+
+    useEffect(() => {
+        if (currentPlaying?.song && audioPlayer.current && readyToListen) {
+            audioPlayer.current.src = currentPlaying.song;
+            audioPlayer.current.play();
+            dispatch({
+                type: reducerCases.SET_PLAYER_STATE,
+                playerState: true,
+            });
+            animationRef.current = requestAnimationFrame(whilePlaying);
+        }
+    }, [currentPlaying, dispatch]);
 
     const whilePlaying = () => {
         progressBar.current.value = audioPlayer.current.currentTime;
@@ -63,6 +75,12 @@ export default function PlayerControls() {
     const changeState = async () => {
         if (currentPlaying.id) {
             if (!playerState) {
+                if (!readyToListen) {
+                    dispatch({
+                        type: reducerCases.SET_READY,
+                        readyToListen: true,
+                    });
+                }
                 audioPlayer.current.play();
                 progressBar.current.style.setProperty(
                     "--played-width",

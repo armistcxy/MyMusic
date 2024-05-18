@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { MdHomeFilled, MdSearch } from "react-icons/md";
 import { IoLibrary } from "react-icons/io5";
@@ -10,8 +10,7 @@ import { FaPlusCircle } from "react-icons/fa";
 import { useStateProvider } from "../utils/StateProvider";
 
 export default function Sidebar({ openModal }) {
-    const [{isAuthenticated}] = useStateProvider();
-    const [isHovered, setIsHovered] = useState(false);
+    const [{ isAuthenticated }] = useStateProvider();
 
     useEffect(() => {
         const allLi = document
@@ -52,18 +51,15 @@ export default function Sidebar({ openModal }) {
             </div>
             <div className="border-b border-white/30 w-full"></div>
             <div>
-                <Link
-                    to="lib"
-                    className="flex items-center space-x-2 library ml-5 mt-5 relative"
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                >
-                    <IoLibrary className="text-xl" />
-                    <span>Your Library</span>
-                    {isHovered && isAuthenticated && (
-                        <FaPlusCircle className="text-xl hover:text-green-500 scale-125 absolute right-5" onClick={openModal}/>
+                <div className="flex items-center space-x-2 library ml-5 mt-5 relative">
+                    <Link to="lib" className="flex items-center space-x-2">
+                        <IoLibrary className="text-xl" />
+                        <span>Your Library</span>
+                    </Link>
+                    {isAuthenticated && (
+                        <FaPlusCircle className="text-xl hover:text-green-500 scale-125 absolute right-5" onClick={openModal} />
                     )}
-                </Link>
+                </div>
                 <Playlists openModal={openModal} />
             </div>
 
@@ -97,7 +93,7 @@ export default function Sidebar({ openModal }) {
                     </button>
                 </div>
             )}
-            
+
         </Container>
     );
 }

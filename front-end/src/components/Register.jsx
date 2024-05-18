@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,24}$/;
@@ -162,7 +163,8 @@ const Register = () => {
             );
             console.log(response?.data);
             console.log(response?.accessToken);
-            console.log(JSON.stringify(response))
+            console.log(JSON.stringify(response));
+            toast.success("Login successfully.");
             navigate('/login');
             setSuccess(true);
             setEmail('');
@@ -171,11 +173,14 @@ const Register = () => {
             setMatchPwd('');
         } catch (err) {
             if (!err?.response) {
-                setErrMsg('No Server Response');
+                //setErrMsg('No Server Response');
+                toast.error("No Server Response");
             } else if (err.response?.status === 409) {
-                setErrMsg('Username Taken');
+                //setErrMsg('Username Taken');
+                toast.error("Username Taken");
             } else {
-                setErrMsg('Registration Failed')
+                //setErrMsg('Registration Failed')
+                toast.error("Registration Failed");
             }
             errRef.current.focus();
         }

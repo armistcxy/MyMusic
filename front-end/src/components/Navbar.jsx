@@ -13,6 +13,7 @@ import { reducerCases } from "../utils/Constants";
 import axios from "axios";
 import Playlists from "./Playlists";
 import { CgProfile } from "react-icons/cg";
+import { toast } from "react-toastify";
 
 export default function Navbar() {
     const [{token, userInfo, isAuthenticated}, dispatch] = useStateProvider();
@@ -41,6 +42,7 @@ export default function Navbar() {
     }, [token, dispatch]);
 
     const logoutUser = () => {
+        
         dispatch({ type: reducerCases.SET_TOKEN, token: null});
         dispatch({ type: reducerCases.SET_PLAYLISTS, playlists: null});
         dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: false});
@@ -50,6 +52,7 @@ export default function Navbar() {
             type: reducerCases.USER_LOGGED_OUT,
         });
         window.location.reload();
+        toast.success("You logged out! See you later.");
     }
 
     return (
