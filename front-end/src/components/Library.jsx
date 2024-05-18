@@ -1,5 +1,5 @@
 import { useStateProvider } from "../utils/StateProvider"
-import PageContent from "./PageContent"
+import PlaylistContent from "./PlaylistContent"
 
 export default function Library() {
     const [{isAuthenticated}] = useStateProvider();
@@ -20,7 +20,7 @@ export default function Library() {
                         </h1>
                     </div>
                     <div>
-                        <PageContent/>
+                        <PlaylistContent />
                     </div>
                 </div>
             ) : (

@@ -1,4 +1,4 @@
-import PageContent from "./PageContent"
+import HomeContent from "./HomeContent"
 
 export default function Home() {
     return (
@@ -16,7 +16,7 @@ export default function Home() {
                         Newest Songs
                     </h1>
                 </div>
-                <PageContent/>
+                <HomeContent/>
             </div>
         </div>
     )
