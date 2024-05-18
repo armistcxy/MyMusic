@@ -18,13 +18,13 @@ class TrackSimpleResponse(BaseModel):
     length: int
     track_image_path: str | None = None
     artists: list[ArtistSimpleResponse]
+    album: str
 
 
 from app.schema.album import AlbumSimpleResponse
 
 
 class TrackResponse(TrackSimpleResponse):
-    album: AlbumSimpleResponse | None = None
     categories: list[CategoryResponse] | None = None
 
 
