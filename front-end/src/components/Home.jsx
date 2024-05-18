@@ -1,4 +1,3 @@
-import About from "./About"
 import PageContent from "./PageContent"
 
 export default function Home() {
@@ -18,7 +17,6 @@ export default function Home() {
                     </h1>
                 </div>
                 <PageContent/>
-                <About></About>
             </div>
         </div>
     )

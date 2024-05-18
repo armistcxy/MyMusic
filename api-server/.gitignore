@@ -5,3 +5,5 @@ config.yml
 \postgres-data
 .vscode
 app/static/
+handle_csv.ipynb
+

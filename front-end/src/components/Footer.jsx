@@ -32,9 +32,9 @@ const Footer = () => {
         </div>
         <div className="col-span-3">
           <div className="flex justify-end gap-2">
-            <FaFacebook className="text-4xl p-2 rounded-full bg-[#292929] shadow-2xl hover:bg-white/10" />
-            <FaInstagram className="text-4xl p-2 rounded-full bg-[#292929] shadow-2xl hover:bg-white/10" />
-            <FaTwitter className="text-4xl p-2 rounded-full bg-[#292929] shadow-2xl hover:bg-white/10" />
+            <FaFacebook className="text-4xl p-2 rounded-full bg-[#292929] shadow-2xl hover:bg-white/10 text-white" />
+            <FaInstagram className="text-4xl p-2 rounded-fulgl bg-[#292929] shadow-2xl hover:bg-white/10 text-white" />
+            <FaTwitter className="text-4xl p-2 rounded-full bg-[#292929] shadow-2xl hover:bg-white/10 text-white" />
           </div>
         </div>
       </div>

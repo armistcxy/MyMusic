@@ -1,13 +1,17 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import { MdHomeFilled, MdSearch } from "react-icons/md";
 import { IoLibrary } from "react-icons/io5";
 import { TbWorld } from "react-icons/tb";
 import Playlists from "./Playlists";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { FaPlusCircle } from "react-icons/fa";
+import { useStateProvider } from "../utils/StateProvider";
 
-export default function Sidebar({openModal}) {
+export default function Sidebar({ openModal }) {
+    const [{isAuthenticated}] = useStateProvider();
+    const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
         const allLi = document
@@ -31,7 +35,7 @@ export default function Sidebar({openModal}) {
                     />
                 </div>
                 <ul>
-                    <li>
+                    <li className="active">
                         <Link to="/" className="link">
                             <MdHomeFilled />
                             <span>Home</span>
@@ -44,46 +48,56 @@ export default function Sidebar({openModal}) {
                             <span>Search</span>
                         </Link>
                     </li>
-                    <li>
-                        <Link to="lib" className="link">
-                            <IoLibrary />
-                            <span>Your Library</span>
-                        </Link>
-                    </li>
                 </ul>
             </div>
-<<<<<<< HEAD
-            <Playlists />
-=======
-            <Playlists openModal={openModal}/>
-            <div className="mt-4 px-4 grid grid-cols-2 gap-4 text-left">
-                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
-                    Legal
-                </button>
-                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
-                    Center
-                </button>
-                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
-                    Policy
-                </button>
-                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
-                    Cookies
-                </button>
-                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
-                    About Ads
-                </button>
-                <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
-                    Accessibility
-                </button>
+            <div className="border-b border-white/30 w-full"></div>
+            <div>
+                <Link
+                    to="lib"
+                    className="flex items-center space-x-2 library ml-5 mt-5 relative"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                >
+                    <IoLibrary className="text-xl" />
+                    <span>Your Library</span>
+                    {isHovered && isAuthenticated && (
+                        <FaPlusCircle className="text-xl hover:text-green-500 scale-125 absolute right-5" onClick={openModal}/>
+                    )}
+                </Link>
+                <Playlists openModal={openModal} />
             </div>
 
+            {!isAuthenticated && (
+                <div>
+                    <div className="mt-4 px-4 grid grid-cols-2 gap-4 text-left">
+                        <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                            Legal
+                        </button>
+                        <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                            Center
+                        </button>
+                        <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                            Policy
+                        </button>
+                        <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                            Cookies
+                        </button>
+                        <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                            About Ads
+                        </button>
+                        <button className="text-xs text-gray-300 mx-4 focus:outline-none text-left">
+                            Accessibility
+                        </button>
+                    </div>
 
-            <button className="mx-4 mt-4 text-sm border-white border rounded-full flex gap-2 px-3 py-1 items-center  text-white ">
-                <TbWorld />
-                <span className="text-white font-bold">English</span>
-            </button>
 
->>>>>>> 0a779d7f73ee4c63ac78d0b57b49ccf829a778fe
+                    <button className="mx-4 mt-4 text-sm border-white border rounded-full flex gap-2 px-3 py-1 items-center  text-white ">
+                        <TbWorld />
+                        <span className="text-white font-bold">English</span>
+                    </button>
+                </div>
+            )}
+            
         </Container>
     );
 }

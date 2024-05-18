@@ -6,7 +6,7 @@ export const initialState = {
     isAuthenticated: false,
     playlists: [],
     userInfo: null,
-    selectedPlaylistId: "3AnJMxvBGp1QXMQv06AwTi", // Q: 7qimTUDzmrsBjZSrpCJPCH     K:3AnJMxvBGp1QXMQv06AwTi
+    selectedPlaylistId: null,
     selectedPlaylist: null,
     currentPlaying: null,
     playerState: false,
@@ -67,7 +67,7 @@ const reducer = (state, action) => {
             return { ...state, user: action.payload, isAuthenticated: true };
         }
         case reducerCases.USER_LOGGED_OUT: {
-            return { ...state, user: {}, isAuthenticated: false };
+            return { ...state, user: null, isAuthenticated: false };
         }
         default:
             return state;

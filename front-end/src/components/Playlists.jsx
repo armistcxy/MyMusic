@@ -13,26 +13,41 @@ export default function Playlists({ openModal }) {
   const [popperElement, setPopperElement] = useState(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: 'right',
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: [0, 20],
+        },
+      },
+    ],
   });
-  // useEffect(() => {
-  //     const getPlaylistData = async () => {
-  //         const response = await axios.get(
-  //             'https://api.spotify.com/v1/me/playlists',
-  //             {
-  //                 headers: {
-  //                     Authorization: "Bearer " + token,
-  //                     "Content-Type": "application/json",
-  //                 },
-  //             }
-  //         );
-  //         const { items } = response.data;
-  //         const playlists = items.map(({name, id}) => {
-  //             return { name, id };
-  //         });
-  //         dispatch({ type: reducerCases.SET_PLAYLISTS, playlists });
-  //     };
-  //     getPlaylistData();
-  // }, [token, dispatch]);
+  useEffect(() => {
+    const getPlaylistData = async () => {
+      const response = await axios.get(
+        'http://localhost:8000/playlists/me',
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const items = response.data;
+      const playlists = items.map(({name, id}) => {
+           return { name, id };
+      });
+      //console.log(playlists);
+     dispatch({ type: reducerCases.SET_PLAYLISTS, playlists: playlists });
+    };
+    if (token) {
+      getPlaylistData();
+    }
+  }, [token, playlists, dispatch]);
+
+  const changeCurrentPlaylist = (selectedPlaylistId) => {
+    dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId: selectedPlaylistId});
+  };
 
   const handleCreatePlaylist = () => {
     if (isAuthenticated) {
@@ -61,21 +76,23 @@ export default function Playlists({ openModal }) {
 
 
   return <Container>
-    {(playlists.length !== 0) ?
+    {(playlists !== null && playlists.length !== 0) ?
+      (
       <ul>
         {
           playlists.map(({ name, id }) => {
             return (
-              <li key={id} >
+              <li key={id} onClick= {() => changeCurrentPlaylist(id)}>
                 {name}
               </li>
             );
           })
         }
       </ul>
+      )
       : (
         <div className="your_library">
-          <div className="leading-8 mt-2 tertiary_bg rounded-lg py-6 px-4">
+          <div className="leading-8 tertiary_bg rounded-lg py-6 px-4">
             <p className="font-bold">Create your first playlist</p>
             <p className="font-semibold">
               It's easy, we'll help you

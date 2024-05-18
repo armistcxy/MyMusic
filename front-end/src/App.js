@@ -10,8 +10,8 @@ import { AuthProvider } from "./components/context/AuthProvider";
 
 export default function App() {
   return (
-    
+    <AuthProvider>
         <AppRouter />
-    
+    </AuthProvider>
   );
 }
