@@ -116,6 +116,8 @@ def stream_track(id: uuid.UUID):
         )
     return stream_response
 
-@track_router.get("/newest")
+
+@track_router.get("/new/{amount}")
 def get_newest_track(amount: int):
-    pass
+    response = track_service.get_newest_track(amount)
+    return response

@@ -17,19 +17,19 @@ def general_search(name: str):
     return track_response, artist_response, album_response
 
 
-@search_router.get("/{name}/track")
+@search_router.get("/{name}/tracks")
 def track_search(name: str):
     track_response = track_service.find_track_with_name(name)
     return track_response
 
 
-@search_router.get("{name}/album")
+@search_router.get("/{name}/albums")
 def album_search(name: str):
     album_response = album_service.find_album_with_name(name)
     return album_response
 
 
-@search_router.get("{name}/artist")
+@search_router.get("/{name}/artists")
 def artist_search(name: str):
     artist_response = artist_service.find_artist_with_name(name)
     return artist_response

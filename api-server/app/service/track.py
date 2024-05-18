@@ -146,3 +146,12 @@ def stream_track(track_name: str) -> Iterator[bytes]:
             yield from file
     except Exception as e:
         raise StreamError(str(e))
+
+
+def get_newest_track(amount: int) -> list[TrackResponse]:
+    session = get_session()
+    tracks = track_repo.get_newest_track(session=session, amount=amount)
+    response = [schema_utils.track_model_to_simple_response(track) for track in tracks]
+    session.close()
+    return response
+
