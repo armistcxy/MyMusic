@@ -5,6 +5,7 @@ import uuid
 class ArtistSimpleResponse(BaseModel):
     id: str
     name: str
+    artist_image_path: str | None = None
 
 
 class ArtistUploadForm(BaseModel):

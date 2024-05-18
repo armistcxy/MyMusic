@@ -17,6 +17,7 @@ def track_model_to_simple_response(
         id=str(track.id),
         name=track.name,
         length=track.length,
+        track_image_path=f"track/{convert_name_to_slug(track.name)}.jpg",
     )
     return track_response
 
@@ -29,6 +30,7 @@ def artist_model_to_simple_response(
     artist_response = schema_artist.ArtistSimpleResponse(
         id=str(artist.id),
         name=artist.name,
+        artist_image_path=f"artist/{convert_name_to_slug(artist.name)}.jpg",
     )
     return artist_response
 
@@ -66,6 +68,7 @@ def track_model_to_detail_response(
         id=str(track.id),
         name=track.name,
         length=track.length,
+        track_image_path=f"track/{convert_name_to_slug(track.name)}.jpg",
         artists=[artist_model_to_simple_response(artist) for artist in track.artists],
         album=album_model_to_simple_response(track.album),
         categories=[
@@ -84,6 +87,7 @@ def artist_model_to_detail_response(
         id=str(artist.id),
         name=artist.name,
         description=artist.description,
+        artist_image_path=f"artist/{convert_name_to_slug(artist.name)}.jpg",
     )
     return artist_response
 
