@@ -18,6 +18,7 @@ def track_model_to_simple_response(
         name=track.name,
         length=track.length,
         track_image_path=f"track/{convert_name_to_slug(track.name)}.jpg",
+        artists=[artist_model_to_simple_response(artist) for artist in track.artists],
     )
     return track_response
 

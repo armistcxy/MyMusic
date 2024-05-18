@@ -115,3 +115,7 @@ def stream_track(id: uuid.UUID):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
         )
     return stream_response
+
+@track_router.get("/newest")
+def get_newest_track(amount: int):
+    pass
