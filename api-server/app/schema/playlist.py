@@ -17,12 +17,12 @@ class PlaylistSimpleResponse(BaseModel):
     name: str
 
 
-from app.schema.track import TrackSimpleResponse
+from app.schema.track import TrackSimpleResponse, TrackResponse
 
 
 class PlaylistDetailResponse(PlaylistSimpleResponse):
     user: UserSimpleResponse
-    tracks: list[TrackSimpleResponse]
+    tracks: list[TrackResponse] | None = None
 
 
 class PlaylistModifyForm(BaseModel):

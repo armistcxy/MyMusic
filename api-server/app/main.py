@@ -6,6 +6,7 @@ from app.api.album import album_router
 from app.api.category import category_router
 from app.api.playlist import playlist_router
 from app.api.crawl import crawl_router
+from app.api.search import search_router
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -17,6 +18,7 @@ api.include_router(album_router)
 api.include_router(category_router)
 api.include_router(playlist_router)
 api.include_router(crawl_router)
+api.include_router(search_router)
 
 api.mount("/static", StaticFiles(directory="app/static"), name="static")
 

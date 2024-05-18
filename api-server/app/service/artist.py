@@ -46,3 +46,13 @@ def get_artist_by_name(name: str) -> ArtistResponse | None:
 def delete_artist_by_id(id: uuid.UUID):
     session = get_session()
     artist_repo.delete_artist(session=session, id=id)
+
+
+def find_artist_with_name(name: str):
+    session = get_session()
+    artists = artist_repo.find_artist_with_name(session=session, name=name)
+    response = [
+        schema_utils.artist_model_to_simple_response(artist) for artist in artists
+    ]
+    session.close()
+    return response

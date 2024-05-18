@@ -51,3 +51,7 @@ def update_track(track: models.Track, session: Session) -> models.Track:
             length=track.length,
         )
     )
+
+
+def get_newest_track(session: Session, amount: int) -> list[models.Track]:
+    pass

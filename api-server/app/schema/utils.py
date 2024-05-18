@@ -8,6 +8,18 @@ from app.model import models
 from slugify import slugify
 
 
+def album_model_to_simple_response(
+    album: models.Album,
+) -> schema_album.AlbumSimpleResponse | None:
+    if album is None:
+        return None
+    album_response = schema_album.AlbumSimpleResponse(
+        id=str(album.id),
+        name=album.name,
+    )
+    return album_response
+
+
 def track_model_to_simple_response(
     track: models.Track,
 ) -> schema_track.TrackSimpleResponse | None:
@@ -18,6 +30,8 @@ def track_model_to_simple_response(
         name=track.name,
         length=track.length,
         track_image_path=f"track/{convert_name_to_slug(track.name)}.jpg",
+        artists=[artist_model_to_simple_response(artist) for artist in track.artists],
+        album=track.album.name,
     )
     return track_response
 
@@ -33,18 +47,6 @@ def artist_model_to_simple_response(
         artist_image_path=f"artist/{convert_name_to_slug(artist.name)}.jpg",
     )
     return artist_response
-
-
-def album_model_to_simple_response(
-    album: models.Album,
-) -> schema_album.AlbumSimpleResponse | None:
-    if album is None:
-        return None
-    album_response = schema_album.AlbumSimpleResponse(
-        id=str(album.id),
-        name=album.name,
-    )
-    return album_response
 
 
 def playlist_model_to_simple_response(
@@ -70,7 +72,7 @@ def track_model_to_detail_response(
         length=track.length,
         track_image_path=f"track/{convert_name_to_slug(track.name)}.jpg",
         artists=[artist_model_to_simple_response(artist) for artist in track.artists],
-        album=album_model_to_simple_response(track.album),
+        album=track.album.name,
         categories=[
             category_model_to_response(category) for category in track.categories
         ],
@@ -150,8 +152,11 @@ def playlist_model_to_detail_response(
         id=str(playlist.id),
         name=playlist.name,
         user=user_model_to_simple_response(playlist.user),
-        tracks=[track_model_to_simple_response(track) for track in playlist.tracks],
     )
+    if playlist.tracks:
+        playlist_response.tracks = [
+            track_model_to_detail_response(track) for track in playlist.tracks
+        ]
     return playlist_response
 
 

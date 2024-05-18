@@ -60,7 +60,7 @@ def find_album_with_name(session: Session, name: str) -> list[models.Album]:
     session = get_session()
     ts_query = func.plainto_tsquery("simple", name)
     albums = (
-        session.query(models.album)
+        session.query(models.Album)
         .filter(func.to_tsvector("simple", models.Album.name).op("@@")(ts_query))
         .all()
     )
