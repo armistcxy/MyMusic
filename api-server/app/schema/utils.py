@@ -72,7 +72,7 @@ def track_model_to_detail_response(
         length=track.length,
         track_image_path=f"track/{convert_name_to_slug(track.name)}.jpg",
         artists=[artist_model_to_simple_response(artist) for artist in track.artists],
-        album=album_model_to_simple_response(track.album),
+        album=track.album.name,
         categories=[
             category_model_to_response(category) for category in track.categories
         ],
@@ -152,8 +152,11 @@ def playlist_model_to_detail_response(
         id=str(playlist.id),
         name=playlist.name,
         user=user_model_to_simple_response(playlist.user),
-        tracks=[track_model_to_simple_response(track) for track in playlist.tracks],
     )
+    if playlist.tracks:
+        playlist_response.tracks = [
+            track_model_to_detail_response(track) for track in playlist.tracks
+        ]
     return playlist_response
 
 
