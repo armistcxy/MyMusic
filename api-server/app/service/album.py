@@ -66,7 +66,7 @@ def delete_album_by_id(id: uuid.UUID):
 
 def find_album_with_name(name: str) -> list[AlbumSimpleResponse]:
     session = get_session()
-    albums = album_repo.find_album_with_name(name)
+    albums = album_repo.find_album_with_name(session=session, name=name)
     response = [schema_utils.album_model_to_simple_response(album) for album in albums]
     session.close()
     return response
