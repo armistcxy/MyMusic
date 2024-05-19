@@ -85,7 +85,7 @@ export default function SongSelected({ headerBackground }) {
                     </div>
                 </div>
                 <div className="list">
-                    <div className="header__row">
+                    {/* <div className="header__row">
                         <div className="col">
                             <span>#</span>
                         </div>
@@ -98,7 +98,7 @@ export default function SongSelected({ headerBackground }) {
                         <div className="col">
                             <AiFillClockCircle />
                         </div>
-                    </div>
+                    </div> */}
                     {/* <div className="tracks">
                         {selectedSong.tracks.map(
                             ({
@@ -165,6 +165,7 @@ const Container = styled.div`
         }
     }
     .list {
+        margin: 0 0 3rem 0;
         .header__row {
             display: grid;
             grid-template-columns: 0.3fr 3fr 2fr 0.1fr;

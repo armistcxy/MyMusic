@@ -89,55 +89,58 @@ export default function PlaylistSelected({ headerBackground }) {
                     </div>
                 </div>
                 <div className="list">
-                    <div className="header__row">
-                        <div className="col">
-                            <span>#</span>
+                    {selectedPlaylist.tracks.length !== 0 ? (
+                    <>
+                        <div className="header__row">
+                            <div className="col">
+                                <span>#</span>
+                            </div>
+                            <div className="col">
+                                <span>TITLE</span>
+                            </div>
+                            <div className="col">
+                                <span>ALBUM</span>
+                            </div>
+                            <div className="col">
+                                <AiFillClockCircle />
+                            </div>
                         </div>
-                        <div className="col">
-                            <span>TITLE</span>
-                        </div>
-                        <div className="col">
-                            <span>ALBUM</span>
-                        </div>
-                        <div className="col">
-                            <AiFillClockCircle />
-                        </div>
-                    </div>
-                    <div className="tracks">
-                        {selectedPlaylist.tracks.map(
-                            ({
-                                id,
-                                name,
-                                length,
-                                track_image_path,
-                                artist,
-                                album
-                            }, index) => {
-                                return (
-                                    <div className="row" key={id} onClick={() => changeTrack(id, token, readyToListen, dispatch)}>
-                                        <div className="col">
-                                            <span>{index + 1}</span>
-                                        </div>
-                                        <div className="col detail">
-                                            <div className="image">
-                                                <img src={track_image_path} alt="track" />
+                        <div className="tracks">
+                            {selectedPlaylist.tracks.map(
+                                ({
+                                    id,
+                                    name,
+                                    length,
+                                    track_image_path,
+                                    artist,
+                                    album
+                                }, index) => {
+                                    return (
+                                        <div className="row" key={id} onClick={() => changeTrack(id, token, readyToListen, dispatch)}>
+                                            <div className="col">
+                                                <span>{index + 1}</span>
                                             </div>
-                                            <div className="info">
-                                                <span className="name">{name}</span>
-                                                <span>{artist}</span>
+                                            <div className="col detail">
+                                                <div className="image">
+                                                    <img src={track_image_path} alt="track" />
+                                                </div>
+                                                <div className="info">
+                                                    <span className="name">{name}</span>
+                                                    <span>{artist}</span>
+                                                </div>
+                                            </div>
+                                            <div className="col">
+                                                <span>{album}</span>
+                                            </div>
+                                            <div className="col">
+                                                <span>{calculateTime(length)}</span>
                                             </div>
                                         </div>
-                                        <div className="col">
-                                            <span>{album}</span>
-                                        </div>
-                                        <div className="col">
-                                            <span>{calculateTime(length)}</span>
-                                        </div>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
+                                    )
+                                })
+                            }
+                        </div>
+                    </>) : ""}
                 </div>
             </>
         )
@@ -169,6 +172,7 @@ const Container = styled.div`
         }
     }
     .list {
+        margin: 0 0 3rem 0;
         .header__row {
             display: grid;
             grid-template-columns: 0.3fr 3fr 2fr 0.1fr;
