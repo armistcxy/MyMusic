@@ -48,43 +48,6 @@ export default function PlaylistSelected({ headerBackground }) {
         }
     }, [token, dispatch, selectedPlaylistId]);
 
-    // const playTrack = async (
-    //     id,
-    //     name,
-    //     artists,
-    //     image,
-    //     context_uri,
-    //     track_number
-    //   ) => {
-    //     const response = await axios.put(
-    //         `https://api.spotify.com/v1/me/player/play`,
-    //         {
-    //           context_uri,
-    //           offset: {
-    //             position: track_number - 1,
-    //           },
-    //           position_ms: 0,
-    //         },
-    //         {
-    //           headers: {
-    //             "Content-Type": "application/json",
-    //             Authorization: "Bearer " + token,
-    //           },
-    //         }
-    //     );
-    //     if (response.status === 204) {
-    //         const currentPlaying = {
-    //             id,
-    //             name,
-    //             artists,
-    //             image,
-    //         };
-    //         dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
-    //         dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
-    //     } else {
-    //         dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
-    //     }
-    //   }
 
     const calculateTime = (sec) => {
         const minutes = Math.floor(sec / 60);
@@ -99,7 +62,9 @@ export default function PlaylistSelected({ headerBackground }) {
             <>
                 <div className="playlist">
                     <div className="image">
-                        <img src={selectedPlaylist.tracks.length !== 0 ? selectedPlaylist.tracks[0].track_image_path : `https://www.gravatar.com/avatar/${selectedPlaylist.id.replace(/-/g, "")}?s=64&d=identicon&r=PG`} alt={selectedPlaylist.playlist_name}></img>
+                        <img src={
+                            // selectedPlaylist.tracks.length !== 0 ? selectedPlaylist.tracks[0].track_image_path :
+                             `https://www.gravatar.com/avatar/${selectedPlaylist.id.replace(/-/g, "")}?s=64&d=identicon&r=PG`} alt={selectedPlaylist.playlist_name}></img>
                     </div>
                     <div className="details">
                         <span className="type">PLAYLIST</span>
