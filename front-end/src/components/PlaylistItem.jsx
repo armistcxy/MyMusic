@@ -32,8 +32,7 @@ export default function PlaylistItem({ data }) {
         
         if (token) {
             getInitialPlaylist();
-            console.log("have token");
-        } else console.log("null token");
+        }
     }, [token, dispatch]);
 
     return (
