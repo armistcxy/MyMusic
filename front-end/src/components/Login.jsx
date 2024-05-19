@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const LOGIN_URL = 'http://localhost:8000/users/login';
 
@@ -210,18 +211,23 @@ const Login = () => {
             dispatch({ type: reducerCases.USER_LOGGED_IN });
             setAuth({ email, password, access_token, refresh_token });
             setIsSuccess(true);
+            toast.success("Login successfully.");
             navigate('/');
             setEmail('');
             setPassword('');
         } catch (err) {
             if (!err?.response) {
-                setErrMsg('No Server Response');
+                //setErrMsg('No Server Response');
+                toast.error("No Server Response");
             } else if (err.response?.status === 400) {
-                setErrMsg('Missing Username or Password');
+                //setErrMsg('Missing Username or Password');
+                toast.error("Missing Username or Password");
             } else if (err.response?.status === 401) {
-                setErrMsg('Unauthorized');
+                //setErrMsg('Unauthorized');
+                toast.error("Unauthorized");
             } else {
-                setErrMsg('Login Failed');
+                //setErrMsg('Login Failed');
+                toast.error("Login Failed");
             }
             errRef.current.focus();
         }

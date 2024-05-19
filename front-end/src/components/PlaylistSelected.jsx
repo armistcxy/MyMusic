@@ -10,9 +10,10 @@ import { Routes, Route } from "react-router-dom";
 import Library from "./Library";
 import Home from "./Home";
 import Search from "./Search";
+import { changeTrack } from "./CurrentTrack";
 
 export default function PlaylistSelected({ headerBackground }) {
-    const [{ token, selectedPlaylistId, selectedPlaylist }, dispatch] = useStateProvider();
+    const [{ token, selectedPlaylistId, selectedPlaylist, readyToListen }, dispatch] = useStateProvider();
 
     useEffect(() => {
         const getInitialPlaylist = async () => {
@@ -25,17 +26,19 @@ export default function PlaylistSelected({ headerBackground }) {
                     },
                 }
             );
-                console.log(response);
+            console.log(response.data.id);
             const selectedPlaylist = {
                 id: response.data.id,
                 playlist_name: response.data.name,
                 user_id: response.data.user.id,
                 user_name: response.data.user.username,
-                tracks: response.data.tracks.map(( track ) => ({
+                tracks: response.data.tracks.map((track) => ({
                     id: track.id,
                     name: track.name,
                     length: track.length,
                     track_image_path: `http://localhost:8000/static/${track.track_image_path}`,
+                    artist: track.artists[0].name,
+                    album: track.album,
                 })),
             };
             dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist: selectedPlaylist })
@@ -120,10 +123,12 @@ export default function PlaylistSelected({ headerBackground }) {
     //     }
     //   }
 
-    const msToMinutesAndSeconds = (ms) => {
-        var minutes = Math.floor(ms / 60000);
-        var seconds = ((ms % 60000) / 1000).toFixed(0);
-        return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+    const calculateTime = (sec) => {
+        const minutes = Math.floor(sec / 60);
+        const returnMin = minutes < 10 ? `0${minutes}` : `${minutes}`;
+        const seconds = Math.floor(sec % 60);
+        const returnSec = seconds < 10 ? `0${seconds}` : `${seconds}`;
+        return `${returnMin}:${returnSec}`;
     };
 
     return <Container headerBackground={headerBackground}>
@@ -131,7 +136,7 @@ export default function PlaylistSelected({ headerBackground }) {
             <>
                 <div className="playlist">
                     <div className="image">
-                        <img src={selectedPlaylist.tracks.length !== 0 ? selectedPlaylist.tracks[0].track_image_path : "https://www.gravatar.com/avatar/?fbclid=IwAR1Eib3mYRBaVR1_aYmz-RBx35wCvLvdxonshz_futx0MMykIZbxbZQIy1U"} alt={selectedPlaylist.playlist_name}></img>
+                        <img src={selectedPlaylist.tracks.length !== 0 ? selectedPlaylist.tracks[0].track_image_path : `https://www.gravatar.com/avatar/${selectedPlaylist.id.replace(/-/g, "")}?s=64&d=identicon&r=PG`} alt={selectedPlaylist.playlist_name}></img>
                     </div>
                     <div className="details">
                         <span className="type">PLAYLIST</span>
@@ -160,9 +165,11 @@ export default function PlaylistSelected({ headerBackground }) {
                                 name,
                                 length,
                                 track_image_path,
+                                artist,
+                                album
                             }, index) => {
                                 return (
-                                    <div className="row" key={id} /*onClick={() => playTrack()}*/>
+                                    <div className="row" key={id} onClick={() => changeTrack(id, token, readyToListen, dispatch)}>
                                         <div className="col">
                                             <span>{index + 1}</span>
                                         </div>
@@ -172,14 +179,14 @@ export default function PlaylistSelected({ headerBackground }) {
                                             </div>
                                             <div className="info">
                                                 <span className="name">{name}</span>
-                                                <span>Name Artist: Null</span>
+                                                <span>{artist}</span>
                                             </div>
                                         </div>
                                         <div className="col">
-                                            <span>Album: Null</span>
+                                            <span>{album}</span>
                                         </div>
                                         <div className="col">
-                                            <span>{msToMinutesAndSeconds(length)}</span>
+                                            <span>{calculateTime(length)}</span>
                                         </div>
                                     </div>
                                 )

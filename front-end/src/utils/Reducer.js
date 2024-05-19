@@ -11,6 +11,7 @@ export const initialState = {
     newestSongs: null,
     currentPlaying: {},
     playerState: false,
+    readyToListen: false,
     volume: 0.75,
 };
 
@@ -68,6 +69,12 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 volume: action.volume,
+            }
+        }
+        case reducerCases.SET_READY: {
+            return {
+                ...state,
+                readyToListen: action.readyToListen,
             }
         }
         case reducerCases.USER_LOGGED_IN: {
