@@ -21,8 +21,6 @@ export default function HomeContent() {
                         },
                     }
                 );
-                if (response.data === null) console.log("nullres");
-                else console.log("notnull");
                     
                 const newestSongs = {
                     songs: response.data.map(( song ) => ({
@@ -42,8 +40,7 @@ export default function HomeContent() {
                         })),
                     })),
                 };
-                console.log(newestSongs);
-                console.log(newestSongs.songs[0].artists[0].name);
+                
                 dispatch({ type: reducerCases.SET_NEWEST_SONGS, newestSongs: newestSongs })
             } catch (error) {
                 console.error('Error fetching newest songs:', error);

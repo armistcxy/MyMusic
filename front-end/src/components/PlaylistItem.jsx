@@ -5,9 +5,7 @@ import axios from "axios";
 import { reducerCases } from "../utils/Constants";
 
 export default function PlaylistItem({ data }) {
-    const [{ userInfo }] = useStateProvider();
-
-    const [{ token, selectedPlaylist }, dispatch] = useStateProvider();
+    const [{ token, selectedPlaylist, userInfo }, dispatch] = useStateProvider();
 
     useEffect(() => {
         const getInitialPlaylist = async () => {
@@ -20,37 +18,42 @@ export default function PlaylistItem({ data }) {
                     },
                 }
             );
+            console.log("at playlist item");
+            console.log(response.data);
 
             const selectedPlaylist = {
                 tracks: response.data.tracks.map(( track ) => ({
                     track_image_path: `http://localhost:8000/static/${track.track_image_path}`,
                 })),
             };
+            console.log(response.data);
             dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist: selectedPlaylist })
         };
+        
         if (token) {
             getInitialPlaylist();
-        }
-    }, [token, dispatch, data.id]);
+            console.log("have token");
+        } else console.log("null token");
+    }, [token, dispatch]);
 
     return (
         <div
             onClick={() => { }}
             className="
-        relative
-        group
-        flex
-        flex-col
-        items-center
-        justify-center
-        rounded-md
-        overflow-hidden
-        gap-x-4
-        bg-neutral-400/5
-        cursor-pointer
-        hover:bg-neutral-400/10
-        transition
-        p-3">
+            relative
+            group
+            flex
+            flex-col
+            items-center
+            justify-center
+            rounded-md
+            overflow-hidden
+            gap-x-4
+            bg-neutral-400/5
+            cursor-pointer
+            hover:bg-neutral-400/10
+            transition
+            p-3">
             <div className="
                 relative
                 aspect-square
@@ -60,7 +63,7 @@ export default function PlaylistItem({ data }) {
                 overflow-hidden">
                 <img
                     className="object-cover w-full h-full"
-                    src={selectedPlaylist.tracks.length !== 0 ? selectedPlaylist.tracks[0].track_image_path : "https://www.gravatar.com/avatar/?fbclid=IwAR1Eib3mYRBaVR1_aYmz-RBx35wCvLvdxonshz_futx0MMykIZbxbZQIy1U"}
+                    src={selectedPlaylist?.tracks?.length !== 0 ? selectedPlaylist?.tracks[0]?.track_image_path : "https://www.gravatar.com/avatar/?fbclid=IwAR1Eib3mYRBaVR1_aYmz-RBx35wCvLvdxonshz_futx0MMykIZbxbZQIy1U"}
                     alt={data.name}>
                 </img>
             </div>
