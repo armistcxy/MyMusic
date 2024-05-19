@@ -32,6 +32,7 @@ def track_model_to_simple_response(
         track_image_path=f"track/{convert_name_to_slug(track.name)}.jpg",
         artists=[artist_model_to_simple_response(artist) for artist in track.artists],
         album=track.album.name,
+        audio_url=f"static/audio/{convert_name_to_slug(track.name)}.mp3",
     )
     return track_response
 
@@ -76,6 +77,7 @@ def track_model_to_detail_response(
         categories=[
             category_model_to_response(category) for category in track.categories
         ],
+        audio_url=f"static/audio/{convert_name_to_slug(track.name)}.mp3",
     )
     return track_response
 

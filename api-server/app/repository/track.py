@@ -63,3 +63,16 @@ def get_newest_track(session: Session, amount: int) -> list[models.Track]:
     tracks = session.query(models.Track).limit(amount).all()
     logging.info(tracks)
     return tracks
+
+
+def get_tracks_in_range(session: Session, start: int, end: int) -> list[models.Track]:
+    if start > end:
+        return []
+    tracks = (
+        session.query(models.Track)
+        .order_by(models.Track.id)
+        .offset(start)
+        .limit(end - start + 1)
+        .all()
+    )
+    return tracks

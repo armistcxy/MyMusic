@@ -19,6 +19,7 @@ class TrackSimpleResponse(BaseModel):
     track_image_path: str | None = None
     artists: list[ArtistSimpleResponse]
     album: str
+    audio_url: str
 
 
 from app.schema.album import AlbumSimpleResponse

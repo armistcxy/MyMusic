@@ -121,3 +121,10 @@ def stream_track(id: uuid.UUID):
 def get_newest_track(amount: int):
     response = track_service.get_newest_track(amount)
     return response
+
+
+@track_router.get("/random/{amount}")
+def get_random_track(amount: int):
+    response = track_service.get_tracks_in_range(1, 50)
+    random_response = track_service.random_track_choosing(response, amount=amount)
+    return random_response
