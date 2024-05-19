@@ -15,6 +15,7 @@ import uuid
 from os.path import join
 from app.service.error import StreamError
 from app.repository.error import NotFoundError
+import random
 
 
 def upload_track(track_form: TrackUploadForm) -> TrackResponse:
@@ -154,3 +155,17 @@ def get_newest_track(amount: int) -> list[TrackResponse]:
     response = [schema_utils.track_model_to_detail_response(track) for track in tracks]
     session.close()
     return response
+
+
+def get_tracks_in_range(start: int, end: int) -> list[TrackResponse]:
+    session = get_session()
+    tracks = track_repo.get_tracks_in_range(session=session, start=start, end=end)
+    response = [schema_utils.track_model_to_detail_response(track) for track in tracks]
+    session.close()
+    return response
+
+
+def random_track_choosing(
+    track_response: list[TrackResponse], amount: int
+) -> list[TrackResponse]:
+    return random.sample(track_response, min(len(track_response), amount))
