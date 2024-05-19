@@ -5,6 +5,7 @@ import { useStateProvider } from "../utils/StateProvider";
 import axios from "axios";
 import { reducerCases } from "../utils/Constants";
 import { changeTrack } from "./CurrentTrack";
+import { FaPlay } from "react-icons/fa";
 
 export default function PlaylistSelected({ headerBackground }) {
     const [{ token, selectedPlaylistId, selectedPlaylist, readyToListen }, dispatch] = useStateProvider();
@@ -63,6 +64,28 @@ export default function PlaylistSelected({ headerBackground }) {
                     <div className="details">
                         <span className="type">PLAYLIST</span>
                         <h1 className="title">{selectedPlaylist.playlist_name}</h1>
+                    </div>
+                </div>
+                <div>
+                    <div className="
+                    ml-8
+                    mt-4">
+                        <button
+                            className="
+                                transition
+                                rounded-full
+                                flex
+                                items-center
+                                bg-green-500
+                                p-4
+                                drop-shadow-md
+                                translate
+                                translate-y-1/4
+                                group-hover:opacity-100
+                                group-hover:translate-y-0
+                                hover:scale-110">
+                            <FaPlay className="text-black"></FaPlay>
+                        </button>
                     </div>
                 </div>
                 <div className="list">
