@@ -12,5 +12,7 @@ export const reducerCases = {
     USER_LOGGED_IN : "USER_LOGGED_IN",
     USER_LOGGED_OUT : "USER_LOGGED_OUT",
     SET_NEWEST_SONGS: "SET_NEWEST_SONGS",
+    SET_SONG_ID: "SET_SONG_ID",
+    SET_SONG: "SET_SONG",
 };
 

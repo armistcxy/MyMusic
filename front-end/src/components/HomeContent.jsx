@@ -3,6 +3,7 @@ import { useStateProvider } from "../utils/StateProvider";
 import SongItem from "./SongItem";
 import { useEffect } from "react";
 import { reducerCases } from "../utils/Constants";
+import { Link } from "react-router-dom";
 
 const amountSong = 10;
 
@@ -50,8 +51,8 @@ export default function HomeContent() {
         getNewestSongs();
     }, []);
 
-    const onClick = () => {
-        //...
+    const selectSong = (selectedSongId) => {
+        dispatch({ type: reducerCases.SET_SONG_ID, selectedSongId: selectedSongId })
     }
     
     return (
@@ -65,10 +66,12 @@ export default function HomeContent() {
         gap-4
         mt-4">
             {newestSongs?.songs?.map((item) => (
-                <SongItem
-                    key={item.id}
-                    onClick={() => {}}
-                    data={item} />
+                <Link to="songview" onClick={() => selectSong(item.id)}>
+                    <SongItem
+                        key={item.id}
+                        onClick={() => {}}
+                        data={item} />
+                </Link>
             ))}
         </div>        
     )

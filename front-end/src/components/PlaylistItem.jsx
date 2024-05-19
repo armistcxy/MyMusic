@@ -1,11 +1,7 @@
-import { FaPlay } from "react-icons/fa"
 import { useStateProvider } from "../utils/StateProvider"
-import { useEffect } from "react";
-import axios from "axios";
-import { reducerCases } from "../utils/Constants";
 
 export default function PlaylistItem({ data }) {
-    const [{ token, selectedPlaylist, userInfo }, dispatch] = useStateProvider();
+    const [{ userInfo }] = useStateProvider();
 
     return (
         <div

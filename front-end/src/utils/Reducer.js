@@ -8,6 +8,8 @@ export const initialState = {
     userInfo: null,
     selectedPlaylistId: null,
     selectedPlaylist: null,
+    selectedSong: null,
+    selectedSongId: null,
     newestSongs: null,
     filterItems: [[],[],[]],
     currentPlaying: {},
@@ -34,6 +36,18 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 newestSongs: action.newestSongs,
+            }
+        }
+        case reducerCases.SET_SONG_ID: {
+            return {
+                ...state,
+                selectedSongId: action.selectedSongId,
+            }
+        }
+        case reducerCases.SET_SONG: {
+            return {
+                ...state,
+                selectedSong: action.selectedSong,
             }
         }
         case reducerCases.SET_PLAYLIST: {

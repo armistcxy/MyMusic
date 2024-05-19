@@ -4,15 +4,14 @@ import { AiFillClockCircle } from "react-icons/ai";
 import { useStateProvider } from "../utils/StateProvider";
 import axios from "axios";
 import { reducerCases } from "../utils/Constants";
-import { changeTrack } from "./CurrentTrack";
 
-export default function PlaylistSelected({ headerBackground }) {
-    const [{ token, selectedPlaylistId, selectedPlaylist, readyToListen }, dispatch] = useStateProvider();
+export default function SongSelected({ headerBackground }) {
+    const [{ token, selectedSongId, selectedSong }, dispatch] = useStateProvider();
 
     useEffect(() => {
-        const getInitialPlaylist = async () => {
+        const getSong = async () => {
             const response = await axios.get(
-                `http://localhost:8000/playlists/${selectedPlaylistId}`,
+                `http://localhost:8000/tracks/${selectedSongId}`,
                 {
                     headers: {
                         Authorization: "Bearer " + token,
@@ -21,26 +20,24 @@ export default function PlaylistSelected({ headerBackground }) {
                 }
             );
             
-            const selectedPlaylist = {
+            const selectedSong = {
                 id: response.data.id,
-                playlist_name: response.data.name,
-                user_id: response.data.user.id,
-                user_name: response.data.user.username,
-                tracks: response.data.tracks.map((track) => ({
-                    id: track.id,
-                    name: track.name,
-                    length: track.length,
-                    track_image_path: `http://localhost:8000/static/${track.track_image_path}`,
-                    artist: track.artists[0].name,
-                    album: track.album,
-                })),
+                name: response.data.name,
+                track_image_path: `http://localhost:8000/static/${response.data.track_image_path}`,
+                artist_id: response.data.artists[0].id,
+                artist_name: response.data.artists[0].name,
+                artist_image_path: `http://localhost:8000/static/${response.data.artists[0].artist_image_path}`,
+                album: response.data.album,
+                categories: response.data.categories.map((categorie) => ({
+                    id: categorie.id,
+                    name: categorie.name,
+                }))
             };
-            dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist: selectedPlaylist })
+            dispatch({ type: reducerCases.SET_SONG, selectedSong: selectedSong })
         };
-        if (token) {
-            getInitialPlaylist();
-        }
-    }, [token, dispatch, selectedPlaylistId]);
+        getSong();
+        console.log(selectedSong);
+    }, [dispatch]);
 
 
     const calculateTime = (sec) => {
@@ -52,17 +49,16 @@ export default function PlaylistSelected({ headerBackground }) {
     };
 
     return <Container headerBackground={headerBackground}>
-        {selectedPlaylist && (
+        {selectedSong && (
             <>
                 <div className="playlist">
                     <div className="image">
-                        <img src={
-                            // selectedPlaylist.tracks.length !== 0 ? selectedPlaylist.tracks[0].track_image_path :
-                             `https://www.gravatar.com/avatar/${selectedPlaylist.id.replace(/-/g, "")}?s=64&d=identicon&r=PG`} alt={selectedPlaylist.playlist_name}></img>
+                        <img src={selectedSong.track_image_path} alt={selectedSong.name}></img>
                     </div>
                     <div className="details">
-                        <span className="type">PLAYLIST</span>
-                        <h1 className="title">{selectedPlaylist.playlist_name}</h1>
+                        <span className="type">Song</span>
+                        <h1 className="title">{selectedSong.name}</h1>
+                        <p>{selectedSong.artist_name}</p>
                     </div>
                 </div>
                 <div className="list">
@@ -80,8 +76,8 @@ export default function PlaylistSelected({ headerBackground }) {
                             <AiFillClockCircle />
                         </div>
                     </div>
-                    <div className="tracks">
-                        {selectedPlaylist.tracks.map(
+                    {/* <div className="tracks">
+                        {selectedSong.tracks.map(
                             ({
                                 id,
                                 name,
@@ -114,7 +110,7 @@ export default function PlaylistSelected({ headerBackground }) {
                                 )
                             })
                         }
-                    </div>
+                    </div> */}
                 </div>
             </>
         )
