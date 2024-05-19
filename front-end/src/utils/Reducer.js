@@ -11,6 +11,9 @@ export const initialState = {
     selectedSong: null,
     selectedSongId: null,
     newestSongs: null,
+    randomSongs: null,
+    isRandom: false,
+    isQuery: false,
     filterItems: [[],[],[]],
     currentPlaying: {},
     playerState: false,
@@ -26,6 +29,12 @@ const reducer = (state, action) => {
                 token: action.token,
             }
         }
+        case reducerCases.SET_RANDOM: {
+            return {
+                ...state,
+                isRandom: action.isRandom,
+            }
+        }
         case reducerCases.SET_PLAYLISTS: {
             return {
                 ...state,
@@ -36,6 +45,12 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 newestSongs: action.newestSongs,
+            }
+        }
+        case reducerCases.SET_RANDOM_SONGS: {
+            return {
+                ...state,
+                randomSongs: action.randomSongs,
             }
         }
         case reducerCases.SET_SONG_ID: {
@@ -72,6 +87,12 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 playerState: action.playerState,
+            }
+        }
+        case reducerCases.SET_QUERY: {
+            return {
+                ...state,
+                isQuery: action.isQuery,
             }
         }
         case reducerCases.SET_PLAYLIST_ID: {

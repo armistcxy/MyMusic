@@ -67,13 +67,14 @@ const getCurrentTrack = async (token, dispatch) => {
             },
         }
     );
+    console.log(response);
     if (response.data !== "") {
         const currentPlaying = {
             id: response.data.id,
             name: response.data.name,
             artists: response.data.artists.map((artist) => artist.name),
             image: `http://localhost:8000/static/${response.data.track_image_path}`,
-            song: `http://localhost:8000/static/${response.data.id}.mp3`,
+            song: `http://localhost:8000/${response.data.audio_url}`,
         };
         dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: currentPlaying });
     } else {
