@@ -1,6 +1,6 @@
 import { FaPlay } from "react-icons/fa"
 
-export default function SongItem(song) {
+export default function SongItem({ data }) {
     return (
         <div
             onClick={() => { }}
@@ -27,14 +27,18 @@ export default function SongItem(song) {
                 rounded-md
                 overflow-hidden">
                 <img
-                    className="object-cover"
-                    src={song.image}
-                    alt={song.name}>
+                    className="object-cover w-full h-full"
+                    src={data?.track_image_path}
+                    alt={data?.name}>
                 </img>
             </div>
             <div className="flex flex-col items-start w-full pt-4 gap-y-1">
-                <p className="text-neutral-100 text-lg font-semibold truncate w-full">{song.name}</p>
-                <p className="text-neutral-400 text-smpb-4 w-full truncate">{song.artist}</p>
+                <p className="text-neutral-100 text-lg font-semibold truncate w-full">{data?.name}</p>
+                {data?.artists.map((artist) => (
+                    <p className="text-neutral-400 text-smpb-4 w-full truncate">
+                        {artist?.name}
+                    </p>
+                ))}
                 <div className="
                 absolute
                 bottom-24

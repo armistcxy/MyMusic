@@ -59,7 +59,7 @@ export default function PlaylistItem({ data }) {
                 rounded-md
                 overflow-hidden">
                 <img
-                    className="object-cover"
+                    className="object-cover w-full h-full"
                     src={selectedPlaylist.tracks.length !== 0 ? selectedPlaylist.tracks[0].track_image_path : "https://www.gravatar.com/avatar/?fbclid=IwAR1Eib3mYRBaVR1_aYmz-RBx35wCvLvdxonshz_futx0MMykIZbxbZQIy1U"}
                     alt={data.name}>
                 </img>

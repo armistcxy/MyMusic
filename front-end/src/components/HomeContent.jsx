@@ -1,35 +1,61 @@
+import axios from "axios";
 import { useStateProvider } from "../utils/StateProvider";
 import SongItem from "./SongItem";
+import { useEffect } from "react";
+import { reducerCases } from "../utils/Constants";
+
+const amountSong = 10;
 
 export default function HomeContent() {
-    // const [{  }] = useStateProvider();
+    const [{ token, newestSongs }, dispatch] = useStateProvider();
+
+    useEffect(() => {
+        const getNewestSongs = async () => {
+            try {
+                const response = await axios.get(
+                    `http://localhost:8000/tracks/new/${amountSong}`,
+                    {
+                        headers: {
+                            Authorization: "Bearer " + token,
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                if (response.data === null) console.log("nullres");
+                else console.log("notnull");
+                    
+                const newestSongs = {
+                    songs: response.data.map(( song ) => ({
+                        id: song.id,
+                        name: song.name,
+                        length: song.length,
+                        track_image_path: "http://localhost:8000/static/" + song.track_image_path,
+                        artists: song.artists.map(( artist ) => ({
+                            id: artist.id,
+                            name: artist.name,
+                            artist_image_path: "http://localhost:8000/static/" + artist.artist_image_path,
+                        })),
+                        album: song.album,
+                        categories: song.categories.map(( categorie ) => ({
+                            id: categorie.id,
+                            name: categorie.name,
+                        })),
+                    })),
+                };
+                console.log(newestSongs);
+                console.log(newestSongs.songs[0].artists[0].name);
+                dispatch({ type: reducerCases.SET_NEWEST_SONGS, newestSongs: newestSongs })
+            } catch (error) {
+                console.error('Error fetching newest songs:', error);
+            }
+            
+        };
+        getNewestSongs();
+    }, []);
 
     const onClick = () => {
         //...
     }
-
-    const songs = [
-        {
-            id: 1,
-            title: "Lạc trôi",
-            artist: "Sơn Tùng MTP",
-            mp3: new Audio("/data/mp3/Lac Troi.mp3"),
-            link_pic: "/data/img/SonTung.jpg",
-            description: "Best Music",
-            duration: 200,
-            album: "Sky Tour",
-        },
-        {
-            id: 2,
-            title: "Lạc trôi",
-            artist: "Sơn Tùng MTP",
-            mp3: new Audio("/data/mp3/Lac Troi.mp3"),
-            link_pic: "/data/img/SonTung.jpg",
-            description: "Best Music",
-            duration: 200,
-            album: "Sky Tour",
-        },
-        ]
     
     return (
         <div className="grid
@@ -41,11 +67,11 @@ export default function HomeContent() {
         2xl:grid-cols-8
         gap-4
         mt-4">
-            {songs.map((item) => (
+            {newestSongs?.songs?.map((item) => (
                 <SongItem
                     key={item.id}
                     onClick={() => {}}
-                    data={item}/>
+                    data={item} />
             ))}
         </div>        
     )

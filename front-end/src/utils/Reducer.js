@@ -8,6 +8,7 @@ export const initialState = {
     userInfo: null,
     selectedPlaylistId: null,
     selectedPlaylist: null,
+    newestSongs: null,
     currentPlaying: {},
     playerState: false,
     volume: 0.75,
@@ -25,6 +26,12 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 playlists: action.playlists,
+            }
+        }
+        case reducerCases.SET_NEWEST_SONGS: {
+            return {
+                ...state,
+                newestSongs: action.newestSongs,
             }
         }
         case reducerCases.SET_PLAYLIST: {
