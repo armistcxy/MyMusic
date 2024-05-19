@@ -49,80 +49,6 @@ export default function PlaylistSelected({ headerBackground }) {
     }, [token, dispatch, selectedPlaylistId]);
 
 
-
-    // useEffect(() => {
-    //     const getInitialPlaylist = async () => {
-    //         const response = await axios.get(
-    //             `https://api.spotify.com/v1/playlists/${selectedPlaylistId}`, 
-    //             {
-    //                 headers: {
-    //                     Authorization: "Bearer " + token,
-    //                     "Content-Type": "application/json",
-    //                 },
-    //             }
-    //         );
-
-    //         const selectedPlaylist = {
-    //             id: response.data.id,
-    //             name: response.data.name,
-    //             description: response.data.description.startsWith("<a")
-    //                 ? ""
-    //                 : response.data.description,
-    //                 image: response.data.images[0].url,
-    //                 tracks: response.data.tracks.items.map(({ track }) => ({
-    //                     id: track.id,
-    //                     name: track.name,
-    //                     artists: track.artists.map((artist) => artist.name),
-    //                     image: track.album.images[2].url,
-    //                     duration: track.duration_ms,
-    //                     album: track.album.name,
-    //                     context_uri: track.album.uri,
-    //                     track_number: track.track_number, 
-    //                 })),
-    //         };
-    //         dispatch({type: reducerCases.SET_PLAYLIST, selectedPlaylist})
-    //     };
-    //     getInitialPlaylist();
-    // }, [token, dispatch, selectedPlaylistId]);
-
-    // const playTrack = async (
-    //     id,
-    //     name,
-    //     artists,
-    //     image,
-    //     context_uri,
-    //     track_number
-    //   ) => {
-    //     const response = await axios.put(
-    //         `https://api.spotify.com/v1/me/player/play`,
-    //         {
-    //           context_uri,
-    //           offset: {
-    //             position: track_number - 1,
-    //           },
-    //           position_ms: 0,
-    //         },
-    //         {
-    //           headers: {
-    //             "Content-Type": "application/json",
-    //             Authorization: "Bearer " + token,
-    //           },
-    //         }
-    //     );
-    //     if (response.status === 204) {
-    //         const currentPlaying = {
-    //             id,
-    //             name,
-    //             artists,
-    //             image,
-    //         };
-    //         dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
-    //         dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
-    //     } else {
-    //         dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
-    //     }
-    //   }
-
     const calculateTime = (sec) => {
         const minutes = Math.floor(sec / 60);
         const returnMin = minutes < 10 ? `0${minutes}` : `${minutes}`;
@@ -136,7 +62,9 @@ export default function PlaylistSelected({ headerBackground }) {
             <>
                 <div className="playlist">
                     <div className="image">
-                        <img src={selectedPlaylist.tracks.length !== 0 ? selectedPlaylist.tracks[0].track_image_path : `https://www.gravatar.com/avatar/${selectedPlaylist.id.replace(/-/g, "")}?s=64&d=identicon&r=PG`} alt={selectedPlaylist.playlist_name}></img>
+                        <img src={
+                            // selectedPlaylist.tracks.length !== 0 ? selectedPlaylist.tracks[0].track_image_path :
+                             `https://www.gravatar.com/avatar/${selectedPlaylist.id.replace(/-/g, "")}?s=64&d=identicon&r=PG`} alt={selectedPlaylist.playlist_name}></img>
                     </div>
                     <div className="details">
                         <span className="type">PLAYLIST</span>

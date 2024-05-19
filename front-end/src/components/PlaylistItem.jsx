@@ -7,35 +7,6 @@ import { reducerCases } from "../utils/Constants";
 export default function PlaylistItem({ data }) {
     const [{ token, selectedPlaylist, userInfo }, dispatch] = useStateProvider();
 
-    useEffect(() => {
-        const getInitialPlaylist = async () => {
-            const response = await axios.get(
-                `http://localhost:8000/playlists/${data.id}`,
-                {
-                    headers: {
-                        Authorization: "Bearer " + token,
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
-            console.log("at playlist item");
-            console.log(response.data);
-
-            const selectedPlaylist = {
-                tracks: response.data.tracks.map(( track ) => ({
-                    track_image_path: `http://localhost:8000/static/${track.track_image_path}`,
-                })),
-            };
-            console.log(response.data);
-            dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist: selectedPlaylist })
-        };
-        
-        if (token) {
-            getInitialPlaylist();
-            console.log("have token");
-        } else console.log("null token");
-    }, [token, dispatch]);
-
     return (
         <div
             onClick={() => { }}
@@ -63,35 +34,13 @@ export default function PlaylistItem({ data }) {
                 overflow-hidden">
                 <img
                     className="object-cover w-full h-full"
-                    src={selectedPlaylist?.tracks?.length !== 0 ? selectedPlaylist?.tracks[0]?.track_image_path : "https://www.gravatar.com/avatar/?fbclid=IwAR1Eib3mYRBaVR1_aYmz-RBx35wCvLvdxonshz_futx0MMykIZbxbZQIy1U"}
+                    src={`https://www.gravatar.com/avatar/${data.id.replace(/-/g, "")}?s=64&d=identicon&r=PG`}
                     alt={data.name}>
                 </img>
             </div>
             <div className="flex flex-col items-start w-full pt-4 gap-y-1">
                 <p className="text-neutral-100 text-lg font-semibold truncate w-full">{data.name}</p>
                 <p className="text-neutral-400 text-smpb-4 w-full truncate">By {userInfo?.username}</p>
-                <div className="
-                absolute
-                bottom-24
-                right-5">
-                    <button
-                        className="
-                            transition
-                            opacity-0
-                            rounded-full
-                            flex
-                            items-center
-                            bg-green-500
-                            p-4
-                            drop-shadow-md
-                            translate
-                            translate-y-1/4
-                            group-hover:opacity-100
-                            group-hover:translate-y-0
-                            hover:scale-110">
-                        <FaPlay className="text-black"></FaPlay>
-                    </button>
-                </div>
             </div>
         </div>
     )
