@@ -101,43 +101,6 @@ export default function PlayerControls() {
     };
 
 
-    // const changeTrack = async (type) => {
-    //     console.log(type);
-    //     await axios.post(
-    //         `https://api.spotify.com/v1/me/player/${type}`,
-    //         {},
-    //         {
-    //             headers: {
-    //                 Authorization: "Bearer " + token,
-    //                 "Content-Type": "application/json",
-    //             },
-    //         }
-    //     );
-    //     dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
-    //     const response = await axios.get(
-    //         "https://api.spotify.com/v1/me/player/currently-playing",
-    //         {
-    //             headers: {
-    //                 Authorization: "Bearer " + token,
-    //                 "Content-Type": "application/json",
-    //             },
-    //         }
-    //     );
-    //     if (response.data !== "") {
-    //         const currentPlaying = {
-    //             id: response.data.item.id,
-    //             name: response.data.item.name,
-    //             artists: response.data.item.artists.map((artist) => artist.name),
-    //             image: response.data.item.album.images[2].url,
-    //         };
-    //         dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
-    //     } else {
-    //         dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: null });
-    //     }
-
-    // };
-
-
     return (
         <Container>
             <audio src={currentPlaying?.song} preload="metadata" ref={audioPlayer} />

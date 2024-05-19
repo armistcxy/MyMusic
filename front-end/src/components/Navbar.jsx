@@ -29,6 +29,12 @@ export default function Navbar() {
     getFilter(value);
   }
   useEffect(() => {
+      if (query === "") {
+        dispatch({ type: reducerCases.SET_QUERY, isQuery : false});
+      }
+      else dispatch({ type: reducerCases.SET_QUERY, isQuery : true});
+  }, [query, dispatch]);
+  useEffect(() => {
     if (location.pathname !== "/search") {
       setQuery("");
       dispatch({ type: reducerCases.SET_FILTER, filterItems: [[],[],[]] });
@@ -72,7 +78,6 @@ export default function Navbar() {
   }, [token, dispatch]);
 
   const logoutUser = () => {
-
     dispatch({ type: reducerCases.SET_TOKEN, token: null });
     dispatch({ type: reducerCases.SET_PLAYLISTS, playlists: null });
     dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: false });
@@ -82,6 +87,7 @@ export default function Navbar() {
       type: reducerCases.USER_LOGGED_OUT,
     });
     window.location.reload();
+    navigate('/');
     toast.success("You logged out! See you later.");
   }
 
