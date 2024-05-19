@@ -9,6 +9,7 @@ export const initialState = {
     selectedPlaylistId: null,
     selectedPlaylist: null,
     newestSongs: null,
+    filterItems: [[],[],[]],
     currentPlaying: {},
     playerState: false,
     readyToListen: false,
@@ -75,6 +76,12 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 readyToListen: action.readyToListen,
+            }
+        }
+        case reducerCases.SET_FILTER: {
+            return {
+                ...state,
+                filterItems: action.filterItems,
             }
         }
         case reducerCases.USER_LOGGED_IN: {

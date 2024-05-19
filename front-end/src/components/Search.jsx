@@ -22,7 +22,7 @@ export default function Search() {
                     <SearchContent/>
                     <div className="flex justify-between items-center pt-6">
                         <h1 className="text-white text-xl font-semibold">
-                            Popular
+                            Results
                         </h1>
                     </div>
                     <SearchContent/>           
@@ -31,7 +31,7 @@ export default function Search() {
                 <div className="mt-2 mb-7 px-6">
                     <div className="flex justify-between items-center pt-6">
                         <h1 className="text-white text-xl font-semibold">
-                            Popular
+                            Results
                         </h1>
                     </div>
                     <SearchContent/>           

@@ -28,7 +28,7 @@ export default function SongItem({ data }) {
                 overflow-hidden">
                 <img
                     className="object-cover w-full h-full"
-                    src={data?.track_image_path}
+                    src={"http://localhost:8000/static/" + data?.track_image_path}
                     alt={data?.name}>
                 </img>
             </div>

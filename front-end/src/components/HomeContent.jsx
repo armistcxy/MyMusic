@@ -27,11 +27,11 @@ export default function HomeContent() {
                         id: song.id,
                         name: song.name,
                         length: song.length,
-                        track_image_path: "http://localhost:8000/static/" + song.track_image_path,
+                        track_image_path: song.track_image_path,
                         artists: song.artists.map(( artist ) => ({
                             id: artist.id,
                             name: artist.name,
-                            artist_image_path: "http://localhost:8000/static/" + artist.artist_image_path,
+                            artist_image_path: artist.artist_image_path,
                         })),
                         album: song.album,
                         categories: song.categories.map(( categorie ) => ({
