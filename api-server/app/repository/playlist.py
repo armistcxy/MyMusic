@@ -41,7 +41,6 @@ def get_all_playlists(session: Session) -> list[models.Playlist]:
 
 
 def delete_playlist(id: uuid.UUID, session: Session) -> bool:
-    session = get_session()
     playlist = session.get(models.Playlist, ident=id)
     if playlist == None:
         return False
