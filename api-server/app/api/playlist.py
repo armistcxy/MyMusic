@@ -130,7 +130,7 @@ def modify_track_in_playlist(
             )
         if rename:
             playlist_service.change_playlist_name(new_name=rename, id=playlist_id)
-        if track_id_list:
+        if track_id_list is not None:
             playlist_service.update_track_in_playlist(
                 playlist_id=playlist_id, track_id_list=track_id_list
             )
