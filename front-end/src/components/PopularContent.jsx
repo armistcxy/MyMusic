@@ -67,7 +67,7 @@ export default function PopularContent() {
         gap-4
         mt-4">
             {randomSongs?.songs?.map((item) => (
-                <Link to="songview" onClick={() => selectSong(item.id)}>
+                <Link to="/songview" onClick={() => selectSong(item.id)}>
                     <SongItem
                         key={item.id}
                         onClick={() => { }}

@@ -6,6 +6,7 @@ import axios from "axios";
 import { reducerCases } from "../utils/Constants";
 import { changeTrack } from "./CurrentTrack";
 import { FaPlay } from "react-icons/fa";
+import { IoTrashOutline } from "react-icons/io5";
 
 export default function PlaylistSelected({ headerBackground }) {
     const [{ token, selectedPlaylistId, selectedPlaylist, readyToListen }, dispatch] = useStateProvider();
@@ -68,6 +69,9 @@ export default function PlaylistSelected({ headerBackground }) {
                 </div>
                 <div>
                     <div className="
+                    flex
+                    flex-row
+                    justify-between
                     ml-8
                     mt-4">
                         <button
@@ -85,6 +89,14 @@ export default function PlaylistSelected({ headerBackground }) {
                                 group-hover:translate-y-0
                                 hover:scale-110">
                             <FaPlay className="text-black"></FaPlay>
+                        </button>
+                        <button className="
+                            transition
+                            order-last
+                            mr-8
+                            scale-150
+                            hover:scale-170">
+                            <IoTrashOutline className="text-white"></IoTrashOutline>
                         </button>
                     </div>
                 </div>
