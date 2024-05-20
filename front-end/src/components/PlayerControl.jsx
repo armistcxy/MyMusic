@@ -259,7 +259,7 @@ const Container2 = styled.div`
       }
       
       .progressBar::-moz-range-progress {
-        background: #848484;
+        background: #1db954;
         width: var(--played-width);
         height: 100%;
         border-radius: 10px;

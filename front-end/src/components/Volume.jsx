@@ -97,7 +97,7 @@ const Container = styled.div`
         content: "";
         top: 0;
         left: 0;
-        background: #848484;
+        background: #1db954;
         width: ${props => props.volume * 100}%;
         height: 100%;
         border-radius: 10px;

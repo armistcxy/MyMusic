@@ -3,7 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
-import { TiHeartOutline, TiPlusOutline } from "react-icons/ti";
+import { TiDownload, TiPlusOutline } from "react-icons/ti";
 import { toast } from "react-toastify";
 
 // Define the changeTrack function outside of the component
@@ -151,20 +151,20 @@ export default function CurrentTrack() {
                         <h6 className="track__info__track__artists">
                             {currentPlaying?.artists?.join(", ")}
                         </h6>
-                    </div>
-                    {token ? <TiHeartOutline /> : <></>}
+                    </div>                    
                     <div className="playlist-icon">
                         {token ? <TiPlusOutline onClick={togglePlaylists} /> : <></>}
                         {showPlaylists && (
                             <PlaylistContainer ref={playlistRef} >
                                 <ul>
                                     {playlists.map((playlist) => (
-                                        <li key={playlist.id} onClick={() => { addTrackToPlaylist(token, currentPlaying.id, playlist.id); setShowPlaylists(false); toast.success("Add successfully") }}>{playlist.name}</li>
+                                        <li key={playlist.id} onClick={() => { addTrackToPlaylist(token, currentPlaying.id, playlist.id); setShowPlaylists(false); toast.success("Add successfully") }}><span>{playlist.name}</span></li>
                                     ))}
                                 </ul>
                             </PlaylistContainer>
                         )}
                     </div>
+                    {token ? <TiDownload /> : <></>}
                 </div>
             )}
         </Container>
@@ -208,7 +208,7 @@ const PlaylistContainer = styled.div`
     position: absolute;
     left: 30px;
     top: -150px; 
-    right: -200px; 
+    right: -150px; 
     background-color: #282828;
     border: 1px solid #b3b3b3;
     padding: 10px;
@@ -229,11 +229,16 @@ const PlaylistContainer = styled.div`
         padding: 0;
         margin: 0;
         display: flex;
-        flex-wrap: wrap; /* Allow playlist items to wrap to the next line if necessary */
+        flex-wrap: wrap; 
     }
     li {
-        padding: 5px 10px; /* Add padding to each playlist item */
+        padding: 5px 10px;
         color: white;
+        span {
+            background-color: #808080; /* Màu xám cho nền */
+            padding: 3px 5px; /* Tăng độ rộng và chiều cao của padding để bao quanh chữ */
+            border-radius: 3px; /* Làm mịn các góc */
+        }
         &:hover {
             color: #1db954;
             cursor: pointer;

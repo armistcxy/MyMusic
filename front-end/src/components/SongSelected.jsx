@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { AiFillClockCircle } from "react-icons/ai";
 import { useStateProvider } from "../utils/StateProvider";
@@ -6,9 +6,41 @@ import axios from "axios";
 import { reducerCases } from "../utils/Constants";
 import { FaPlay } from "react-icons/fa";
 import { changeTrack } from "./CurrentTrack";
+import { TiDownload, TiPlusOutline } from "react-icons/ti";
+import { toast } from "react-toastify";
+import { addTrackToPlaylist } from "./CurrentTrack";
 
 export default function SongSelected({ headerBackground }) {
-    const [{ token, selectedSongId, selectedSong, readyToListen }, dispatch] = useStateProvider();
+    const [{ token, selectedSongId, selectedSong, readyToListen, currentPlaying }, dispatch] = useStateProvider();
+    const [showPlaylists, setShowPlaylists] = useState(false);
+    const [playlists, setPlaylists] = useState([]);
+    const playlistRef = useRef();
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (playlistRef.current && !playlistRef.current.contains(event.target)) {
+                setShowPlaylists(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    const fetchPlaylists = async () => {
+        const response = await axios.get("http://localhost:8000/playlists/me", {
+            headers: {
+                Authorization: "Bearer " + token,
+                "Content-Type": "application/json",
+            },
+        });
+        setPlaylists(response.data);
+    };
+
+    const togglePlaylists = () => {
+        setShowPlaylists(!showPlaylists);
+    };
 
     useEffect(() => {
         const getSong = async () => {
@@ -64,80 +96,48 @@ export default function SongSelected({ headerBackground }) {
                     </div>
                 </div>
                 <div>
-                    <div className="
-                    ml-8
-                    mt-4">
+                    <div className="ml-8 mt-4 flex items-center space-x-4">
                         <button
-                            className="
-                                transition
-                                rounded-full
-                                flex
-                                items-center
-                                bg-green-500
-                                p-4
-                                drop-shadow-md
-                                translate
-                                translate-y-1/4
-                                group-hover:opacity-100
-                                group-hover:translate-y-0
-                                hover:scale-110">
-                            <FaPlay className="text-black" onClick={() => {
+                            className="transition rounded-full flex items-center justify-center bg-green-500 p-3 drop-shadow-md transform-gpu hover:scale-110"
+                            onClick={() => {
                                 dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: false });
-                                changeTrack(selectedSong.id, null, readyToListen, dispatch, selectedSong)}
-                                }></FaPlay>
+                                changeTrack(selectedSong.id, null, readyToListen, dispatch, selectedSong);
+                            }}
+                        >
+                            <FaPlay className="text-black" />
                         </button>
+                        <div className="playlist-icon relative">
+                            {token && (
+                                <TiPlusOutline
+                                    className="text-white scale-150 transition duration-300 hover:text-green-500"
+                                    onClick={togglePlaylists}
+                                />
+                            )}
+                            {showPlaylists && (
+                                <PlaylistContainer ref={playlistRef}>
+                                    <ul className="text-white">
+                                        {playlists.map((playlist) => (
+                                            <li
+                                                key={playlist.id}
+                                                onClick={() => {
+                                                    addTrackToPlaylist(token, currentPlaying.id, playlist.id);
+                                                    setShowPlaylists(false);
+                                                    toast.success("Add successfully");
+                                                }}
+                                            >
+                                                {playlist.name}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </PlaylistContainer>
+                            )}
+                        </div>
+                        {token && (
+                            <TiDownload
+                                className="text-white scale-150 transition duration-300 hover:text-green-500"
+                            />
+                        )}
                     </div>
-                </div>
-                <div className="list">
-                    {/* <div className="header__row">
-                        <div className="col">
-                            <span>#</span>
-                        </div>
-                        <div className="col">
-                            <span>TITLE</span>
-                        </div>
-                        <div className="col">
-                            <span>ALBUM</span>
-                        </div>
-                        <div className="col">
-                            <AiFillClockCircle />
-                        </div>
-                    </div> */}
-                    {/* <div className="tracks">
-                        {selectedSong.tracks.map(
-                            ({
-                                id,
-                                name,
-                                length,
-                                track_image_path,
-                                artist,
-                                album
-                            }, index) => {
-                                return (
-                                    <div className="row" key={id} onClick={() => changeTrack(id, token, readyToListen, dispatch)}>
-                                        <div className="col">
-                                            <span>{index + 1}</span>
-                                        </div>
-                                        <div className="col detail">
-                                            <div className="image">
-                                                <img src={track_image_path} alt="track" />
-                                            </div>
-                                            <div className="info">
-                                                <span className="name">{name}</span>
-                                                <span>{artist}</span>
-                                            </div>
-                                        </div>
-                                        <div className="col">
-                                            <span>{album}</span>
-                                        </div>
-                                        <div className="col">
-                                            <span>{calculateTime(length)}</span>
-                                        </div>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div> */}
                 </div>
             </>
         )
@@ -215,3 +215,45 @@ const Container = styled.div`
         }
     }
 `
+
+const PlaylistContainer = styled.div`
+    position: absolute;
+    left: 30px;
+    top: -150px; 
+    right: -150px; 
+    background-color: #282828;
+    border: 1px solid #b3b3b3;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 10;
+    max-width: 500px; 
+    overflow-x: auto; 
+    max-height: 150px; 
+    overflow-y: auto; 
+    &::-webkit-scrollbar {
+        width: 0.7rem;
+        &-thumb {
+            background-color: rgba(255, 255, 255, 0.6);
+        }
+    }
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap; 
+    }
+    li {
+        padding: 5px 10px;
+        color: white;
+        span {
+            background-color: #808080; /* Màu xám cho nền */
+            padding: 3px 5px; /* Tăng độ rộng và chiều cao của padding để bao quanh chữ */
+            border-radius: 3px; /* Làm mịn các góc */
+        }
+        &:hover {
+            color: #1db954;
+            cursor: pointer;
+        }
+    }
+`;

@@ -41,6 +41,8 @@ export default function Playlists({ openModal }) {
     };
     if (token) {
       getPlaylistData();
+      const intervalId = setInterval(getPlaylistData, 5000); // Cập nhật dữ liệu mỗi 3 giây
+      return () => clearInterval(intervalId);
     }
   }, [token, dispatch]);
 

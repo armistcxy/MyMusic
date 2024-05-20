@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { reducerCases } from "../utils/Constants";
 import { Link } from "react-router-dom";
 
-const amountSong = 10;
+const amountSong = 16;
 
 export default function PopularContent() {
     const [{ token, randomSongs, isRandom }, dispatch] = useStateProvider();
