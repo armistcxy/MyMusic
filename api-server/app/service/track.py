@@ -132,7 +132,7 @@ def filter_by_lev_distance(
     return result
 
 
-BASE_TRACK_PATH = "app/static"
+BASE_TRACK_PATH = "app/static/audio"
 
 
 # I consider using track_name for convenient way for develop, when deploy consider using id => better way IMO

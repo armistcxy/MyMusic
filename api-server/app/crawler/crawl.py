@@ -15,7 +15,7 @@ async def download(
     save_path: str | None = None,
 ):
     await page.goto(URL)
-    await page.locator("#query").fill(track_title)
+    await page.locator("#query").fill(f"{track_title} {artist}")
     await page.get_by_role("button").click()
     async with page.expect_download() as download_info:
         await page.locator("xpath=/html/body/div[3]/div[1]/div[2]/a[1]").click()
