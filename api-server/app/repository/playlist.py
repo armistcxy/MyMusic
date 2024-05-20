@@ -127,7 +127,9 @@ def update_track_in_playlist(
             remove_track_id_list.append(track.id)
         current_tracks_id.add(track.id)
 
+    logger.info([track.id for track in current_tracks])
     logger.info(remove_track_id_list)
+    logger.info("hi")
     if len(remove_track_id_list) > 0:
         remove_track_from_playlist(
             session=session,
