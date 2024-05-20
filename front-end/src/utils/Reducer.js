@@ -12,6 +12,7 @@ export const initialState = {
     selectedSongId: null,
     newestSongs: null,
     randomSongs: null,
+    isOpenDeletePlaylist: false,
     isRandom: false,
     isQuery: false,
     filterItems: [[],[],[]],
@@ -27,6 +28,12 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 token: action.token,
+            }
+        }
+        case reducerCases.SET_ISOPEN_DELETE_PLAYLIST: {
+            return {
+                ...state,
+                isOpenDeletePlaylist: action.isOpenDeletePlaylist,
             }
         }
         case reducerCases.SET_RANDOM: {

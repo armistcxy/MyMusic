@@ -6,6 +6,7 @@ import axios from "axios";
 import { reducerCases } from "../utils/Constants";
 import { changeTrack } from "./CurrentTrack";
 import { FaPlay } from "react-icons/fa";
+import { IoTrashOutline } from "react-icons/io5";
 
 export default function PlaylistSelected({ headerBackground }) {
     const [{ token, selectedPlaylistId, selectedPlaylist, readyToListen }, dispatch] = useStateProvider();
@@ -36,6 +37,7 @@ export default function PlaylistSelected({ headerBackground }) {
                     album: track.album,
                 })),
             };
+            console.log(response.data.id);
             dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist: selectedPlaylist })
         };
         if (token) {
@@ -43,6 +45,9 @@ export default function PlaylistSelected({ headerBackground }) {
         }
     }, [token, dispatch, selectedPlaylistId]);
 
+    const makeSureToDelete = () => {
+        dispatch({ type: reducerCases.SET_ISOPEN_DELETE_PLAYLIST, isOpenDeletePlaylist: true})
+    }
 
     const calculateTime = (sec) => {
         const minutes = Math.floor(sec / 60);
@@ -55,6 +60,7 @@ export default function PlaylistSelected({ headerBackground }) {
     return <Container headerBackground={headerBackground}>
         {selectedPlaylist && (
             <>
+                
                 <div className="playlist">
                     <div className="image">
                         <img src={
@@ -68,6 +74,9 @@ export default function PlaylistSelected({ headerBackground }) {
                 </div>
                 <div>
                     <div className="
+                    flex
+                    flex-row
+                    justify-between
                     ml-8
                     mt-4">
                         <button
@@ -85,6 +94,14 @@ export default function PlaylistSelected({ headerBackground }) {
                                 group-hover:translate-y-0
                                 hover:scale-110">
                             <FaPlay className="text-black"></FaPlay>
+                        </button>
+                        <button className="
+                            transition
+                            order-last
+                            mr-8
+                            scale-150
+                            hover:scale-170">
+                            <IoTrashOutline className="text-white" onClick={() => makeSureToDelete()}></IoTrashOutline>
                         </button>
                     </div>
                 </div>
