@@ -203,7 +203,7 @@ const Container1 = styled.div`
                 color: white;
             }
             color: ${({ isRepeatTrack }) =>
-        isRepeatTrack ? "white" : "#b3b3b3"}; 
+        isRepeatTrack ? "green" : "#b3b3b3"}; 
         }
     }
 `;

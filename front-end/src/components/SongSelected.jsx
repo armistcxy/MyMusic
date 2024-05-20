@@ -4,7 +4,7 @@ import { useStateProvider } from "../utils/StateProvider";
 import axios from "axios";
 import { reducerCases } from "../utils/Constants";
 import { FaPlay } from "react-icons/fa";
-import { changeTrack } from "./CurrentTrack";
+import { changeTrack, downloadAudio } from "./CurrentTrack";
 import { TiDownload, TiPlusOutline } from "react-icons/ti";
 import { toast } from "react-toastify";
 import { addTrackToPlaylist } from "./CurrentTrack";
@@ -134,6 +134,7 @@ export default function SongSelected({ headerBackground }) {
                         {token && (
                             <TiDownload
                                 className="text-white scale-150 transition duration-300 hover:text-green-500"
+                                onClick={()=>{downloadAudio(selectedSong.song)}}
                             />
                         )}
                     </div>

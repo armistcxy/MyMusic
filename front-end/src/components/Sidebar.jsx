@@ -29,8 +29,8 @@ export default function Sidebar({ openModal }) {
             <div className="top_links">
                 <div className="logo">
                     <img
-                        src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_White.png"
-                        alt="spotify"
+                        src="https://scontent.fhan14-5.fna.fbcdn.net/v/t1.15752-9/441091466_358428320580641_1009732377608950088_n.png?_nc_cat=104&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeG87f2Pvu4UvVF5g-ul1oLfqOL04fsv4tmo4vTh-y_i2VTu9u-un7e5I2zZo8hWclsZNV9jGI1lnNAjCDBsT_eZ&_nc_ohc=BIawS0fqo-UQ7kNvgFqCpjN&_nc_ht=scontent.fhan14-5.fna&oh=03_Q7cD1QGh_VU3yg1y6pZSaOwsNfzMs5dOow7jtuThtwsoaajsgw&oe=6672E6E6"
+                        alt="flotify"
                     />
                 </div>
                 <ul>

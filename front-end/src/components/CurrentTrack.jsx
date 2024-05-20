@@ -69,8 +69,27 @@ export const addTrackToPlaylist = async (token, newTrackId, playlistId) => {
             },
         }
     );
-
 };
+
+export const downloadAudio = (link) => {
+    const audioUrl = link; 
+
+    axios({
+      url: audioUrl,
+      method: 'GET',
+      responseType: 'blob', 
+    }).then(response => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', url.substring(url.lastIndexOf('/') + 1));
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    }).catch(error => {
+      console.error('Lỗi khi tải xuống tệp âm thanh:', error);
+    });
+  };
 
 const getCurrentTrack = async (token, dispatch) => {
     try {
@@ -105,7 +124,6 @@ export default function CurrentTrack() {
     const [showPlaylists, setShowPlaylists] = useState(false);
     const [playlists, setPlaylists] = useState([]);
     const playlistRef = useRef();
-
     useEffect(() => {
         if (token) {
             getCurrentTrack(token, dispatch);
@@ -140,6 +158,7 @@ export default function CurrentTrack() {
         fetchPlaylists();
     };
 
+
     return (
         <Container>
             {currentPlaying && currentPlaying.id && (
@@ -165,7 +184,7 @@ export default function CurrentTrack() {
                             </PlaylistContainer>
                         )}
                     </div>
-                    {token ? <TiDownload /> : <></>}
+                    {token ? <TiDownload onClick={() => {downloadAudio(currentPlaying.song)}}/> : <></>}
                 </div>
             )}
         </Container>
