@@ -72,7 +72,7 @@ export default function RecentContent() {
                         data={item} />
                 </Link>
             ))} */}
-            This is Recent
+            {/* This is Recent */}
         </div>        
     )
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useStateProvider } from "../utils/StateProvider";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function CreatePlaylistModal({ closeModal }) {
     const [{token},dispatch] = useStateProvider();
@@ -8,7 +9,7 @@ export default function CreatePlaylistModal({ closeModal }) {
     const [playlistThumbnail, setPlaylistThumbnail] = useState("");
 
     const createPlaylist = async () => {
-        const response = await axios.post(
+        try{const response = await axios.post(
             "http://localhost:8000/playlists",
             {name: playlistName},
             {
@@ -20,6 +21,8 @@ export default function CreatePlaylistModal({ closeModal }) {
         );
         if (response.status == 200) {
             closeModal();
+        }} catch (error) {
+            toast.error("You already have playlist with this name");
         }
     };
 

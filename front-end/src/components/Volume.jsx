@@ -83,6 +83,41 @@ const Container = styled.div`
             background: #1db954;
         }
     }
+    input::-moz-range-track {
+        width: 100%;
+        height: 5px;
+        outline: none;
+        appearance: none;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      
+      input::-moz-range-progress {
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        background: #848484;
+        width: ${props => props.volume * 100}%;
+        height: 100%;
+        border-radius: 10px;
+        z-index: 2;
+        transition: width 250ms linear;
+      }
+      
+      input::-moz-range-thumb {
+        -moz-appearance: none;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        position: relative;
+        margin: -2px 0 0 0;
+        z-index: 3;
+        box-sizing: border-box;
+        transition: all 250ms linear;
+      }
     svg {
         color: #b3b3b3;
         transition: 0.2s ease-in-out;
