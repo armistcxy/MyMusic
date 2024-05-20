@@ -24,7 +24,6 @@ export default function PlaylistSelected({ headerBackground }) {
                     },
                 }
             );
-
             const selectedPlaylist = {
                 id: response.data.id,
                 playlist_name: response.data.name,
@@ -125,7 +124,9 @@ export default function PlaylistSelected({ headerBackground }) {
                                 group-hover:opacity-100
                                 group-hover:translate-y-0
                                 hover:scale-110">
-                            <FaPlay className="text-black"></FaPlay>
+                            <FaPlay className="text-black" onClick={()=> {
+                                changeTrack(selectedPlaylist.tracks[0].id, token, readyToListen, dispatch);
+                            }}></FaPlay>
                         </button>
                         <button className="
                             transition
