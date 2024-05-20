@@ -27,7 +27,7 @@ export default function PlayerControls() {
         setDuration(seconds);
         // set max prop with out seconds in input[range]
         progressBar.current.max = seconds;
-    }, [audioPlayer?.current?.loadedmetada, audioPlayer?.current?.readyState]);
+    }, [audioPlayer?.current?.loadedmetada, audioPlayer?.current?.readyState, currentPlaying]);
 
     useEffect(() => {
         audioPlayer.current.volume = volume;
@@ -47,7 +47,13 @@ export default function PlayerControls() {
     }, [currentPlaying, dispatch]);
 
     const whilePlaying = () => {
-        progressBar.current.value = audioPlayer.current.currentTime;
+        if (progressBar.current) {
+            progressBar.current.value = audioPlayer?.current?.currentTime;
+            progressBar.current.style.setProperty(
+                "--played-width",
+                `${(progressBar.current.value/ duration) * 100}%`
+            );
+        }
         changeCurrentTime();
         animationRef.current = requestAnimationFrame(whilePlaying);
     };
@@ -58,11 +64,13 @@ export default function PlayerControls() {
     };
 
     const changeCurrentTime = () => {
-        progressBar.current.style.setProperty(
-            "--played-width",
-            `${(progressBar.current.value / duration) * 100}%`
-        );
-        setCurrenttime(progressBar.current.value);
+        if (progressBar.current)
+            progressBar.current.style.setProperty(
+                "--played-width",
+                `${(progressBar.current.value/ duration) * 100}%`
+            );
+        if (progressBar.current)
+            setCurrenttime(progressBar.current.value);
     };
 
     const calculateTime = (sec) => {
@@ -74,6 +82,7 @@ export default function PlayerControls() {
     };
 
     const changeState = async () => {
+
         if (currentPlaying.id) {
             if (!playerState) {
                 if (!readyToListen) {
@@ -82,16 +91,19 @@ export default function PlayerControls() {
                         readyToListen: true,
                     });
                 }
-                audioPlayer.current.play();
                 progressBar.current.style.setProperty(
                     "--played-width",
                     `${(progressBar.current.value / duration) * 100}%`
                 );
-                //console.log((progressBar.current.value / duration) * 100);
                 animationRef.current = requestAnimationFrame(whilePlaying);
+                audioPlayer.current.play();
             } else {
-                audioPlayer.current.pause();
+                progressBar.current.style.setProperty(
+                    "--played-width",
+                    `${(progressBar.current.value/ duration) * 100}%`
+                );
                 cancelAnimationFrame(animationRef.current);
+                audioPlayer.current.pause();
             }
 
             dispatch({
@@ -104,7 +116,7 @@ export default function PlayerControls() {
 
     return (
         <Container>
-            <audio src={currentPlaying?.song} preload="metadata" ref={audioPlayer} />
+            <audio src={currentPlaying?.song} preload="metadata" ref={audioPlayer} type="audio/mpeg" />
             <Container1>
                 <div className="shuffle">
                     <BsShuffle />
@@ -133,7 +145,7 @@ export default function PlayerControls() {
                     className="progressBar"
                     ref={progressBar}
                     defaultValue="0"
-                    onChange={changeProgress}
+                    onChange={() => changeProgress()}
                 />
                 <div className="duration" >
                     {duration && !isNaN(duration) && calculateTime(duration)
@@ -213,7 +225,7 @@ const Container2 = styled.div`
         top: 0;
         left: 0;
         background: #848484;
-        width: var(--played-width);
+        width: var(--played-width, 0%);
         height: 100%;
         border-radius: 10px;
         z-index: 2;
@@ -236,6 +248,37 @@ const Container2 = styled.div`
             background: #1db954;
             opacity: 1;
         }
+      }
+      .progressBar::-moz-range-track {
+        width: 100%;
+        height: 5px;
+        outline: none;
+        appearance: none;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      
+      .progressBar::-moz-range-progress {
+        background: #848484;
+        width: var(--played-width);
+        height: 100%;
+        border-radius: 10px;
+        z-index: 2;
+        transition: width 250ms linear;
+      }
+      
+      .progressBar::-moz-range-thumb {
+        -moz-appearance: none;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        position: relative;
+        margin: -2px 0 0 0;
+        z-index: 3;
+        box-sizing: border-box;
+        transition: all 250ms linear;
       }
 `
 

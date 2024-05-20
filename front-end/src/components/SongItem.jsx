@@ -1,6 +1,7 @@
 import { FaPlay } from "react-icons/fa"
 import { changeTrack } from "./CurrentTrack"
 import { useStateProvider } from "../utils/StateProvider"
+import { reducerCases } from "../utils/Constants";
 
 export default function SongItem({ data }) {
     const [{readyToListen},dispatch] = useStateProvider();
@@ -60,7 +61,10 @@ export default function SongItem({ data }) {
                             group-hover:opacity-100
                             group-hover:translate-y-0
                             hover:scale-110">
-                        <FaPlay className="text-black" onClick={() => {changeTrack(data.id,null,readyToListen,dispatch,data)}}></FaPlay>
+                        <FaPlay className="text-black" onClick={() => {
+                            dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: false });
+                            changeTrack(data.id,null,readyToListen,dispatch,data);
+                            }}></FaPlay>
                     </button>
                 </div>
             </div>

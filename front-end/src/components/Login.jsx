@@ -209,6 +209,8 @@ const Login = () => {
             console.log(access_token);
             dispatch({ type: reducerCases.SET_TOKEN, token: access_token });
             dispatch({ type: reducerCases.USER_LOGGED_IN });
+            dispatch({ type: reducerCases.SET_READY, readyToListen: false });
+            dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: false });
             setAuth({ email, password, access_token, refresh_token });
             setIsSuccess(true);
             toast.success("Login successfully.");
@@ -224,7 +226,7 @@ const Login = () => {
                 toast.error("Missing Username or Password");
             } else if (err.response?.status === 401) {
                 //setErrMsg('Unauthorized');
-                toast.error("Unauthorized");
+                toast.error("Incorrect username or password.");
             } else {
                 //setErrMsg('Login Failed');
                 toast.error("Login Failed");
@@ -273,16 +275,6 @@ const Login = () => {
                                     value={password}
                                     required
                                 />
-
-                                <div className="checkbox-container">
-                                    <label htmlFor="rememberMe">Remember Me</label>
-                                    <input
-                                        type="checkbox"
-                                        id="rememberMe"
-                                        checked={rememberMe}
-                                        onChange={(e) => setRememberMe(e.target.checked)}
-                                    />
-                                </div>
                                 <button type="submit">Sign In</button>
                                 <p className="signup-link">
                                     Need an Account?<br />

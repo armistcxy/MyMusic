@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 // Define the changeTrack function outside of the component
 export const changeTrack = async (id, token, readyToListen, dispatch, song = null) => {
     if (song) {
-        console.log(song.song);
         const currentPlaying = {
             id: song.id,
             name: song.name,
@@ -17,6 +16,7 @@ export const changeTrack = async (id, token, readyToListen, dispatch, song = nul
             image: `http://localhost:8000/static/${song.track_image_path}`,
             song: song.song,
         };
+        dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: false });
         dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: currentPlaying });
         if (!readyToListen) {
             dispatch({ type: reducerCases.SET_READY, readyToListen: true });
@@ -54,7 +54,6 @@ export const addTrackToPlaylist = async (token, newTrackId, playlistId) => {
     const curTrack = response.data.tracks.map((track) =>
         track.id
     );
-    console.log(curTrack);
     const response2 = await axios.patch(
         `http://localhost:8000/playlists/${playlistId}`,
         {
@@ -74,27 +73,30 @@ export const addTrackToPlaylist = async (token, newTrackId, playlistId) => {
 };
 
 const getCurrentTrack = async (token, dispatch) => {
-    const response = await axios.get(
-        "http://localhost:8000/users/me/last",
-        {
-            headers: {
-                Authorization: "Bearer " + token,
-                "Content-Type": "application/json",
-            },
+    try {
+        const response = await axios.get(
+            "http://localhost:8000/users/me/last",
+            {
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        if (response.data !== "") {
+            const currentPlaying = {
+                id: response.data.id,
+                name: response.data.name,
+                artists: response.data.artists.map((artist) => artist.name),
+                image: `http://localhost:8000/static/${response.data.track_image_path}`,
+                song: `http://localhost:8000/${response.data.audio_url}`,
+            };
+            dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: currentPlaying });
+        } else {
+            dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: null });
         }
-    );
-    console.log(response);
-    if (response.data !== "") {
-        const currentPlaying = {
-            id: response.data.id,
-            name: response.data.name,
-            artists: response.data.artists.map((artist) => artist.name),
-            image: `http://localhost:8000/static/${response.data.track_image_path}`,
-            song: `http://localhost:8000/${response.data.audio_url}`,
-        };
-        dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: currentPlaying });
-    } else {
-        dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: null });
+    } catch (error) {
+        console.error('Error fetching newest songs:', error);
     }
 };
 
@@ -150,9 +152,9 @@ export default function CurrentTrack() {
                             {currentPlaying?.artists?.join(", ")}
                         </h6>
                     </div>
-                    <TiHeartOutline />
+                    {token ? <TiHeartOutline /> : <></>}
                     <div className="playlist-icon">
-                        <TiPlusOutline onClick={togglePlaylists} />
+                        {token ? <TiPlusOutline onClick={togglePlaylists} /> : <></>}
                         {showPlaylists && (
                             <PlaylistContainer ref={playlistRef} >
                                 <ul>

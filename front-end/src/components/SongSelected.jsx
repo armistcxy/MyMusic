@@ -81,7 +81,10 @@ export default function SongSelected({ headerBackground }) {
                                 group-hover:opacity-100
                                 group-hover:translate-y-0
                                 hover:scale-110">
-                            <FaPlay className="text-black" onClick={() => {changeTrack(selectedSong.id,null,readyToListen,dispatch,selectedSong)}}></FaPlay>
+                            <FaPlay className="text-black" onClick={() => {
+                                dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: false });
+                                changeTrack(selectedSong.id, null, readyToListen, dispatch, selectedSong)}
+                                }></FaPlay>
                         </button>
                     </div>
                 </div>
