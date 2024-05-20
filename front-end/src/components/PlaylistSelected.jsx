@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { AiFillClockCircle } from "react-icons/ai";
 import { useStateProvider } from "../utils/StateProvider";
@@ -7,12 +7,9 @@ import { reducerCases } from "../utils/Constants";
 import { changeTrack } from "./CurrentTrack";
 import { FaPlay } from "react-icons/fa";
 import { IoTrashOutline } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
 
 export default function PlaylistSelected({ headerBackground }) {
     const [{ token, selectedPlaylistId, selectedPlaylist, readyToListen }, dispatch] = useStateProvider();
-    const navigate = useNavigate();
-    const [isOpenDeletePlaylist, setIsOpenDeletePlaylist] = useState(false);
 
     useEffect(() => {
         const getInitialPlaylist = async () => {
@@ -49,37 +46,7 @@ export default function PlaylistSelected({ headerBackground }) {
     }, [token, dispatch, selectedPlaylistId]);
 
     const makeSureToDelete = () => {
-        setIsOpenDeletePlaylist(true);
-        
-    }
-
-    const deleteThisPlaylist = async (id_playlist) => {
-        await axios.delete(
-            `http://localhost:8000/playlists/${id_playlist}`,
-            {
-                headers: {
-                    Authorization: "Bearer " + token,
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-
-        const response = await axios.get(
-            'http://localhost:8000/playlists/me',
-            {
-              headers: {
-                Authorization: "Bearer " + token,
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          const items = response.data;
-          const playlists = items.map(({ name, id }) => {
-            return { name, id };
-        });
-        dispatch({ type: reducerCases.SET_PLAYLISTS, playlists: playlists });
-        setIsOpenDeletePlaylist(false);
-        navigate('/lib');
+        dispatch({ type: reducerCases.SET_ISOPEN_DELETE_PLAYLIST, isOpenDeletePlaylist: true})
     }
 
     const calculateTime = (sec) => {
@@ -93,6 +60,7 @@ export default function PlaylistSelected({ headerBackground }) {
     return <Container headerBackground={headerBackground}>
         {selectedPlaylist && (
             <>
+                
                 <div className="playlist">
                     <div className="image">
                         <img src={
@@ -133,7 +101,7 @@ export default function PlaylistSelected({ headerBackground }) {
                             mr-8
                             scale-150
                             hover:scale-170">
-                            <IoTrashOutline className="text-white" onClick={() => makeSureToDelete(selectedPlaylistId)}></IoTrashOutline>
+                            <IoTrashOutline className="text-white" onClick={() => makeSureToDelete()}></IoTrashOutline>
                         </button>
                     </div>
                 </div>
