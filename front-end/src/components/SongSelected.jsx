@@ -39,7 +39,7 @@ export default function SongSelected({ headerBackground }) {
     };
 
     const togglePlaylists = () => {
-        setShowPlaylists(!showPlaylists);
+        setShowPlaylists(!showPlaylists);fetchPlaylists();
     };
 
     useEffect(() => {
@@ -125,7 +125,7 @@ export default function SongSelected({ headerBackground }) {
                                                     toast.success("Add successfully");
                                                 }}
                                             >
-                                                {playlist.name}
+                                                <span>{playlist.name}</span>
                                             </li>
                                         ))}
                                     </ul>

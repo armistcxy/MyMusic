@@ -137,6 +137,7 @@ export default function CurrentTrack() {
 
     const togglePlaylists = () => {
         setShowPlaylists(!showPlaylists);
+        fetchPlaylists();
     };
 
     return (
