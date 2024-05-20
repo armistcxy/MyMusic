@@ -27,13 +27,13 @@ export default function SearchContent() {
                             sm:grid-cols-3
                             md:grid-cols-3
                             lg:grid-cols-4
-                            xl:grid-cols-5
+                            xl:grid-cols-6
                             2xl:grid-cols-8
                             gap-4">
                             {filterItems[0].map((song) => (
                                 <div
                                     key={song?.id}
-                                    className="flex items-center gap-x-4 w-full">
+                                    >
                                     <Link to="/songview" onClick={() => selectSong(song?.id)}>
                                         <SongItem
                                             key={song.id}
@@ -88,7 +88,7 @@ export default function SearchContent() {
                             sm:grid-cols-3
                             md:grid-cols-3
                             lg:grid-cols-4
-                            xl:grid-cols-5
+                            xl:grid-cols-6
                             2xl:grid-cols-8
                             gap-4">
                             {filterItems[2].map((album) => (
