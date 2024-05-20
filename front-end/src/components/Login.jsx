@@ -174,7 +174,7 @@ const Login = () => {
     const [rememberMe, setRememberMe] = useState(false);
     const [errMsg, setErrMsg] = useState('');
     const [isSuccess, setIsSuccess] = useState(false);
-    const [{}, dispatch] = useStateProvider();
+    const [{ }, dispatch] = useStateProvider();
     const navigate = useNavigate();
 
     // Focus on email input on component mount

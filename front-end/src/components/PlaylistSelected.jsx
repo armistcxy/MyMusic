@@ -43,7 +43,7 @@ export default function PlaylistSelected({ headerBackground }) {
         };
         if (token) {
             getInitialPlaylist();
-            const intervalId = setInterval(getInitialPlaylist, 3000); 
+            const intervalId = setInterval(getInitialPlaylist, 3000);
             return () => clearInterval(intervalId);
         }
     }, [token, dispatch, selectedPlaylistId]);
@@ -74,7 +74,7 @@ export default function PlaylistSelected({ headerBackground }) {
             track.id
         );
         const newCurTrack = curTrack.filter(id => id !== removeTrackId);
-        await axios.patch(
+        const response2 = await axios.patch(
             `http://localhost:8000/playlists/${playlistId}`,
             {
                 "track_id_list": newCurTrack
@@ -86,7 +86,7 @@ export default function PlaylistSelected({ headerBackground }) {
                 },
             }
         );
-    
+
     };
 
     return <Container headerBackground={headerBackground}>
@@ -195,7 +195,7 @@ export default function PlaylistSelected({ headerBackground }) {
                                                         <IoTrashOutline className="text-red-500 z-[10] rounded-full hover:scale-150 transition-transform duration-200"
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
-                                                                removeTrack(token,id,selectedPlaylistId);
+                                                                removeTrack(token, id, selectedPlaylistId);
                                                                 toast.success("Removed!");
                                                             }}
                                                         />

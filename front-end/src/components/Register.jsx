@@ -147,7 +147,7 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (!validName || !validPwd || !validMatch || !validEmail) {
             setErrMsg("Invalid Entry");
             return;
@@ -155,7 +155,7 @@ const Register = () => {
 
         try {
             const response = await axios.post(REGISTER_URL,
-                JSON.stringify({ email, name : user, password : pwd}),
+                JSON.stringify({ email, name: user, password: pwd }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: false
@@ -213,7 +213,7 @@ const Register = () => {
                         </label>
                         {!validEmail && email ? (
                             <span className="invalid-feedback">Invalid email format</span>
-                        ): <span className="valid-feedback" > t  </span>}
+                        ) : <span className="valid-feedback" > t  </span>}
 
                         <label htmlFor="username">
                             Username:
@@ -230,7 +230,7 @@ const Register = () => {
                         </label>
                         {!validName && user ? (
                             <span className="invalid-feedback">Invalid username format</span>
-                        ): <span className="valid-feedback" > t  </span>}
+                        ) : <span className="valid-feedback" > t  </span>}
 
                         <label htmlFor="password">
                             Password:
@@ -245,7 +245,7 @@ const Register = () => {
                         </label>
                         {!validPwd && pwd ? (
                             <span className="invalid-feedback">Invalid password format</span>
-                        ): <span className="valid-feedback" > t  </span>}
+                        ) : <span className="valid-feedback" > t  </span>}
 
                         <label htmlFor="confirm_pwd">
                             Confirm Password:
@@ -260,8 +260,8 @@ const Register = () => {
                         </label>
                         {!validMatch && matchPwd ? (
                             <span className="invalid-feedback">Confirm password don't match with password</span>
-                        ): <span className="valid-feedback" > t  </span>}
-                    <p ref={errRef} className={errMsg ? "error" : "offscreen"} aria-live="assertive">{errMsg ? errMsg : " "}</p>
+                        ) : <span className="valid-feedback" > t  </span>}
+                        <p ref={errRef} className={errMsg ? "error" : "offscreen"} aria-live="assertive">{errMsg ? errMsg : " "}</p>
                         <button disabled={!validName || !validPwd || !validMatch || !validEmail}>Sign Up</button>
                     </form>
                     <p className="already-registered">

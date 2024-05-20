@@ -38,7 +38,7 @@ export default function SongSelected({ headerBackground }) {
     };
 
     const togglePlaylists = () => {
-        setShowPlaylists(!showPlaylists);fetchPlaylists();
+        setShowPlaylists(!showPlaylists); fetchPlaylists();
     };
 
     useEffect(() => {

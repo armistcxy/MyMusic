@@ -29,12 +29,12 @@ export default function SearchContent() {
                             {filterItems[0].map((song) => (
                                 <div
                                     key={song?.id}
-                                    >
+                                >
                                     <Link to="/songview" onClick={() => selectSong(song?.id)}>
                                         <SongItem
                                             key={song.id}
                                             data={{
-                                                id : song.id,
+                                                id: song.id,
                                                 name: song.name,
                                                 track_image_path: song.track_image_path,
                                                 artists: song.artists.map((artist) => ({
@@ -42,7 +42,7 @@ export default function SearchContent() {
                                                     name: artist.name,
                                                     artist_image_path: artist.artist_image_path,
                                                 })),
-                                                song:"http://localhost:8000/" + song.audio_url,
+                                                song: "http://localhost:8000/" + song.audio_url,
                                             }} />
                                     </Link>
                                 </div>

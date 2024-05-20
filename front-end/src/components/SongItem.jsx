@@ -4,7 +4,7 @@ import { useStateProvider } from "../utils/StateProvider"
 import { reducerCases } from "../utils/Constants";
 
 export default function SongItem({ data }) {
-    const [{readyToListen},dispatch] = useStateProvider();
+    const [{ readyToListen }, dispatch] = useStateProvider();
     return (
         <div
             className="
@@ -63,8 +63,8 @@ export default function SongItem({ data }) {
                             hover:scale-110">
                         <FaPlay className="text-black" onClick={() => {
                             dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: false });
-                            changeTrack(data.id,null,readyToListen,dispatch,data);
-                            }}></FaPlay>
+                            changeTrack(data.id, null, readyToListen, dispatch, data);
+                        }}></FaPlay>
                     </button>
                 </div>
             </div>

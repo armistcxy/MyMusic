@@ -5,7 +5,7 @@ import { reducerCases } from "../utils/Constants";
 import { RxSpeakerLoud, RxSpeakerModerate, RxSpeakerQuiet, RxSpeakerOff } from "react-icons/rx";
 
 export default function Volume() {
-    const [{volume}, dispatch] = useStateProvider();
+    const [{ volume }, dispatch] = useStateProvider();
     const setVolume = (e) => {
         const curVolume = e.target.value / 100;
         dispatch({
@@ -29,12 +29,12 @@ export default function Volume() {
 
     return (
         <Container volume={volume}>
-            {volume <= 0 && <RxSpeakerOff className="loudspeaker" onClick={setUnmute}/>}
-            {volume > 0 && volume <= 0.25 && <RxSpeakerQuiet className="loudspeaker" onClick={setMute}/>}
-            {volume > 0.25 && volume <= 0.5 && <RxSpeakerModerate className="loudspeaker" onClick={setMute}/>}
-            {volume > 0.5 && <RxSpeakerLoud className="loudspeaker" onClick={setMute}/>}
-            <input type="range" min={0} max={100} onMouseUp={(e => setVolume(e))}/>
-        </Container>     
+            {volume <= 0 && <RxSpeakerOff className="loudspeaker" onClick={setUnmute} />}
+            {volume > 0 && volume <= 0.25 && <RxSpeakerQuiet className="loudspeaker" onClick={setMute} />}
+            {volume > 0.25 && volume <= 0.5 && <RxSpeakerModerate className="loudspeaker" onClick={setMute} />}
+            {volume > 0.5 && <RxSpeakerLoud className="loudspeaker" onClick={setMute} />}
+            <input type="range" min={0} max={100} onMouseUp={(e => setVolume(e))} />
+        </Container>
     )
 }
 

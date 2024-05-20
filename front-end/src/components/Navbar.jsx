@@ -27,15 +27,15 @@ export default function Navbar() {
     getFilter(value);
   }
   useEffect(() => {
-      if (query === "") {
-        dispatch({ type: reducerCases.SET_QUERY, isQuery : false});
-      }
-      else dispatch({ type: reducerCases.SET_QUERY, isQuery : true});
+    if (query === "") {
+      dispatch({ type: reducerCases.SET_QUERY, isQuery: false });
+    }
+    else dispatch({ type: reducerCases.SET_QUERY, isQuery: true });
   }, [query, dispatch]);
   useEffect(() => {
     if (location.pathname !== "/search") {
       setQuery("");
-      dispatch({ type: reducerCases.SET_FILTER, filterItems: [[],[],[]] });
+      dispatch({ type: reducerCases.SET_FILTER, filterItems: [[], [], []] });
     }
   }, [location.pathname, dispatch]);
 
@@ -54,7 +54,7 @@ export default function Navbar() {
       const fil = response.data;
       dispatch({ type: reducerCases.SET_FILTER, filterItems: fil });
     } else
-    dispatch({ type: reducerCases.SET_FILTER, filterItems: [[],[],[]] });
+      dispatch({ type: reducerCases.SET_FILTER, filterItems: [[], [], []] });
   }
 
   useEffect(() => {

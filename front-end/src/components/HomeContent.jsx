@@ -23,30 +23,30 @@ export default function HomeContent() {
                     }
                 );
                 const newestSongs = {
-                    songs: response.data.map(( song ) => ({
+                    songs: response.data.map((song) => ({
                         id: song.id,
                         name: song.name,
                         length: song.length,
                         song: "http://localhost:8000/" + song.audio_url,
                         track_image_path: song.track_image_path,
-                        artists: song.artists.map(( artist ) => ({
+                        artists: song.artists.map((artist) => ({
                             id: artist.id,
                             name: artist.name,
                             artist_image_path: artist.artist_image_path,
                         })),
                         album: song.album,
-                        categories: song.categories.map(( categorie ) => ({
+                        categories: song.categories.map((categorie) => ({
                             id: categorie.id,
                             name: categorie.name,
                         })),
                     })),
                 };
-                
+
                 dispatch({ type: reducerCases.SET_NEWEST_SONGS, newestSongs: newestSongs })
             } catch (error) {
                 console.error('Error fetching newest songs:', error);
             }
-            
+
         };
         getNewestSongs();
     }, []);
@@ -54,7 +54,7 @@ export default function HomeContent() {
     const selectSong = (selectedSongId) => {
         dispatch({ type: reducerCases.SET_SONG_ID, selectedSongId: selectedSongId })
     }
-    
+
     return (
         <div className="grid
         grid-cols-2
@@ -69,10 +69,10 @@ export default function HomeContent() {
                 <Link to="songview" onClick={() => selectSong(item.id)}>
                     <SongItem
                         key={item.id}
-                        onClick={() => {}}
+                        onClick={() => { }}
                         data={item} />
                 </Link>
             ))}
-        </div>        
+        </div>
     )
 }

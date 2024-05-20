@@ -50,7 +50,7 @@ export default function PlayerControls() {
             progressBar.current.value = audioPlayer?.current?.currentTime;
             progressBar.current.style.setProperty(
                 "--played-width",
-                `${(progressBar.current.value/ duration) * 100}%`
+                `${(progressBar.current.value / duration) * 100}%`
             );
         }
         changeCurrentTime();
@@ -66,7 +66,7 @@ export default function PlayerControls() {
         if (progressBar.current)
             progressBar.current.style.setProperty(
                 "--played-width",
-                `${(progressBar.current.value/ duration) * 100}%`
+                `${(progressBar.current.value / duration) * 100}%`
             );
         if (progressBar.current)
             setCurrenttime(progressBar.current.value);
@@ -81,7 +81,7 @@ export default function PlayerControls() {
             audioPlayer.current.currentTime = 0;
             audioPlayer.current.play();
         }
-      };
+    };
 
     const calculateTime = (sec) => {
         const minutes = Math.floor(sec / 60);
@@ -110,7 +110,7 @@ export default function PlayerControls() {
             } else {
                 progressBar.current.style.setProperty(
                     "--played-width",
-                    `${(progressBar.current.value/ duration) * 100}%`
+                    `${(progressBar.current.value / duration) * 100}%`
                 );
                 cancelAnimationFrame(animationRef.current);
                 audioPlayer.current.pause();
@@ -145,7 +145,7 @@ export default function PlayerControls() {
                     <CgPlayTrackNext /*onClick={() => changeTrack("next")}*/ />
                 </div>
                 <div className="repeat">
-                    <FiRepeat onClick={() => repeatCurrentTrack()}/>
+                    <FiRepeat onClick={() => repeatCurrentTrack()} />
                 </div>
             </Container1>
             <Container2 >
@@ -203,7 +203,7 @@ const Container1 = styled.div`
                 color: white;
             }
             color: ${({ isRepeatTrack }) =>
-            isRepeatTrack ? "white" : "#b3b3b3"}; 
+        isRepeatTrack ? "white" : "#b3b3b3"}; 
         }
     }
 `;

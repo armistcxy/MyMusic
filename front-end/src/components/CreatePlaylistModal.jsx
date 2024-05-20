@@ -10,25 +10,25 @@ export default function CreatePlaylistModal({ closeModal }) {
 
     const createPlaylist = async () => {
         try {
-            if (playlistName!==""){
-            const response = await axios.post(
-                "http://localhost:8000/playlists",
-                { name: playlistName },
-                {
-                    headers: {
-                        Authorization: "Bearer " + token,
-                        "Content-Type": "application/json",
-                    },
+            if (playlistName !== "") {
+                const response = await axios.post(
+                    "http://localhost:8000/playlists",
+                    { name: playlistName },
+                    {
+                        headers: {
+                            Authorization: "Bearer " + token,
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                if (response.status === 200) {
+                    closeModal();
+                    toast.success("Create successfully");
                 }
-            );
-            if (response.status === 200) {
-                closeModal();
-                toast.success("Create successfully");
             }
-        }
-        else {
-            toast.error("You need to fill playlist name");
-        }
+            else {
+                toast.error("You need to fill playlist name");
+            }
         } catch (error) {
             toast.error("You already have playlist with this name");
         }

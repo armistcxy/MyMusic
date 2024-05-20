@@ -152,7 +152,7 @@ export default function CurrentTrack() {
                         <h6 className="track__info__track__artists">
                             {currentPlaying?.artists?.join(", ")}
                         </h6>
-                    </div>                    
+                    </div>
                     <div className="playlist-icon">
                         {token ? <TiPlusOutline onClick={togglePlaylists} /> : <></>}
                         {showPlaylists && (

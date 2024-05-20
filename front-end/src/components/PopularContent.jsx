@@ -45,7 +45,7 @@ export default function PopularContent() {
         } catch (error) {
             console.error('Error fetching newest songs:', error);
         }
-        
+
     };
 
     if (!isRandom) {

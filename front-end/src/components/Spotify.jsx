@@ -42,18 +42,18 @@ export default function Spotify() {
         const response = await axios.get(
             'http://localhost:8000/playlists/me',
             {
-              headers: {
-                Authorization: "Bearer " + token,
-                "Content-Type": "application/json",
-              },
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
             }
-          );
-          const items = response.data;
-          const playlists = items.map(({ name, id }) => {
+        );
+        const items = response.data;
+        const playlists = items.map(({ name, id }) => {
             return { name, id };
         });
         dispatch({ type: reducerCases.SET_PLAYLISTS, playlists: playlists });
-        dispatch({ type: reducerCases.SET_ISOPEN_DELETE_PLAYLIST, isOpenDeletePlaylist: false})
+        dispatch({ type: reducerCases.SET_ISOPEN_DELETE_PLAYLIST, isOpenDeletePlaylist: false })
         navigate('/lib');
     }
 
@@ -67,35 +67,35 @@ export default function Spotify() {
                 />
             )}
             {isOpenDeletePlaylist && (
-                    <DeletePlaylistBox 
+                <DeletePlaylistBox
                     closeModal={() => {
-                        dispatch({ type: reducerCases.SET_ISOPEN_DELETE_PLAYLIST, isOpenDeletePlaylist: false})
+                        dispatch({ type: reducerCases.SET_ISOPEN_DELETE_PLAYLIST, isOpenDeletePlaylist: false })
                     }}
-                    deletePL = {() => {
+                    deletePL={() => {
                         deleteThisPlaylist(selectedPlaylistId);
-                    }}/>
-                    )
-                }
+                    }} />
+            )
+            }
             <div className="spotify_body">
                 <Sidebar openModal={() => {
-                        setCreatePlaylistModalOpen(true);
-                    }}/>
+                    setCreatePlaylistModalOpen(true);
+                }} />
                 <div className="body" ref={bodyRef} >{/*onScroll={bodyScrolled}*/}
-                    <Navbar />{/*navBackground={navBackground}*/} 
+                    <Navbar />{/*navBackground={navBackground}*/}
                     <div className="body_contents">
-                        <Outlet/>
+                        <Outlet />
                         <Footer />
                     </div>
-                </div>            
+                </div>
             </div>
             <div className="spotify_play_bar">
-                <PlayBar/>
+                <PlayBar />
             </div>
         </Container>
     )
-    }
-    // background: linear-gradient(transparent, rgba(0, 0, 0, 1));background-color: #171717;
-    const Container = styled.div`
+}
+// background: linear-gradient(transparent, rgba(0, 0, 0, 1));background-color: #171717;
+const Container = styled.div`
         max-width: 100vw;
         max-height: 100vh;
         overflow: hidden;

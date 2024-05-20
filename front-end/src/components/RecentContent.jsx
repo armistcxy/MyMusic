@@ -21,7 +21,7 @@ export default function RecentContent() {
     //                     },
     //                 }
     //             );
-                    
+
     //             const newestSongs = {
     //                 songs: response.data.map(( song ) => ({
     //                     id: song.id,
@@ -40,12 +40,12 @@ export default function RecentContent() {
     //                     })),
     //                 })),
     //             };
-                
+
     //             dispatch({ type: reducerCases.SET_NEWEST_SONGS, newestSongs: newestSongs })
     //         } catch (error) {
     //             console.error('Error fetching newest songs:', error);
     //         }
-            
+
     //     };
     //     getNewestSongs();
     // }, []);
@@ -53,7 +53,7 @@ export default function RecentContent() {
     // const selectSong = (selectedSongId) => {
     //     dispatch({ type: reducerCases.SET_SONG_ID, selectedSongId: selectedSongId })
     // }
-    
+
     return (
         <div className="grid
         grid-cols-2
@@ -73,6 +73,6 @@ export default function RecentContent() {
                 </Link>
             ))} */}
             {/* This is Recent */}
-        </div>        
+        </div>
     )
 }

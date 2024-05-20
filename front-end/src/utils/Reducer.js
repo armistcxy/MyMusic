@@ -15,7 +15,7 @@ export const initialState = {
     isOpenDeletePlaylist: false,
     isRandom: false,
     isQuery: false,
-    filterItems: [[],[],[]],
+    filterItems: [[], [], []],
     currentPlaying: {},
     playerState: false,
     readyToListen: false,

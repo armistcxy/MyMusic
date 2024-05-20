@@ -5,10 +5,10 @@ import { reducerCases } from "../utils/Constants";
 
 export default function PlaylistContent() {
     const [{ playlists }, dispatch] = useStateProvider();
-    
-      const changeCurrentPlaylist = (selectedPlaylistId) => {
-        dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId: selectedPlaylistId});
-      };
+
+    const changeCurrentPlaylist = (selectedPlaylistId) => {
+        dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId: selectedPlaylistId });
+    };
 
     return (
         <div className="grid
@@ -23,10 +23,10 @@ export default function PlaylistContent() {
             {playlists.map((item) => (
                 <Link to="/lib/playlist" onClick={() => changeCurrentPlaylist(item.id)}>
                     <PlaylistItem
-                    key={item.id}
-                    data={item}/>
+                        key={item.id}
+                        data={item} />
                 </Link>
             ))}
-        </div>        
+        </div>
     )
 }
