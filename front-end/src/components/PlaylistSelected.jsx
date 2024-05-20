@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { AiFillClockCircle } from "react-icons/ai";
 import { useStateProvider } from "../utils/StateProvider";
@@ -7,9 +7,12 @@ import { reducerCases } from "../utils/Constants";
 import { changeTrack } from "./CurrentTrack";
 import { FaPlay } from "react-icons/fa";
 import { IoTrashOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 export default function PlaylistSelected({ headerBackground }) {
     const [{ token, selectedPlaylistId, selectedPlaylist, readyToListen }, dispatch] = useStateProvider();
+    const navigate = useNavigate();
+    const [isOpenDeletePlaylist, setIsOpenDeletePlaylist] = useState(false);
 
     useEffect(() => {
         const getInitialPlaylist = async () => {
@@ -37,6 +40,7 @@ export default function PlaylistSelected({ headerBackground }) {
                     album: track.album,
                 })),
             };
+            console.log(response.data.id);
             dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist: selectedPlaylist })
         };
         if (token) {
@@ -44,6 +48,39 @@ export default function PlaylistSelected({ headerBackground }) {
         }
     }, [token, dispatch, selectedPlaylistId]);
 
+    const makeSureToDelete = () => {
+        setIsOpenDeletePlaylist(true);
+        
+    }
+
+    const deleteThisPlaylist = async (id_playlist) => {
+        await axios.delete(
+            `http://localhost:8000/playlists/${id_playlist}`,
+            {
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        const response = await axios.get(
+            'http://localhost:8000/playlists/me',
+            {
+              headers: {
+                Authorization: "Bearer " + token,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          const items = response.data;
+          const playlists = items.map(({ name, id }) => {
+            return { name, id };
+        });
+        dispatch({ type: reducerCases.SET_PLAYLISTS, playlists: playlists });
+        setIsOpenDeletePlaylist(false);
+        navigate('/lib');
+    }
 
     const calculateTime = (sec) => {
         const minutes = Math.floor(sec / 60);
@@ -96,7 +133,7 @@ export default function PlaylistSelected({ headerBackground }) {
                             mr-8
                             scale-150
                             hover:scale-170">
-                            <IoTrashOutline className="text-white"></IoTrashOutline>
+                            <IoTrashOutline className="text-white" onClick={() => makeSureToDelete(selectedPlaylistId)}></IoTrashOutline>
                         </button>
                     </div>
                 </div>
