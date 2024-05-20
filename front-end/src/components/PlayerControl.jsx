@@ -17,6 +17,7 @@ export default function PlayerControls() {
 
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrenttime] = useState(0);
+    const [isRepeatTrack, setRepeatTrack] = useState(false);
 
     const audioPlayer = useRef();
     const progressBar = useRef();
@@ -73,6 +74,17 @@ export default function PlayerControls() {
             setCurrenttime(progressBar.current.value);
     };
 
+    const repeatCurrentTrack = () => {
+        setRepeatTrack(!isRepeatTrack);
+    }
+
+    const handleSongEnd = () => {
+        if (isRepeatTrack) {
+            audioPlayer.current.currentTime = 0;
+            audioPlayer.current.play();
+        }
+      };
+
     const calculateTime = (sec) => {
         const minutes = Math.floor(sec / 60);
         const returnMin = minutes < 10 ? `0${minutes}` : `${minutes}`;
@@ -116,8 +128,8 @@ export default function PlayerControls() {
 
     return (
         <Container>
-            <audio src={currentPlaying?.song} preload="metadata" ref={audioPlayer} type="audio/mpeg" />
-            <Container1>
+            <audio src={currentPlaying?.song} onEnded={() => handleSongEnd()} preload="metadata" ref={audioPlayer} type="audio/mpeg" />
+            <Container1 isRepeatTrack={isRepeatTrack}>
                 <div className="shuffle">
                     <BsShuffle />
                 </div>
@@ -135,8 +147,8 @@ export default function PlayerControls() {
                     <CgPlayTrackNext /*onClick={() => changeTrack("next")}*/ />
                 </div>
                 <div className="repeat">
-                    <FiRepeat />
-                </div>
+                    <FiRepeat onClick={() => repeatCurrentTrack()}/>
+                </div>{console.log(isRepeatTrack)}
             </Container1>
             <Container2 >
                 <div className="currentTime">{calculateTime(currentTime)}</div>
@@ -186,6 +198,15 @@ const Container1 = styled.div`
     .next,
     .state {
         font-size: 2rem;
+    }
+    .repeat {
+        svg {
+            &:hover {
+                color: white;
+            }
+            color: ${({ isRepeatTrack }) =>
+            isRepeatTrack ? "white" : "#b3b3b3"}; 
+        }
     }
 `;
 
