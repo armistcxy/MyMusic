@@ -57,9 +57,9 @@ def upload_track(track_form: TrackUploadForm) -> TrackResponse:
     return track_response
 
 
-def get_all_tracks() -> list[TrackSimpleResponse]:
+def get_all_tracks(page: int, size: int) -> list[TrackSimpleResponse]:
     session = get_session()
-    tracks = track_repo.get_all_tracks(session)
+    tracks = track_repo.get_all_tracks(session, page, size)
     responses = [schema_utils.track_model_to_simple_response(track) for track in tracks]
 
     session.close()

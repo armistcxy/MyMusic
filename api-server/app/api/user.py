@@ -68,11 +68,6 @@ def get_all_users():
     return response
 
 
-@user_router.get("/search/{name}")
-def find_users_with_name(name: str):
-    pass
-
-
 @user_router.delete(
     "/profile/delete", dependencies=[Depends(security.access_token_required)]
 )
