@@ -1,9 +1,11 @@
 import { FaPlay } from "react-icons/fa"
+import { changeTrack } from "./CurrentTrack"
+import { useStateProvider } from "../utils/StateProvider"
 
 export default function SongItem({ data }) {
+    const [{readyToListen},dispatch] = useStateProvider();
     return (
         <div
-            onClick={() => { }}
             className="
         relative
         group
@@ -58,7 +60,7 @@ export default function SongItem({ data }) {
                             group-hover:opacity-100
                             group-hover:translate-y-0
                             hover:scale-110">
-                        <FaPlay className="text-black"></FaPlay>
+                        <FaPlay className="text-black" onClick={() => {changeTrack(data.id,null,readyToListen,dispatch,data)}}></FaPlay>
                     </button>
                 </div>
             </div>

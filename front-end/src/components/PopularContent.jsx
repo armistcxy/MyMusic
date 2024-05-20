@@ -28,6 +28,7 @@ export default function PopularContent() {
                     name: song.name,
                     length: song.length,
                     track_image_path: song.track_image_path,
+                    song: "http://localhost:8000/" + song.audio_url,
                     artists: song.artists.map((artist) => ({
                         id: artist.id,
                         name: artist.name,
@@ -45,8 +46,9 @@ export default function PopularContent() {
         } catch (error) {
             console.error('Error fetching newest songs:', error);
         }
-
+        
     };
+
     if (!isRandom) {
         getRandomSongs();
         dispatch({ type: reducerCases.SET_RANDOM, isRandom: true });
@@ -70,7 +72,6 @@ export default function PopularContent() {
                 <Link to="/songview" onClick={() => selectSong(item.id)}>
                     <SongItem
                         key={item.id}
-                        onClick={() => { }}
                         data={item} />
                 </Link>
             ))}

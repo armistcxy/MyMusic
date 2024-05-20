@@ -22,12 +22,12 @@ export default function HomeContent() {
                         },
                     }
                 );
-                    
                 const newestSongs = {
                     songs: response.data.map(( song ) => ({
                         id: song.id,
                         name: song.name,
                         length: song.length,
+                        song: "http://localhost:8000/" + song.audio_url,
                         track_image_path: song.track_image_path,
                         artists: song.artists.map(( artist ) => ({
                             id: artist.id,
@@ -61,7 +61,7 @@ export default function HomeContent() {
         sm:grid-cols-3
         md:grid-cols-3
         lg:grid-cols-4
-        xl:grid-cols-6
+        xl:grid-cols-5
         2xl:grid-cols-8
         gap-4
         mt-4">
