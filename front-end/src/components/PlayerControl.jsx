@@ -34,6 +34,7 @@ export default function PlayerControls() {
     }, [volume]);
 
     useEffect(() => {
+        audioPlayer.current.src = currentPlaying.song;
         if (currentPlaying?.song && audioPlayer.current && readyToListen) {
             audioPlayer.current.src = currentPlaying.song;
             audioPlayer.current.play();

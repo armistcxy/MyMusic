@@ -5,9 +5,10 @@ import { useStateProvider } from "../utils/StateProvider";
 import axios from "axios";
 import { reducerCases } from "../utils/Constants";
 import { FaPlay } from "react-icons/fa";
+import { changeTrack } from "./CurrentTrack";
 
 export default function SongSelected({ headerBackground }) {
-    const [{ token, selectedSongId, selectedSong }, dispatch] = useStateProvider();
+    const [{ token, selectedSongId, selectedSong, readyToListen }, dispatch] = useStateProvider();
 
     useEffect(() => {
         const getSong = async () => {
@@ -20,13 +21,14 @@ export default function SongSelected({ headerBackground }) {
                     },
                 }
             );
-            
             const selectedSong = {
                 id: response.data.id,
                 name: response.data.name,
-                track_image_path: `http://localhost:8000/static/${response.data.track_image_path}`,
+                track_image_path: response.data.track_image_path,
+                song: `http://localhost:8000/${response.data.audio_url}`,
                 artist_id: response.data.artists[0].id,
                 artist_name: response.data.artists[0].name,
+                artists: response.data.artists,
                 artist_image_path: `http://localhost:8000/static/${response.data.artists[0].artist_image_path}`,
                 album: response.data.album,
                 categories: response.data.categories.map((categorie) => ({
@@ -37,8 +39,7 @@ export default function SongSelected({ headerBackground }) {
             dispatch({ type: reducerCases.SET_SONG, selectedSong: selectedSong })
         };
         getSong();
-        console.log(selectedSong);
-    }, [dispatch]);
+    }, [selectedSongId, dispatch]);
 
 
     const calculateTime = (sec) => {
@@ -54,7 +55,7 @@ export default function SongSelected({ headerBackground }) {
             <>
                 <div className="playlist">
                     <div className="image">
-                        <img src={selectedSong.track_image_path} alt={selectedSong.name}></img>
+                        <img src={`http://localhost:8000/static/${selectedSong.track_image_path}`} alt={selectedSong.name}></img>
                     </div>
                     <div className="details">
                         <span className="type">Song</span>
@@ -80,7 +81,7 @@ export default function SongSelected({ headerBackground }) {
                                 group-hover:opacity-100
                                 group-hover:translate-y-0
                                 hover:scale-110">
-                            <FaPlay className="text-black"></FaPlay>
+                            <FaPlay className="text-black" onClick={() => {changeTrack(selectedSong.id,null,readyToListen,dispatch,selectedSong)}}></FaPlay>
                         </button>
                     </div>
                 </div>

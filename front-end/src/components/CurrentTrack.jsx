@@ -7,21 +7,37 @@ import { TiHeartOutline, TiPlusOutline } from "react-icons/ti";
 import { toast } from "react-toastify";
 
 // Define the changeTrack function outside of the component
-export const changeTrack = async (id, token, readyToListen, dispatch) => {
-    const response = await axios.put(
-        `http://localhost:8000/users/me/now/${id}`,
-        {},
-        {
-            headers: {
-                Authorization: "Bearer " + token,
-                "Content-Type": "application/json",
-            },
+export const changeTrack = async (id, token, readyToListen, dispatch, song = null) => {
+    if (song) {
+        console.log(song.song);
+        const currentPlaying = {
+            id: song.id,
+            name: song.name,
+            artists: song.artists.map((artist) => artist.name),
+            image: `http://localhost:8000/static/${song.track_image_path}`,
+            song: song.song,
+        };
+        dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: currentPlaying });
+        if (!readyToListen) {
+            dispatch({ type: reducerCases.SET_READY, readyToListen: true });
         }
-    );
-    dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: false });
-    getCurrentTrack(token, dispatch); // Call getCurrentTrack after changing the track
-    if (!readyToListen) {
-        dispatch({ type: reducerCases.SET_READY, readyToListen: true });
+    }
+    else {
+        const response = await axios.put(
+            `http://localhost:8000/users/me/now/${id}`,
+            {},
+            {
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: false });
+        getCurrentTrack(token, dispatch); // Call getCurrentTrack after changing the track
+        if (!readyToListen) {
+            dispatch({ type: reducerCases.SET_READY, readyToListen: true });
+        }
     }
 };
 
@@ -141,7 +157,7 @@ export default function CurrentTrack() {
                             <PlaylistContainer ref={playlistRef} >
                                 <ul>
                                     {playlists.map((playlist) => (
-                                        <li key={playlist.id} onClick={() => {addTrackToPlaylist(token, currentPlaying.id, playlist.id); setShowPlaylists(false); toast.success("Add successfully")}}>{playlist.name}</li>
+                                        <li key={playlist.id} onClick={() => { addTrackToPlaylist(token, currentPlaying.id, playlist.id); setShowPlaylists(false); toast.success("Add successfully") }}>{playlist.name}</li>
                                     ))}
                                 </ul>
                             </PlaylistContainer>

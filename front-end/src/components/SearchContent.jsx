@@ -1,15 +1,19 @@
 import { useStateProvider } from "../utils/StateProvider";
 import SongItem from "./SongItem";
+import { reducerCases } from "../utils/Constants";
+import { Link } from "react-router-dom";
 
 export default function SearchContent() {
-    const [{ filterItems }] = useStateProvider();
+    const [{ filterItems }, dispatch] = useStateProvider();
 
     const onClick = () => {
         //...
     }
-
+    console.log(filterItems);
     const isEmptyFilterItems = filterItems.every(arr => Array.isArray(arr) && arr.length === 0);
-
+    const selectSong = (selectedSongId) => {
+        dispatch({ type: reducerCases.SET_SONG_ID, selectedSongId: selectedSongId })
+    }
     return (
         <div>
             {!isEmptyFilterItems ? (
@@ -30,9 +34,21 @@ export default function SearchContent() {
                                 <div
                                     key={song?.id}
                                     className="flex items-center gap-x-4 w-full">
-                                    <div className="flex-1">
-                                        <SongItem data={song} />
-                                    </div>
+                                    <Link to="/songview" onClick={() => selectSong(song?.id)}>
+                                        <SongItem
+                                            key={song.id}
+                                            data={{
+                                                id : song.id,
+                                                name: song.name,
+                                                track_image_path: song.track_image_path,
+                                                artists: song.artists.map((artist) => ({
+                                                    id: artist.id,
+                                                    name: artist.name,
+                                                    artist_image_path: artist.artist_image_path,
+                                                })),
+                                                song:"http://localhost:8000/" + song.audio_url,
+                                            }} />
+                                    </Link>
                                 </div>
                             ))}
                         </div>
@@ -47,7 +63,7 @@ export default function SearchContent() {
                             sm:grid-cols-3
                             md:grid-cols-3
                             lg:grid-cols-4
-                            xl:grid-cols-5
+                            xl:grid-cols-6
                             2xl:grid-cols-8
                             gap-4">
                             {filterItems[1].map((artist) => (
@@ -89,7 +105,7 @@ export default function SearchContent() {
                     </div>
                 </div>
             ) : (
-                <h2>Not found</h2>
+                <h2 className="text-white">Not found</h2>
             )}
         </div>
     );
