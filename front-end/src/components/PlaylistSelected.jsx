@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { AiFillClockCircle } from "react-icons/ai";
 import { useStateProvider } from "../utils/StateProvider";
@@ -7,9 +7,11 @@ import { reducerCases } from "../utils/Constants";
 import { changeTrack } from "./CurrentTrack";
 import { FaPlay } from "react-icons/fa";
 import { IoTrashOutline } from "react-icons/io5";
+import { toast } from "react-toastify";
 
 export default function PlaylistSelected({ headerBackground }) {
     const [{ token, selectedPlaylistId, selectedPlaylist, readyToListen }, dispatch] = useStateProvider();
+    const [hoveredTrackId, setHoveredTrackId] = useState(null);
 
     useEffect(() => {
         const getInitialPlaylist = async () => {
@@ -22,7 +24,7 @@ export default function PlaylistSelected({ headerBackground }) {
                     },
                 }
             );
-            
+
             const selectedPlaylist = {
                 id: response.data.id,
                 playlist_name: response.data.name,
@@ -37,16 +39,17 @@ export default function PlaylistSelected({ headerBackground }) {
                     album: track.album,
                 })),
             };
-            console.log(response.data.id);
             dispatch({ type: reducerCases.SET_PLAYLIST, selectedPlaylist: selectedPlaylist })
         };
         if (token) {
             getInitialPlaylist();
+            const intervalId = setInterval(getInitialPlaylist, 3000); 
+            return () => clearInterval(intervalId);
         }
     }, [token, dispatch, selectedPlaylistId]);
 
     const makeSureToDelete = () => {
-        dispatch({ type: reducerCases.SET_ISOPEN_DELETE_PLAYLIST, isOpenDeletePlaylist: true})
+        dispatch({ type: reducerCases.SET_ISOPEN_DELETE_PLAYLIST, isOpenDeletePlaylist: true })
     }
 
     const calculateTime = (sec) => {
@@ -57,15 +60,44 @@ export default function PlaylistSelected({ headerBackground }) {
         return `${returnMin}:${returnSec}`;
     };
 
+    const removeTrack = async (token, removeTrackId, playlistId) => {
+        const response = await axios.get(
+            `http://localhost:8000/playlists/${playlistId}`,
+            {
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        const curTrack = response.data.tracks.map((track) =>
+            track.id
+        );
+        const newCurTrack = curTrack.filter(id => id !== removeTrackId);
+        const response2 = await axios.patch(
+            `http://localhost:8000/playlists/${playlistId}`,
+            {
+                "track_id_list": newCurTrack
+            },
+            {
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+    
+    };
+
     return <Container headerBackground={headerBackground}>
         {selectedPlaylist && (
             <>
-                
+
                 <div className="playlist">
                     <div className="image">
                         <img src={
                             // selectedPlaylist.tracks.length !== 0 ? selectedPlaylist.tracks[0].track_image_path :
-                             `https://www.gravatar.com/avatar/${selectedPlaylist.id.replace(/-/g, "")}?s=64&d=identicon&r=PG`} alt={selectedPlaylist.playlist_name}></img>
+                            `https://www.gravatar.com/avatar/${selectedPlaylist.id.replace(/-/g, "")}?s=64&d=identicon&r=PG`} alt={selectedPlaylist.playlist_name}></img>
                     </div>
                     <div className="details">
                         <span className="type">PLAYLIST</span>
@@ -107,57 +139,74 @@ export default function PlaylistSelected({ headerBackground }) {
                 </div>
                 <div className="list">
                     {selectedPlaylist.tracks.length !== 0 ? (
-                    <>
-                        <div className="header__row">
-                            <div className="col">
-                                <span>#</span>
+                        <>
+                            <div className="header__row">
+                                <div className="col">
+                                    <span>#</span>
+                                </div>
+                                <div className="col">
+                                    <span>TITLE</span>
+                                </div>
+                                <div className="col">
+                                    <span>ALBUM</span>
+                                </div>
+                                <div className="col">
+                                    <AiFillClockCircle />
+                                </div>
                             </div>
-                            <div className="col">
-                                <span>TITLE</span>
-                            </div>
-                            <div className="col">
-                                <span>ALBUM</span>
-                            </div>
-                            <div className="col">
-                                <AiFillClockCircle />
-                            </div>
-                        </div>
-                        <div className="tracks">
-                            {selectedPlaylist.tracks.map(
-                                ({
-                                    id,
-                                    name,
-                                    length,
-                                    track_image_path,
-                                    artist,
-                                    album
-                                }, index) => {
-                                    return (
-                                        <div className="row" key={id} onClick={() => changeTrack(id, token, readyToListen, dispatch)}>
-                                            <div className="col">
-                                                <span>{index + 1}</span>
-                                            </div>
-                                            <div className="col detail">
-                                                <div className="image">
-                                                    <img src={track_image_path} alt="track" />
+                            <div className="tracks">
+                                {selectedPlaylist.tracks.map(
+                                    ({
+                                        id,
+                                        name,
+                                        length,
+                                        track_image_path,
+                                        artist,
+                                        album
+                                    }, index) => {
+                                        return (
+                                            <div
+                                                className="row"
+                                                key={id}
+                                                onClick={() => changeTrack(id, token, readyToListen, dispatch)}
+                                                onMouseEnter={() => setHoveredTrackId(id)} // Khi trỏ vào bài hát, set hoveredTrackId
+                                                onMouseLeave={() => setHoveredTrackId(null)} // Khi rời khỏi bài hát, reset hoveredTrackId
+                                            >
+                                                <div className="col">
+                                                    <span>{index + 1}</span>
                                                 </div>
-                                                <div className="info">
-                                                    <span className="name">{name}</span>
-                                                    <span>{artist}</span>
+                                                <div className="col detail">
+                                                    <div className="image">
+                                                        <img src={track_image_path} alt="track" />
+                                                    </div>
+                                                    <div className="info">
+                                                        <span className="name">{name}</span>
+                                                        <span>{artist}</span>
+                                                    </div>
+                                                </div>
+                                                <div className="col">
+                                                    <span>{album}</span>
+                                                </div>
+                                                <div className="col">
+                                                    <span>{calculateTime(length)}</span>
+                                                </div>
+                                                <div className="col ml-5 flex justify-center items-center">
+                                                    {hoveredTrackId === id && (
+                                                        <IoTrashOutline className="text-red-500 z-[10] rounded-full hover:scale-150 transition-transform duration-200"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                removeTrack(token,id,selectedPlaylistId);
+                                                                toast.success("Removed!");
+                                                            }}
+                                                        />
+                                                    )}
                                                 </div>
                                             </div>
-                                            <div className="col">
-                                                <span>{album}</span>
-                                            </div>
-                                            <div className="col">
-                                                <span>{calculateTime(length)}</span>
-                                            </div>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
-                    </>) : ""}
+                                        )
+                                    })
+                                }
+                            </div>
+                        </>) : ""}
                 </div>
             </>
         )
@@ -192,7 +241,7 @@ const Container = styled.div`
         margin: 0 0 3rem 0;
         .header__row {
             display: grid;
-            grid-template-columns: 0.3fr 3fr 2fr 0.1fr;
+            grid-template-columns: 0.3fr 2.5fr 1.5fr 0.3fr 0.3fr;
             color: #dddcdc;
             margin: 1rem 0 0 0;
             position: sticky;
@@ -211,7 +260,7 @@ const Container = styled.div`
             .row {
                 padding: 0.5rem 1rem;
                 display: grid;
-                grid-template-columns: 0.3fr 3.1fr 2fr 0.1fr;
+                grid-template-columns: 0.3fr 2.5fr 1.5fr 0.3fr 0.3fr;
                 &:hover {
                     background-color: rgba(0, 0, 0, 0.7);
                 }

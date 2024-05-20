@@ -47,7 +47,6 @@ export default function Playlists({ openModal }) {
   }, [token, dispatch]);
 
   const changeCurrentPlaylist = (selectedPlaylistId) => {
-    console.log(selectedPlaylistId);
     dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId: selectedPlaylistId });
   };
 

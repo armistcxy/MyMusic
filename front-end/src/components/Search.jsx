@@ -16,12 +16,12 @@ export default function Search() {
             overflow-y-auto">
             {isAuthenticated ? (
                 <div className="mt-2 mb-7 px-6">
-                    <div className="flex justify-between items-center">
+                    {/* <div className="flex justify-between items-center">
                         <h1 className="text-white text-2xl font-semibold">
                             Recent
                         </h1>
                     </div>
-                    <RecentContent />
+                    <RecentContent /> */}
                     {isQuery ? <div>
                         <div className="flex justify-between items-center pt-6">
                             <h1 className="text-white text-2xl font-semibold">
