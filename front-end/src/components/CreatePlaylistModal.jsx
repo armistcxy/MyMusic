@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 export default function CreatePlaylistModal({ closeModal }) {
-    const [{ token }, dispatch] = useStateProvider();
+    const [{ token }] = useStateProvider();
     const [playlistName, setPlaylistName] = useState("");
     const [playlistDescription, setPlaylistDescription] = useState("");
 
@@ -21,7 +21,7 @@ export default function CreatePlaylistModal({ closeModal }) {
                     },
                 }
             );
-            if (response.status == 200) {
+            if (response.status === 200) {
                 closeModal();
                 toast.success("Create successfully");
             }

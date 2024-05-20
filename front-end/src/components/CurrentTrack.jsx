@@ -23,7 +23,7 @@ export const changeTrack = async (id, token, readyToListen, dispatch, song = nul
         }
     }
     else {
-        const response = await axios.put(
+        await axios.put(
             `http://localhost:8000/users/me/now/${id}`,
             {},
             {
@@ -54,7 +54,7 @@ export const addTrackToPlaylist = async (token, newTrackId, playlistId) => {
     const curTrack = response.data.tracks.map((track) =>
         track.id
     );
-    const response2 = await axios.patch(
+    await axios.patch(
         `http://localhost:8000/playlists/${playlistId}`,
         {
             "track_id_list": [
@@ -101,7 +101,7 @@ const getCurrentTrack = async (token, dispatch) => {
 };
 
 export default function CurrentTrack() {
-    const [{ token, currentPlaying, readyToListen }, dispatch] = useStateProvider();
+    const [{ token, currentPlaying }, dispatch] = useStateProvider();
     const [showPlaylists, setShowPlaylists] = useState(false);
     const [playlists, setPlaylists] = useState([]);
     const playlistRef = useRef();

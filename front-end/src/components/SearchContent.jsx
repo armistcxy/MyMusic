@@ -6,10 +6,6 @@ import { Link } from "react-router-dom";
 export default function SearchContent() {
     const [{ filterItems }, dispatch] = useStateProvider();
 
-    const onClick = () => {
-        //...
-    }
-    console.log(filterItems);
     const isEmptyFilterItems = filterItems.every(arr => Array.isArray(arr) && arr.length === 0);
     const selectSong = (selectedSongId) => {
         dispatch({ type: reducerCases.SET_SONG_ID, selectedSongId: selectedSongId })

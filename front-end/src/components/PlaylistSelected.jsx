@@ -74,7 +74,7 @@ export default function PlaylistSelected({ headerBackground }) {
             track.id
         );
         const newCurTrack = curTrack.filter(id => id !== removeTrackId);
-        const response2 = await axios.patch(
+        await axios.patch(
             `http://localhost:8000/playlists/${playlistId}`,
             {
                 "track_id_list": newCurTrack

@@ -8,9 +8,7 @@ import {
 import { CgPlayTrackNext, CgPlayTrackPrev } from "react-icons/cg";
 import { FiRepeat } from "react-icons/fi";
 import { useStateProvider } from "../utils/StateProvider";
-import axios from "axios";
 import { reducerCases } from "../utils/Constants";
-import { Songs } from "./Songs";
 
 export default function PlayerControls() {
     const [{ token, playerState, currentPlaying, readyToListen, volume }, dispatch] = useStateProvider();
@@ -148,7 +146,7 @@ export default function PlayerControls() {
                 </div>
                 <div className="repeat">
                     <FiRepeat onClick={() => repeatCurrentTrack()}/>
-                </div>{console.log(isRepeatTrack)}
+                </div>
             </Container1>
             <Container2 >
                 <div className="currentTime">{calculateTime(currentTime)}</div>

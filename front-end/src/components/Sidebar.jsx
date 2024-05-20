@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { MdHomeFilled, MdSearch } from "react-icons/md";
 import { IoLibrary } from "react-icons/io5";
 import { TbWorld } from "react-icons/tb";
 import Playlists from "./Playlists";
 import { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaPlusCircle } from "react-icons/fa";
 import { useStateProvider } from "../utils/StateProvider";
 

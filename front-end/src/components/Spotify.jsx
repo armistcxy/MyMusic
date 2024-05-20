@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
@@ -7,7 +7,6 @@ import Footer from "./Footer";
 
 import { useStateProvider } from "../utils/StateProvider";
 import axios from "axios";
-import { AuthProvider } from "./context/AuthProvider";
 import { reducerCases } from "../utils/Constants";
 import { Outlet, useNavigate } from "react-router-dom";
 import CreatePlaylistModal from "./CreatePlaylistModal";

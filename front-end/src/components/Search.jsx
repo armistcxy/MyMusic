@@ -1,6 +1,5 @@
 import { useStateProvider } from "../utils/StateProvider";
 import PopularContent from "./PopularContent";
-import RecentContent from "./RecentContent";
 import SearchContent from "./SearchContent"
 
 export default function Search() {
