@@ -82,9 +82,30 @@ def find_playlist_with_name(name: str):
     return response
 
 
-@playlist_router.delete("/{id}")
-def delete_playlist_by_id(id: uuid.UUID):
-    playlist_service.delete_playlist_by_id(id)
+@playlist_router.delete("/{id}", dependencies=[Depends(security.access_token_required)])
+def delete_playlist_by_id(
+    id: uuid.UUID, payload: TokenPayload = Depends(security.access_token_required)
+):
+    try:
+        user_id = getattr(payload, "sub")
+        user_id = uuid.UUID(user_id, version=4)
+        playlist_response = playlist_service.get_playlist_by_id(id=id)
+
+        if playlist_response.user.id != str(user_id):
+            raise HTTPException(
+                status_code=status.HTTP_405_METHOD_NOT_ALLOWED,
+                detail=f"User {user_id} have no right to modify playlist {id}",
+            )
+        else:
+            playlist_service.delete_playlist_by_id(id)
+    except AttributeError as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        )
 
 
 @playlist_router.patch(

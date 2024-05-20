@@ -53,8 +53,15 @@ def upload_track(track_form: TrackUploadForm):
 
 
 @track_router.get("/", response_model=list[TrackSimpleResponse])
-def get_all_tracks():
-    responses = track_service.get_all_tracks()
+def get_all_tracks(page: int | None = None, size: int | None = None):
+    if not page and not size:
+        page = -1
+        size = -1
+    if not page:
+        page = 1
+    if not size:
+        size = 10
+    responses = track_service.get_all_tracks(page, size)
     return responses
 
 

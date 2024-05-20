@@ -17,9 +17,13 @@ def insert_track(track: models.Track, session: Session) -> models.Track:
     return track
 
 
-def get_all_tracks(session: Session) -> list[models.Track]:
-    tracks = session.query(models.Track).all()
-    return tracks
+def get_all_tracks(session: Session, page: int, size: int) -> list[models.Track]:
+    if page == -1 and size == -1:
+        tracks = session.query(models.Track).all()
+        return tracks
+    else:
+        tracks = session.query(models.Track).offset((page - 1) * size).limit(size).all()
+        return tracks
 
 
 def get_track_by_id(id: uuid.UUID, session: Session) -> models.Track | None:
