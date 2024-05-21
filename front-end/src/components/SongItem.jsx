@@ -1,10 +1,13 @@
-import PlayButton from "./PlayButton"
+import { FaPlay } from "react-icons/fa"
+import { changeTrack } from "./CurrentTrack"
+import { useStateProvider } from "../utils/StateProvider"
+import { reducerCases } from "../utils/Constants";
 
-export default function SongItem() {
+export default function SongItem({ data }) {
+    const [{ readyToListen }, dispatch] = useStateProvider();
     return (
         <div
-        onClick={() => {}}
-        className="
+            className="
         relative
         group
         flex
@@ -27,19 +30,42 @@ export default function SongItem() {
                 rounded-md
                 overflow-hidden">
                 <img
-                className="object-cover"
-                src="/data/img/SonTung.jpg"
-                alt="SonTung">
+                    className="object-cover w-full h-full"
+                    src={"http://localhost:8000/static/" + data?.track_image_path}
+                    alt={data?.name}>
                 </img>
             </div>
             <div className="flex flex-col items-start w-full pt-4 gap-y-1">
-                <p className="text-neutral-100 text-lg font-semibold truncate w-full">title</p>
-                <p className="text-neutral-400 text-smpb-4 w-full truncate">by</p>
+                <p className="text-neutral-100 text-lg font-semibold truncate w-full">{data?.name}</p>
+                {data?.artists.map((artist) => (
+                    <p className="text-neutral-400 text-smpb-4 w-full truncate">
+                        {artist?.name}
+                    </p>
+                ))}
                 <div className="
                 absolute
                 bottom-24
                 right-5">
-                    <PlayButton></PlayButton>
+                    <button
+                        className="
+                            transition
+                            opacity-0
+                            rounded-full
+                            flex
+                            items-center
+                            bg-green-500
+                            p-4
+                            drop-shadow-md
+                            translate
+                            translate-y-1/4
+                            group-hover:opacity-100
+                            group-hover:translate-y-0
+                            hover:scale-110">
+                        <FaPlay className="text-black" onClick={() => {
+                            dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: false });
+                            changeTrack(data.id, null, readyToListen, dispatch, data);
+                        }}></FaPlay>
+                    </button>
                 </div>
             </div>
         </div>

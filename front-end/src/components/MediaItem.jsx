@@ -1,8 +1,8 @@
 export default function MediaItem() {
     return (
         <div
-        onClick={() => {}}
-        className="flex items-center gap-x-3 cursor-pointer hover:bg-neutral-800/50 w-full p-2 rounded-md"
+            onClick={() => { }}
+            className="flex items-center gap-x-3 cursor-pointer hover:bg-neutral-800/50 w-full p-2 rounded-md"
         >
             <div className="rounded-md h-[48px] w-[48px] overflow-hidden">
                 <img src="/data/img/SonTung.jpg" alt="SonTung" fill className="object-cover" />

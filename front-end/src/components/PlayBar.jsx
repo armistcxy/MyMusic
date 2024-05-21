@@ -9,7 +9,7 @@ export default function PlayBar() {
     <Container>
       <CurrentTrack />
       <PlayerControls />
-      <Volume/>
+      <Volume />
     </Container>
   );
 }

@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,24}$/;
@@ -146,7 +147,7 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (!validName || !validPwd || !validMatch || !validEmail) {
             setErrMsg("Invalid Entry");
             return;
@@ -154,7 +155,7 @@ const Register = () => {
 
         try {
             const response = await axios.post(REGISTER_URL,
-                JSON.stringify({ email, name : user, password : pwd}),
+                JSON.stringify({ email, name: user, password: pwd }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: false
@@ -162,7 +163,8 @@ const Register = () => {
             );
             console.log(response?.data);
             console.log(response?.accessToken);
-            console.log(JSON.stringify(response))
+            console.log(JSON.stringify(response));
+            toast.success("Login successfully.");
             navigate('/login');
             setSuccess(true);
             setEmail('');
@@ -171,11 +173,14 @@ const Register = () => {
             setMatchPwd('');
         } catch (err) {
             if (!err?.response) {
-                setErrMsg('No Server Response');
+                //setErrMsg('No Server Response');
+                toast.error("No Server Response");
             } else if (err.response?.status === 409) {
-                setErrMsg('Username Taken');
+                //setErrMsg('Username Taken');
+                toast.error("Username Taken");
             } else {
-                setErrMsg('Registration Failed')
+                //setErrMsg('Registration Failed')
+                toast.error("Registration Failed");
             }
             errRef.current.focus();
         }
@@ -208,7 +213,7 @@ const Register = () => {
                         </label>
                         {!validEmail && email ? (
                             <span className="invalid-feedback">Invalid email format</span>
-                        ): <span className="valid-feedback" > t  </span>}
+                        ) : <span className="valid-feedback" > t  </span>}
 
                         <label htmlFor="username">
                             Username:
@@ -225,7 +230,7 @@ const Register = () => {
                         </label>
                         {!validName && user ? (
                             <span className="invalid-feedback">Invalid username format</span>
-                        ): <span className="valid-feedback" > t  </span>}
+                        ) : <span className="valid-feedback" > t  </span>}
 
                         <label htmlFor="password">
                             Password:
@@ -240,7 +245,7 @@ const Register = () => {
                         </label>
                         {!validPwd && pwd ? (
                             <span className="invalid-feedback">Invalid password format</span>
-                        ): <span className="valid-feedback" > t  </span>}
+                        ) : <span className="valid-feedback" > t  </span>}
 
                         <label htmlFor="confirm_pwd">
                             Confirm Password:
@@ -255,8 +260,8 @@ const Register = () => {
                         </label>
                         {!validMatch && matchPwd ? (
                             <span className="invalid-feedback">Confirm password don't match with password</span>
-                        ): <span className="valid-feedback" > t  </span>}
-                    <p ref={errRef} className={errMsg ? "error" : "offscreen"} aria-live="assertive">{errMsg ? errMsg : " "}</p>
+                        ) : <span className="valid-feedback" > t  </span>}
+                        <p ref={errRef} className={errMsg ? "error" : "offscreen"} aria-live="assertive">{errMsg ? errMsg : " "}</p>
                         <button disabled={!validName || !validPwd || !validMatch || !validEmail}>Sign Up</button>
                     </form>
                     <p className="already-registered">

@@ -8,8 +8,18 @@ export const initialState = {
     userInfo: null,
     selectedPlaylistId: null,
     selectedPlaylist: null,
-    currentPlaying: null,
+    selectedSong: null,
+    selectedSongId: null,
+    newestSongs: null,
+    randomSongs: null,
+    isOpenDeletePlaylist: false,
+    isRandom: false,
+    isQuery: false,
+    filterItems: [[], [], []],
+    currentPlaying: {},
+    lastPlayed: [],
     playerState: false,
+    readyToListen: false,
     volume: 0.75,
 };
 
@@ -21,10 +31,52 @@ const reducer = (state, action) => {
                 token: action.token,
             }
         }
+        case reducerCases.SET_ISOPEN_DELETE_PLAYLIST: {
+            return {
+                ...state,
+                isOpenDeletePlaylist: action.isOpenDeletePlaylist,
+            }
+        }
+        case reducerCases.SET_RANDOM: {
+            return {
+                ...state,
+                isRandom: action.isRandom,
+            }
+        }
         case reducerCases.SET_PLAYLISTS: {
             return {
                 ...state,
                 playlists: action.playlists,
+            }
+        }
+        case reducerCases.SET_LAST_PLAYED: {
+            return {
+                ...state,
+                lastPlayed: action.lastPlayed,
+            }
+        }
+        case reducerCases.SET_NEWEST_SONGS: {
+            return {
+                ...state,
+                newestSongs: action.newestSongs,
+            }
+        }
+        case reducerCases.SET_RANDOM_SONGS: {
+            return {
+                ...state,
+                randomSongs: action.randomSongs,
+            }
+        }
+        case reducerCases.SET_SONG_ID: {
+            return {
+                ...state,
+                selectedSongId: action.selectedSongId,
+            }
+        }
+        case reducerCases.SET_SONG: {
+            return {
+                ...state,
+                selectedSong: action.selectedSong,
             }
         }
         case reducerCases.SET_PLAYLIST: {
@@ -51,6 +103,12 @@ const reducer = (state, action) => {
                 playerState: action.playerState,
             }
         }
+        case reducerCases.SET_QUERY: {
+            return {
+                ...state,
+                isQuery: action.isQuery,
+            }
+        }
         case reducerCases.SET_PLAYLIST_ID: {
             return {
                 ...state,
@@ -61,6 +119,18 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 volume: action.volume,
+            }
+        }
+        case reducerCases.SET_READY: {
+            return {
+                ...state,
+                readyToListen: action.readyToListen,
+            }
+        }
+        case reducerCases.SET_FILTER: {
+            return {
+                ...state,
+                filterItems: action.filterItems,
             }
         }
         case reducerCases.USER_LOGGED_IN: {

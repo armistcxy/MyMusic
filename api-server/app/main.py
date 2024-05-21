@@ -70,10 +70,8 @@ class PlaylistAdmin(ModelView, model=models.Playlist):
         models.Playlist.tracks,
     ]
 
-
 class CategoryAdmin(ModelView, model=models.Category):
     column_list = [models.Category.id, models.Category.name]
-
 
 class MetaDataAdmin(ModelView, model=models.UserMetadata):
     column_list = [models.UserMetadata.user_id, models.UserMetadata.track_id]

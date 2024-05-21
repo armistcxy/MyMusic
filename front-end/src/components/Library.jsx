@@ -1,8 +1,8 @@
 import { useStateProvider } from "../utils/StateProvider"
-import PageContent from "./PageContent"
+import PlaylistContent from "./PlaylistContent"
 
 export default function Library() {
-    const [{isAuthenticated}] = useStateProvider();
+    const [{ isAuthenticated }] = useStateProvider();
 
     return (
         <div className="
@@ -12,22 +12,22 @@ export default function Library() {
             w-full
             overflow-hiden
             overflow-y-auto">
-            {isAuthenticated ? (    
+            {isAuthenticated ? (
                 <div className="mt-2 mb-7 px-6">
                     <div className="flex justify-between items-center">
                         <h1 className="text-white text-2xl font-semibold">
-                                Playlist
+                            Playlist
                         </h1>
                     </div>
                     <div>
-                        <PageContent/>
+                        <PlaylistContent />
                     </div>
                 </div>
             ) : (
                 <div className="mt-2 mb-7 px-6">
                     <div className="flex justify-between items-center">
                         <h1 className="text-white text-2xl font-semibold">
-                                Log in to enjoy your Playlist!
+                            Log in to enjoy your Playlist!
                         </h1>
                     </div>
                 </div>

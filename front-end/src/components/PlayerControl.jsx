@@ -8,34 +8,91 @@ import {
 import { CgPlayTrackNext, CgPlayTrackPrev } from "react-icons/cg";
 import { FiRepeat } from "react-icons/fi";
 import { useStateProvider } from "../utils/StateProvider";
-import axios from "axios";
 import { reducerCases } from "../utils/Constants";
-import { Songs } from "./Songs";
+import { changeTrack } from "./CurrentTrack";
+import axios from "axios";
 
 export default function PlayerControls() {
-    const [{ token, playerState, currentPlaying, volume }, dispatch] = useStateProvider();
+    const [{ token, playerState, currentPlaying, readyToListen, lastPlayed, volume }, dispatch] = useStateProvider();
 
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrenttime] = useState(0);
+    const [isRepeatTrack, setRepeatTrack] = useState(false);
 
     const audioPlayer = useRef();
-    const progressBar = useRef(); 
+    const progressBar = useRef();
     const animationRef = useRef();
+
+    const nextPlay = async () => {
+        const response = await axios.get(
+            `http://localhost:8000/tracks/random/1`,
+            {
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        const nextSong = {
+            id: response.data[0].id,
+            name: response.data[0].name,
+            artists: response.data[0].artists,
+            track_image_path: response.data[0].track_image_path,
+            song: `http://localhost:8000/${response.data[0].audio_url}`,
+        }
+        const newLastPlayed = [...lastPlayed, nextSong];
+        dispatch({ type: reducerCases.SET_LAST_PLAYED, lastPlayed: newLastPlayed });
+        if (token)
+            changeTrack(nextSong.id, token, readyToListen, dispatch);
+        else changeTrack(nextSong.id, token, readyToListen, dispatch, nextSong);
+        
+    }
+
+    const prevPlay = () => {
+        if (lastPlayed.length >=1 ) {
+            setTimeout(3000);
+            const len = lastPlayed.length;
+            const prevSong = lastPlayed[len - 1];
+            const remaining = lastPlayed.slice(0, -1);
+            dispatch({ type: reducerCases.SET_LAST_PLAYED, lastPlayed: remaining });      
+            if (token)
+                changeTrack(prevSong.id, token, readyToListen, dispatch);
+            else changeTrack(prevSong.id, token, readyToListen, dispatch, prevSong);              
+        }
+    }
 
     useEffect(() => {
         const seconds = Math.floor(audioPlayer.current.duration);
         setDuration(seconds);
-
         // set max prop with out seconds in input[range]
         progressBar.current.max = seconds;
-    }, [audioPlayer?.current?.loadedmetada, audioPlayer?.current?.readyState]);
+    }, [audioPlayer?.current?.loadedmetada, audioPlayer?.current?.readyState, currentPlaying]);
 
     useEffect(() => {
         audioPlayer.current.volume = volume;
     }, [volume]);
 
+    useEffect(() => {
+        audioPlayer.current.src = currentPlaying.song;
+        if (currentPlaying?.song && audioPlayer.current && readyToListen) {
+            audioPlayer.current.src = currentPlaying.song;
+            audioPlayer.current.play();
+            dispatch({
+                type: reducerCases.SET_PLAYER_STATE,
+                playerState: true,
+            });
+            animationRef.current = requestAnimationFrame(whilePlaying);
+        }
+    }, [currentPlaying, dispatch]);
+
     const whilePlaying = () => {
-        progressBar.current.value = audioPlayer.current.currentTime;
+        if (progressBar.current) {
+            progressBar.current.value = audioPlayer?.current?.currentTime;
+            progressBar.current.style.setProperty(
+                "--played-width",
+                `${(progressBar.current.value / duration) * 100}%`
+            );
+        }
         changeCurrentTime();
         animationRef.current = requestAnimationFrame(whilePlaying);
     };
@@ -46,12 +103,24 @@ export default function PlayerControls() {
     };
 
     const changeCurrentTime = () => {
-        progressBar.current.style.setProperty(
-            "--played-width",
-            `${(progressBar.current.value / duration) * 100}%`
-        );
+        if (progressBar.current)
+            progressBar.current.style.setProperty(
+                "--played-width",
+                `${(progressBar.current.value / duration) * 100}%`
+            );
+        if (progressBar.current)
+            setCurrenttime(progressBar.current.value);
+    };
 
-        setCurrenttime(progressBar.current.value);
+    const repeatCurrentTrack = () => {
+        setRepeatTrack(!isRepeatTrack);
+    }
+
+    const handleSongEnd = () => {
+        if (isRepeatTrack) {
+            audioPlayer.current.currentTime = 0;
+            audioPlayer.current.play();
+        }
     };
 
     const calculateTime = (sec) => {
@@ -63,78 +132,49 @@ export default function PlayerControls() {
     };
 
     const changeState = async () => {
-        // const state = playerState ? "pause" : "play";
-        // await axios.put(
-        //     `https://api.spotify.com/v1/me/player/${state}`,
-        //     {},
-        //     {
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //             Authorization: "Bearer " + token,
-        //         },
-        //     }
-        // );
-        if (!playerState) {
-            audioPlayer.current.play();
-            animationRef.current = requestAnimationFrame(whilePlaying);
-        } else {
-            audioPlayer.current.pause();
-            cancelAnimationFrame(animationRef.current);
+
+        if (currentPlaying.id) {
+            if (!playerState) {
+                if (!readyToListen) {
+                    dispatch({
+                        type: reducerCases.SET_READY,
+                        readyToListen: true,
+                    });
+                }
+                progressBar.current.style.setProperty(
+                    "--played-width",
+                    `${(progressBar.current.value / duration) * 100}%`
+                );
+                animationRef.current = requestAnimationFrame(whilePlaying);
+                audioPlayer.current.play();
+            } else {
+                progressBar.current.style.setProperty(
+                    "--played-width",
+                    `${(progressBar.current.value / duration) * 100}%`
+                );
+                cancelAnimationFrame(animationRef.current);
+                audioPlayer.current.pause();
+            }
+
+            dispatch({
+                type: reducerCases.SET_PLAYER_STATE,
+                playerState: !playerState,
+            });
         }
-
-        dispatch({
-            type: reducerCases.SET_PLAYER_STATE,
-            playerState: !playerState,
-        });
     };
-
-
-    // const changeTrack = async (type) => {
-    //     console.log(type);
-    //     await axios.post(
-    //         `https://api.spotify.com/v1/me/player/${type}`,
-    //         {},
-    //         {
-    //             headers: {
-    //                 Authorization: "Bearer " + token,
-    //                 "Content-Type": "application/json",
-    //             },
-    //         }
-    //     );
-    //     dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
-    //     const response = await axios.get(
-    //         "https://api.spotify.com/v1/me/player/currently-playing",
-    //         {
-    //             headers: {
-    //                 Authorization: "Bearer " + token,
-    //                 "Content-Type": "application/json",
-    //             },
-    //         }
-    //     );
-    //     if (response.data !== "") {
-    //         const currentPlaying = {
-    //             id: response.data.item.id,
-    //             name: response.data.item.name,
-    //             artists: response.data.item.artists.map((artist) => artist.name),
-    //             image: response.data.item.album.images[2].url,
-    //         };
-    //         dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
-    //     } else {
-    //         dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: null });
-    //     }
-
-    // };
 
 
     return (
         <Container>
-            <audio src={currentPlaying?.song} preload="metadata" ref={audioPlayer} />
-            <Container1>
+            <audio src={currentPlaying?.song} onEnded={() => handleSongEnd()} preload="metadata" ref={audioPlayer} type="audio/mpeg" />
+            <Container1 isRepeatTrack={isRepeatTrack}>
                 <div className="shuffle">
                     <BsShuffle />
                 </div>
                 <div className="previous">
-                    <CgPlayTrackPrev /*onClick={() => changeTrack("previous")}*/ />
+                    <CgPlayTrackPrev onClick={()=>{
+                        prevPlay();
+                    }}/>
                 </div>
                 <div className="state">
                     {playerState ? (
@@ -144,10 +184,12 @@ export default function PlayerControls() {
                     )}
                 </div>
                 <div className="next">
-                    <CgPlayTrackNext /*onClick={() => changeTrack("next")}*/ />
+                    <CgPlayTrackNext onClick={() => {
+                        nextPlay();
+                    }} />
                 </div>
                 <div className="repeat">
-                    <FiRepeat />
+                    <FiRepeat onClick={() => repeatCurrentTrack()} />
                 </div>
             </Container1>
             <Container2 >
@@ -157,7 +199,7 @@ export default function PlayerControls() {
                     className="progressBar"
                     ref={progressBar}
                     defaultValue="0"
-                    onChange={changeProgress}
+                    onChange={() => changeProgress()}
                 />
                 <div className="duration" >
                     {duration && !isNaN(duration) && calculateTime(duration)
@@ -199,6 +241,15 @@ const Container1 = styled.div`
     .state {
         font-size: 2rem;
     }
+    .repeat {
+        svg {
+            &:hover {
+                color: white;
+            }
+            color: ${({ isRepeatTrack }) =>
+        isRepeatTrack ? "green" : "#b3b3b3"}; 
+        }
+    }
 `;
 
 const Container2 = styled.div`
@@ -237,7 +288,7 @@ const Container2 = styled.div`
         top: 0;
         left: 0;
         background: #848484;
-        width: var(--played-width);
+        width: var(--played-width, 0%);
         height: 100%;
         border-radius: 10px;
         z-index: 2;
@@ -261,5 +312,36 @@ const Container2 = styled.div`
             opacity: 1;
         }
       }
-` 
+      .progressBar::-moz-range-track {
+        width: 100%;
+        height: 5px;
+        outline: none;
+        appearance: none;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      
+      .progressBar::-moz-range-progress {
+        background: #1db954;
+        width: var(--played-width);
+        height: 100%;
+        border-radius: 10px;
+        z-index: 2;
+        transition: width 250ms linear;
+      }
+      
+      .progressBar::-moz-range-thumb {
+        -moz-appearance: none;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        position: relative;
+        margin: -2px 0 0 0;
+        z-index: 3;
+        box-sizing: border-box;
+        transition: all 250ms linear;
+      }
+`
 

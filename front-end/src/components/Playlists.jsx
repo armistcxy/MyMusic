@@ -34,19 +34,20 @@ export default function Playlists({ openModal }) {
         }
       );
       const items = response.data;
-      const playlists = items.map(({name, id}) => {
-           return { name, id };
+      const playlists = items.map(({ name, id }) => {
+        return { name, id };
       });
-      //console.log(playlists);
-     dispatch({ type: reducerCases.SET_PLAYLISTS, playlists: playlists });
+      dispatch({ type: reducerCases.SET_PLAYLISTS, playlists: playlists });
     };
     if (token) {
       getPlaylistData();
+      const intervalId = setInterval(getPlaylistData, 5000); // Cập nhật dữ liệu mỗi 3 giây
+      return () => clearInterval(intervalId);
     }
-  }, [token, playlists, dispatch]);
+  }, [token, dispatch]);
 
   const changeCurrentPlaylist = (selectedPlaylistId) => {
-    dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId: selectedPlaylistId});
+    dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId: selectedPlaylistId });
   };
 
   const handleCreatePlaylist = () => {
@@ -78,17 +79,24 @@ export default function Playlists({ openModal }) {
   return <Container>
     {(playlists !== null && playlists.length !== 0) ?
       (
-      <ul>
-        {
-          playlists.map(({ name, id }) => {
-            return (
-              <li key={id} onClick= {() => changeCurrentPlaylist(id)}>
-                {name}
-              </li>
-            );
-          })
-        }
-      </ul>
+        <ul>
+          {
+            playlists.map(({ name, id }) => {
+              return (
+                <li key={id} onClick={() => changeCurrentPlaylist(id)} className="flex items-center">
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/1680/1680213.png"
+                    alt={name}
+                    className="w-8 h-8 mr-2 scale-75"
+                  />
+                  <Link to="lib/playlist" className="no-underline">
+                    {name}
+                  </Link>
+                </li>
+              );
+            })
+          }
+        </ul>
       )
       : (
         <div className="your_library">

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const LOGIN_URL = 'http://localhost:8000/users/login';
 
@@ -173,7 +174,7 @@ const Login = () => {
     const [rememberMe, setRememberMe] = useState(false);
     const [errMsg, setErrMsg] = useState('');
     const [isSuccess, setIsSuccess] = useState(false);
-    const [{}, dispatch] = useStateProvider();
+    const [{ }, dispatch] = useStateProvider();
     const navigate = useNavigate();
 
     // Focus on email input on component mount
@@ -204,23 +205,32 @@ const Login = () => {
                 }
             );
 
-            const { access_token, refresh_token, roles } = response?.data;
+            const { access_token, refresh_token } = response?.data;
+            console.log(access_token);
             dispatch({ type: reducerCases.SET_TOKEN, token: access_token });
             dispatch({ type: reducerCases.USER_LOGGED_IN });
+            dispatch({ type: reducerCases.SET_READY, readyToListen: false });
+            dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: false });
+            dispatch({ type: reducerCases.SET_LAST_PLAYED, lastPlayed: [] });
             setAuth({ email, password, access_token, refresh_token });
             setIsSuccess(true);
+            toast.success("Login successfully.");
             navigate('/');
             setEmail('');
             setPassword('');
         } catch (err) {
             if (!err?.response) {
-                setErrMsg('No Server Response');
+                //setErrMsg('No Server Response');
+                toast.error("No Server Response");
             } else if (err.response?.status === 400) {
-                setErrMsg('Missing Username or Password');
+                //setErrMsg('Missing Username or Password');
+                toast.error("Missing Username or Password");
             } else if (err.response?.status === 401) {
-                setErrMsg('Unauthorized');
+                //setErrMsg('Unauthorized');
+                toast.error("Incorrect username or password.");
             } else {
-                setErrMsg('Login Failed');
+                //setErrMsg('Login Failed');
+                toast.error("Login Failed");
             }
             errRef.current.focus();
         }
@@ -266,16 +276,6 @@ const Login = () => {
                                     value={password}
                                     required
                                 />
-
-                                <div className="checkbox-container">
-                                    <label htmlFor="rememberMe">Remember Me</label>
-                                    <input
-                                        type="checkbox"
-                                        id="rememberMe"
-                                        checked={rememberMe}
-                                        onChange={(e) => setRememberMe(e.target.checked)}
-                                    />
-                                </div>
                                 <button type="submit">Sign In</button>
                                 <p className="signup-link">
                                     Need an Account?<br />
