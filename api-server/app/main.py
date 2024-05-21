@@ -9,6 +9,9 @@ from app.api.crawl import crawl_router
 from app.api.search import search_router
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from sqladmin import Admin, ModelView
+from app.repository import engine
+import app.model.models as models
 
 api = FastAPI()
 api.include_router(track_router)
@@ -42,3 +45,32 @@ def healthcheck(request: Request):
     for k, v in request.headers.items():
         server_info[k] = v
     return server_info
+
+admin = Admin(api, engine)
+
+class UserAdmin(ModelView, model=models.User):
+    column_list = [models.User.id, models.User.username, models.User.email]
+
+class TrackAdmin(ModelView, model=models.Track):
+    column_list = [models.Track.id, models.Track.name, models.Track.length]
+
+class ArtistAdmin(ModelView, model=models.Artist):
+    column_list = [models.Artist.id, models.Artist.name, models.Artist.description]
+
+class PlaylistAdmin(ModelView, model=models.Playlist):
+    column_list = [models.Playlist.id, models.Playlist.user_id, models.Playlist.name, models.Playlist.tracks]
+
+class CategoryAdmin(ModelView, model=models.Category):
+    column_list = [models.Category.id, models.Category.name]
+
+class MetaDataAdmin(ModelView, model=models.UserMetadata):
+    column_list = [models.UserMetadata.user_id, models.UserMetadata.track_id]
+
+
+
+admin.add_view(UserAdmin)
+admin.add_view(TrackAdmin)
+admin.add_view(ArtistAdmin)
+admin.add_view(PlaylistAdmin)
+admin.add_view(CategoryAdmin)
+admin.add_view(MetaDataAdmin)
