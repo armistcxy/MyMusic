@@ -49,7 +49,8 @@ export default function PlayerControls() {
     }
 
     const prevPlay = () => {
-        if (lastPlayed.length !== 0) {
+        if (lastPlayed.length >=1 ) {
+            setTimeout(3000);
             const len = lastPlayed.length;
             const prevSong = lastPlayed[len - 1];
             const remaining = lastPlayed.slice(0, -1);
