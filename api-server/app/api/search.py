@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from app.schema.category import CategoryResponse, CategoryUploadForm, CategoryUpdateForm
 import uuid
 import app.service.track as track_service
@@ -6,10 +6,14 @@ import app.service.album as album_service
 import app.service.artist as artist_service
 from fastapi.responses import JSONResponse
 
+from fastapi_limiter import FastAPILimiter
+from fastapi_limiter.depends import RateLimiter
+
+
 search_router = APIRouter(prefix="/search", tags=["Search"])
 
 
-@search_router.get("/{name}")
+@search_router.get("/{name}", dependencies=[Depends(RateLimiter(times=2, seconds=5))])
 def general_search(name: str):
     track_response = track_service.find_track_with_name(name)
     artist_response = artist_service.find_artist_with_name(name)
