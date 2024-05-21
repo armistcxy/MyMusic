@@ -60,32 +60,37 @@ export default function PlaylistSelected({ headerBackground }) {
     };
 
     const removeTrack = async (token, removeTrackId, playlistId) => {
-        const response = await axios.get(
-            `http://localhost:8000/playlists/${playlistId}`,
-            {
-                headers: {
-                    Authorization: "Bearer " + token,
-                    "Content-Type": "application/json",
+        const userConfirmed = window.confirm('Are you sure you want to remove it?');
+        if (userConfirmed) {
+            const response = await axios.get(
+                `http://localhost:8000/playlists/${playlistId}`,
+                {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            const curTrack = response.data.tracks.map((track) =>
+                track.id
+            );
+            const newCurTrack = curTrack.filter(id => id !== removeTrackId);
+            const response2 = await axios.patch(
+                `http://localhost:8000/playlists/${playlistId}`,
+                {
+                    "track_id_list": newCurTrack
                 },
-            }
-        );
-        const curTrack = response.data.tracks.map((track) =>
-            track.id
-        );
-        const newCurTrack = curTrack.filter(id => id !== removeTrackId);
-        const response2 = await axios.patch(
-            `http://localhost:8000/playlists/${playlistId}`,
-            {
-                "track_id_list": newCurTrack
-            },
-            {
-                headers: {
-                    Authorization: "Bearer " + token,
-                    "Content-Type": "application/json",
-                },
-            }
-        );
+                {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            toast.success("Removed!")
+        } else {
 
+        }
     };
 
     return <Container headerBackground={headerBackground}>
@@ -124,7 +129,7 @@ export default function PlaylistSelected({ headerBackground }) {
                                 group-hover:opacity-100
                                 group-hover:translate-y-0
                                 hover:scale-110">
-                            <FaPlay className="text-black" onClick={()=> {
+                            <FaPlay className="text-black" onClick={() => {
                                 changeTrack(selectedPlaylist.tracks[0].id, token, readyToListen, dispatch);
                             }}></FaPlay>
                         </button>
@@ -197,7 +202,6 @@ export default function PlaylistSelected({ headerBackground }) {
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
                                                                 removeTrack(token, id, selectedPlaylistId);
-                                                                toast.success("Removed!");
                                                             }}
                                                         />
                                                     )}

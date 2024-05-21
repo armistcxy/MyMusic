@@ -9,9 +9,11 @@ import { CgPlayTrackNext, CgPlayTrackPrev } from "react-icons/cg";
 import { FiRepeat } from "react-icons/fi";
 import { useStateProvider } from "../utils/StateProvider";
 import { reducerCases } from "../utils/Constants";
+import { changeTrack } from "./CurrentTrack";
+import axios from "axios";
 
 export default function PlayerControls() {
-    const [{ token, playerState, currentPlaying, readyToListen, volume }, dispatch] = useStateProvider();
+    const [{ token, playerState, currentPlaying, readyToListen, lastPlayed, volume }, dispatch] = useStateProvider();
 
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrenttime] = useState(0);
@@ -20,6 +22,43 @@ export default function PlayerControls() {
     const audioPlayer = useRef();
     const progressBar = useRef();
     const animationRef = useRef();
+
+    const nextPlay = async () => {
+        const response = await axios.get(
+            `http://localhost:8000/tracks/random/1`,
+            {
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        const nextSong = {
+            id: response.data[0].id,
+            name: response.data[0].name,
+            artists: response.data[0].artists,
+            track_image_path: response.data[0].track_image_path,
+            song: `http://localhost:8000/${response.data[0].audio_url}`,
+        }
+        const newLastPlayed = [...lastPlayed, nextSong];
+        dispatch({ type: reducerCases.SET_LAST_PLAYED, lastPlayed: newLastPlayed });
+        if (token)
+            changeTrack(nextSong.id, token, readyToListen, dispatch);
+        else changeTrack(nextSong.id, token, readyToListen, dispatch, nextSong);
+        
+    }
+
+    const prevPlay = () => {
+        if (lastPlayed.length !== 0) {
+            const len = lastPlayed.length;
+            const prevSong = lastPlayed[len - 1];
+            const remaining = lastPlayed.slice(0, -1);
+            dispatch({ type: reducerCases.SET_LAST_PLAYED, lastPlayed: remaining });      
+            if (token)
+                changeTrack(prevSong.id, token, readyToListen, dispatch);
+            else changeTrack(prevSong.id, token, readyToListen, dispatch, prevSong);              
+        }
+    }
 
     useEffect(() => {
         const seconds = Math.floor(audioPlayer.current.duration);
@@ -132,7 +171,9 @@ export default function PlayerControls() {
                     <BsShuffle />
                 </div>
                 <div className="previous">
-                    <CgPlayTrackPrev /*onClick={() => changeTrack("previous")}*/ />
+                    <CgPlayTrackPrev onClick={()=>{
+                        prevPlay();
+                    }}/>
                 </div>
                 <div className="state">
                     {playerState ? (
@@ -142,7 +183,9 @@ export default function PlayerControls() {
                     )}
                 </div>
                 <div className="next">
-                    <CgPlayTrackNext /*onClick={() => changeTrack("next")}*/ />
+                    <CgPlayTrackNext onClick={() => {
+                        nextPlay();
+                    }} />
                 </div>
                 <div className="repeat">
                     <FiRepeat onClick={() => repeatCurrentTrack()} />

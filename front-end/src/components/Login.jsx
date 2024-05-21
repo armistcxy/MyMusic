@@ -211,6 +211,7 @@ const Login = () => {
             dispatch({ type: reducerCases.USER_LOGGED_IN });
             dispatch({ type: reducerCases.SET_READY, readyToListen: false });
             dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: false });
+            dispatch({ type: reducerCases.SET_LAST_PLAYED, lastPlayed: [] });
             setAuth({ email, password, access_token, refresh_token });
             setIsSuccess(true);
             toast.success("Login successfully.");

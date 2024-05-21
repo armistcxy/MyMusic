@@ -17,6 +17,7 @@ export const initialState = {
     isQuery: false,
     filterItems: [[], [], []],
     currentPlaying: {},
+    lastPlayed: [],
     playerState: false,
     readyToListen: false,
     volume: 0.75,
@@ -46,6 +47,12 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 playlists: action.playlists,
+            }
+        }
+        case reducerCases.SET_LAST_PLAYED: {
+            return {
+                ...state,
+                lastPlayed: action.lastPlayed,
             }
         }
         case reducerCases.SET_NEWEST_SONGS: {
