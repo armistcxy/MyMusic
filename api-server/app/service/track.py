@@ -169,3 +169,20 @@ def random_track_choosing(
     track_response: list[TrackResponse], amount: int
 ) -> list[TrackResponse]:
     return random.sample(track_response, min(len(track_response), amount))
+
+
+def get_tracks_of_artist(artist_id: uuid.UUID) -> list[TrackResponse]:
+    session = get_session()
+    artist = artist_repo.get_artist_by_id(session=session, id=artist_id)
+    if artist is None:
+        session.close()
+        raise NotFoundError(
+            type="Artist", additional_info=f"There's no artist with id: {id}"
+        )
+    else:
+        tracks = artist.tracks
+        response = [
+            schema_utils.track_model_to_detail_response(track) for track in tracks
+        ]
+        session.close()
+        return response

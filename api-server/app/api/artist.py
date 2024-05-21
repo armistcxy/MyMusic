@@ -5,6 +5,9 @@ import app.service.artist as artist_service
 import uuid
 from app.repository.error import IntegrityException, RepositoryError
 from app.schema.error import ErrorResponse
+import app.service.track as track_service
+from app.repository.error import NotFoundError
+from app.schema.track import TrackResponse
 
 artist_router = APIRouter(prefix="/artists", tags=["Artist"])
 
@@ -89,4 +92,24 @@ def delete_artist_by_id(id: uuid.UUID):
         return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"message: {str(e)}",
+        )
+
+
+@artist_router.get(
+    "/{id}/tracks",
+    responses={
+        status.HTTP_200_OK: {"model": list[TrackResponse]},
+        status.HTTP_404_NOT_FOUND: {},
+        status.HTTP_500_INTERNAL_SERVER_ERROR: {},
+    },
+)
+def get_tracks_of_artist(id: uuid.UUID) -> list[TrackResponse]:
+    try:
+        response = track_service.get_tracks_of_artist(artist_id=id)
+        return response
+    except NotFoundError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
         )

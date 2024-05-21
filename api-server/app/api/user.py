@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, Body, status
 import uuid
 from app.api.auth import security
 from pydantic import BaseModel
-from app.schema.user import UserRegisterForm, UserLogInForm
+from app.schema.user import UserRegisterForm, UserLogInForm, UserDetailResponse
 import app.service.user as user_service
 from starlette.responses import RedirectResponse
 from authx import TokenPayload, RequestToken
@@ -13,10 +13,23 @@ from app.schema.track import TrackResponse
 user_router = APIRouter(prefix="/users", tags=["User"])
 
 
-@user_router.post("/register")
+@user_router.post(
+    "/register",
+    responses={
+        status.HTTP_201_CREATED: {"model": UserDetailResponse},
+        status.HTTP_500_INTERNAL_SERVER_ERROR: {},
+    },
+)
 def register_user(register_form: UserRegisterForm):
-    response = user_service.register_user(register_form=register_form)
-    return response
+    try:
+        response = user_service.register_user(register_form=register_form)
+        return JSONResponse(
+            status_code=status.HTTP_201_CREATED, content=response.model_dump()
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        )
 
 
 @user_router.post("/login")

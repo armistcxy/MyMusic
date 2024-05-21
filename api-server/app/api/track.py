@@ -6,7 +6,7 @@ from app.schema.track import (
     TrackDeleteResponse,
 )
 import uuid
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import JSONResponse, StreamingResponse, FileResponse
 import app.service.track as track_service
 from app.repository.error import NotFoundError
 from app.service.error import StreamError
@@ -135,3 +135,10 @@ def get_random_track(amount: int):
     response = track_service.get_tracks_in_range(1, 50)
     random_response = track_service.random_track_choosing(response, amount=amount)
     return random_response
+
+
+@track_router.get("/download/{id}")
+def download_track(id: uuid.UUID):
+    response = track_service.get_track_by_id(id)
+    track_file = FileResponse(path=f"app/{response.audio_url}")
+    return track_file
